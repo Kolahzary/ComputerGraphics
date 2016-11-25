@@ -7,7 +7,8 @@
         mc:Ignorable="d"
         Title="MainWindow"
         Height="350"
-        Width="525">
+        Width="525"
+        Loaded='Window_Loaded'>
   <DockPanel>
     <Menu IsMainMenu='True'
           DockPanel.Dock='Top'>
@@ -34,7 +35,9 @@
     <Image  Name='imgMain'
             RenderOptions.BitmapScalingMode='NearestNeighbor'
             RenderOptions.EdgeMode='Aliased'
-    Stretch='Uniform'/>
-    
+            Stretch='None'
+            HorizontalAlignment='Left'
+            VerticalAlignment='Top'
+            />
   </DockPanel>
 </Window>

@@ -15,16 +15,21 @@ namespace ComputerGraphics
         public WriteableBitmap WritableBitmap => this.wb;
         public int Width => wb.PixelWidth;
         public int Height => wb.PixelHeight;
-        public Bgra32BitmapTool(int width,int height)
-            :this(new WriteableBitmap(
+        public Bgra32BitmapTool(int width, int height)
+            : this(width,height,96.0)
+        {
+
+        }
+        public Bgra32BitmapTool(int width, int height, double resolutionDPI)
+            : this(new WriteableBitmap(
                 pixelWidth: width,
                 pixelHeight: height,
-                dpiX: 96.0,
-                dpiY: 96.0,
+                dpiX: resolutionDPI,
+                dpiY: resolutionDPI,
                 pixelFormat: PixelFormats.Bgra32,
                 palette: null))
         {
-            
+
         }
         public Bgra32BitmapTool(WriteableBitmap writableBitmap)
         {

@@ -20,31 +20,50 @@ namespace ComputerGraphics
     /// </summary>
     public partial class MainWindow : Window
     {
+        Bgra32BitmapTool bmp;
         public MainWindow()
         {
             InitializeComponent();
         }
 
+        private void Window_Loaded(object sender, RoutedEventArgs e)
+        {
+        }
+
         private void MenuItem_File_New_Click(object sender, RoutedEventArgs e)
         {
-            /*
-            var tool= new Bgra32BitmapTool(10, 10);
+            ushort width, height;
+            float resolution;
 
-            for (int i = 0; i < 10; i++)
+            NewDialogBox ndb = new NewDialogBox();
+            ndb.Owner = this;
+            var res = ndb.ShowDialog();
+
+
+            if (res.HasValue)
             {
-                for (int j = 0; j < 10; j++)
+                if (res.Value)
                 {
-                    tool.SetPixel(i,j, Colors.LightGray);
-                    //tool.SetPixel(i, j, 200, 0, 200);
+                    width = ndb.Values_Width;
+                    height = ndb.Values_Height;
+                    resolution = ndb.Values_Resolution;
+
+                    bmp = new Bgra32BitmapTool(width, height, resolution);
+
+
+                    imgMain.Source = bmp.WritableBitmap;
+
+                    for (int i = 0; i < width; i++)
+                    {
+                        for (int j = 0; j < height; j++)
+                        {
+                            bmp.SetPixel(i, j, Colors.LightGray);
+                            //tool.SetPixel(i, j, 200, 0, 200);
+                        }
+                    }
+                    bmp.Apply();
                 }
             }
-
-             tool.SetPixel(9,9, Colors.Gold);
-            var c = tool.GetPixel(0, 0);
-            // tool.SetPixel(1, 0, Colors.Red);
-            tool.Apply();
-            imgMain.Source = tool.WritableBitmap;
-            */
         }
 
         private void MenuItem_File_Exit_Click(object sender, RoutedEventArgs e)
@@ -56,5 +75,6 @@ namespace ComputerGraphics
         {
             System.Diagnostics.Process.Start("https://github.com/Kolahzary/ComputerGraphics");
         }
+
     }
 }
