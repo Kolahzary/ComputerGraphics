@@ -51,6 +51,8 @@ namespace ComputerGraphics
                     bmp = new Bgra32BitmapTool(width, height, resolution);
 
 
+                    imgMain.Width = width;
+                    imgMain.Height = height;
                     imgMain.Source = bmp.WritableBitmap;
 
                     for (int i = 0; i < width; i++)

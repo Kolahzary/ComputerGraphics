@@ -32,12 +32,17 @@
         <MenuItem Header='_About' />
       </MenuItem>
     </Menu>
-    <Image  Name='imgMain'
-            RenderOptions.BitmapScalingMode='NearestNeighbor'
-            RenderOptions.EdgeMode='Aliased'
-            Stretch='None'
-            HorizontalAlignment='Left'
-            VerticalAlignment='Top'
-            />
+    <ScrollViewer HorizontalScrollBarVisibility='Auto'
+                  VerticalScrollBarVisibility='Auto'>
+      <Border BorderThickness='1'
+              BorderBrush='Black'
+              HorizontalAlignment='Left'
+              VerticalAlignment='Top'>
+        <Image  Name='imgMain'
+                RenderOptions.BitmapScalingMode='NearestNeighbor'
+                RenderOptions.EdgeMode='Aliased'
+                Stretch='None' />
+      </Border>
+    </ScrollViewer>
   </DockPanel>
 </Window>
