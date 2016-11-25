@@ -27,7 +27,24 @@ namespace ComputerGraphics
 
         private void MenuItem_File_New_Click(object sender, RoutedEventArgs e)
         {
+            /*
+            var tool= new Bgra32BitmapTool(10, 10);
 
+            for (int i = 0; i < 10; i++)
+            {
+                for (int j = 0; j < 10; j++)
+                {
+                    tool.SetPixel(i,j, Colors.LightGray);
+                    //tool.SetPixel(i, j, 200, 0, 200);
+                }
+            }
+
+             tool.SetPixel(9,9, Colors.Gold);
+            var c = tool.GetPixel(0, 0);
+            // tool.SetPixel(1, 0, Colors.Red);
+            tool.Apply();
+            imgMain.Source = tool.WritableBitmap;
+            */
         }
 
         private void MenuItem_File_Exit_Click(object sender, RoutedEventArgs e)

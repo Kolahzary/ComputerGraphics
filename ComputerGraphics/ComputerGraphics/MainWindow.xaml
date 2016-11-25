@@ -25,11 +25,16 @@
       </MenuItem>
       <MenuItem Header='_Edit'></MenuItem>
       <MenuItem Header='_Help'>
-        <MenuItem Header='_GitHub' Click='MenuItem_Help_GitHub_Click' />
+        <MenuItem Header='_GitHub'
+                  Click='MenuItem_Help_GitHub_Click' />
         <Separator />
         <MenuItem Header='_About' />
       </MenuItem>
     </Menu>
-    <Image Name='imgMain' />
+    <Image  Name='imgMain'
+            RenderOptions.BitmapScalingMode='NearestNeighbor'
+            RenderOptions.EdgeMode='Aliased'
+    Stretch='Uniform'/>
+    
   </DockPanel>
 </Window>
