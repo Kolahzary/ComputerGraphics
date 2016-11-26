@@ -15,6 +15,7 @@ namespace ComputerGraphics
         public WriteableBitmap WritableBitmap => this.wb;
         public int Width => wb.PixelWidth;
         public int Height => wb.PixelHeight;
+        public double Resolution => wb.DpiX;
         public Bgra32BitmapTool(int width, int height)
             : this(width,height,96.0)
         {

@@ -85,8 +85,8 @@ namespace ComputerGraphics
             {
                 Point p = Mouse.GetPosition(imgMain);
                 
-                bmp.SetPixel((int)p.X, (int)p.Y, Colors.Black);
-
+                bmp.SetPixel((int)(p.X/96*bmp.Resolution), (int)(p.Y / 96 * bmp.Resolution), Colors.Black);
+                
                 bmp.Apply();
             }
         }
@@ -97,7 +97,7 @@ namespace ComputerGraphics
             {
                 Point p = Mouse.GetPosition(imgMain);
 
-                bmp.SetPixel((int)p.X, (int)p.Y, Colors.Black);
+                bmp.SetPixel((int)(p.X/96*bmp.Resolution), (int)(p.Y / 96 * bmp.Resolution), Colors.Black);
 
                 bmp.Apply();
             }
