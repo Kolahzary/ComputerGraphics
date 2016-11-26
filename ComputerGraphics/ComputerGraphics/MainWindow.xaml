@@ -25,6 +25,25 @@
                   Click='MenuItem_File_Exit_Click' />
       </MenuItem>
       <MenuItem Header='_Edit'></MenuItem>
+      <MenuItem Header='_Tools'>
+        <MenuItem Header='_Apply background color'>
+          <MenuItem Header='_Black'
+                    Click='MenuItem_ApplyBackgroundColor_Click' />
+          <MenuItem Header='_Gray'
+                    Click='MenuItem_ApplyBackgroundColor_Click' />
+          <MenuItem Header='_White'
+                    Click='MenuItem_ApplyBackgroundColor_Click' />
+          <Separator />
+          <MenuItem Header='_Red'
+                    Click='MenuItem_ApplyBackgroundColor_Click' />
+          <MenuItem Header='Gr_een'
+                    Click='MenuItem_ApplyBackgroundColor_Click' />
+          <MenuItem Header='B_lue'
+                    Click='MenuItem_ApplyBackgroundColor_Click' />
+          <Separator />
+          <MenuItem Header='_Advanced'></MenuItem>
+        </MenuItem>
+      </MenuItem>
       <MenuItem Header='_Help'>
         <MenuItem Header='_GitHub'
                   Click='MenuItem_Help_GitHub_Click' />

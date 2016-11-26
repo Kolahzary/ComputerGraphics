@@ -28,13 +28,12 @@ namespace ComputerGraphics
 
         private void Window_Loaded(object sender, RoutedEventArgs e)
         {
+            bmp = new Bgra32BitmapTool(100,100,96.0);
+            imgMain.Source = bmp.WritableBitmap;
         }
 
         private void MenuItem_File_New_Click(object sender, RoutedEventArgs e)
         {
-            ushort width, height;
-            float resolution;
-
             NewDialogBox ndb = new NewDialogBox();
             ndb.Owner = this;
             var res = ndb.ShowDialog();
@@ -44,26 +43,12 @@ namespace ComputerGraphics
             {
                 if (res.Value)
                 {
-                    width = ndb.Values_Width;
-                    height = ndb.Values_Height;
-                    resolution = ndb.Values_Resolution;
-
-                    bmp = new Bgra32BitmapTool(width, height, resolution);
-
-
-                    imgMain.Width = width;
-                    imgMain.Height = height;
+                    bmp = new Bgra32BitmapTool(
+                        ndb.Values_Width, 
+                        ndb.Values_Height, 
+                        ndb.Values_Resolution
+                        );
                     imgMain.Source = bmp.WritableBitmap;
-
-                    for (int i = 0; i < width; i++)
-                    {
-                        for (int j = 0; j < height; j++)
-                        {
-                            bmp.SetPixel(i, j, Colors.LightGray);
-                            //tool.SetPixel(i, j, 200, 0, 200);
-                        }
-                    }
-                    bmp.Apply();
                 }
             }
         }
@@ -78,5 +63,20 @@ namespace ComputerGraphics
             System.Diagnostics.Process.Start("https://github.com/Kolahzary/ComputerGraphics");
         }
 
+        private void MenuItem_ApplyBackgroundColor_Click(object sender, RoutedEventArgs e)
+        {
+            string name=(sender as MenuItem).Header.ToString().Replace("_","");
+            var c = System.Drawing.Color.FromName(name);
+
+            for (int y = 0; y < bmp.Height; y++)
+            {
+                for (int x = 0; x < bmp.Width; x++)
+                {
+                    bmp.SetPixel(x, y, c.A, c.R, c.G, c.B);
+                }
+            }
+
+            bmp.Apply();
+        }
     }
 }

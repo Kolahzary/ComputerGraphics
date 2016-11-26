@@ -8,7 +8,7 @@
         Title="New"
         Height="200"
         Width="300"
-        ShowInTaskbar='False'
+        ShowInTaskbar='False' FocusManager.FocusedElement='{Binding ElementName=txtWidth}'
         WindowStartupLocation='CenterOwner'>
   <Window.Resources>
     <Style TargetType='TextBox'>
