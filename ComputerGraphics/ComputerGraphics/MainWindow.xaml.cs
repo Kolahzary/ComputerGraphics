@@ -78,5 +78,29 @@ namespace ComputerGraphics
 
             bmp.Apply();
         }
+
+        private void imgMain_MouseMove(object sender, MouseEventArgs e)
+        {
+            if (e.LeftButton==MouseButtonState.Pressed)
+            {
+                Point p = Mouse.GetPosition(imgMain);
+                
+                bmp.SetPixel((int)p.X, (int)p.Y, Colors.Black);
+
+                bmp.Apply();
+            }
+        }
+
+        private void imgMain_MouseDown(object sender, MouseButtonEventArgs e)
+        {
+            if (e.ChangedButton == MouseButton.Left)
+            {
+                Point p = Mouse.GetPosition(imgMain);
+
+                bmp.SetPixel((int)p.X, (int)p.Y, Colors.Black);
+
+                bmp.Apply();
+            }
+        }
     }
 }

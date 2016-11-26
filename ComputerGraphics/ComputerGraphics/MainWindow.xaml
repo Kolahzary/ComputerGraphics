@@ -43,6 +43,7 @@
           <Separator />
           <MenuItem Header='_Advanced'></MenuItem>
         </MenuItem>
+        <MenuItem Header='_Pencil' />
       </MenuItem>
       <MenuItem Header='_Help'>
         <MenuItem Header='_GitHub'
@@ -60,7 +61,9 @@
         <Image  Name='imgMain'
                 RenderOptions.BitmapScalingMode='NearestNeighbor'
                 RenderOptions.EdgeMode='Aliased'
-                Stretch='None' />
+                Stretch='None' MouseDown='imgMain_MouseDown'
+                MouseMove='imgMain_MouseMove'
+                />
       </Border>
     </ScrollViewer>
   </DockPanel>
