@@ -7,7 +7,7 @@ using System.Windows;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 
-namespace ComputerGraphics
+namespace ComputerGraphics.Classes
 {
     public partial class Bgra32BitmapTool
     {
@@ -22,7 +22,7 @@ namespace ComputerGraphics
                 }
             }
         }
-
+        public void Line_DDA(IntPoint source, IntPoint destination, Color color) => this.Line_DDA(source.X, source.Y, destination.X, destination.Y, color);
         public void Line_DDA(int x0, int y0, int x1, int y1, Color color) => this.Line_DDA(x0, y0, x1, y1, color.A, color.R, color.G, color.B);
         public void Line_DDA(int x0,int y0, int x1,int y1, byte alpha, byte red, byte green, byte blue)
         {

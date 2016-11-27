@@ -20,6 +20,7 @@ namespace ComputerGraphics
     /// <summary>
     /// Interaction logic for MainWindow.xaml
     /// </summary>
+    /// 
     public partial class MainWindow : Window
     {
         Bgra32BitmapTool bmp;
@@ -39,6 +40,9 @@ namespace ComputerGraphics
         {
             bmp = new Bgra32BitmapTool(100,100,10);
             imgMain.Source = bmp.WritableBitmap;
+
+            this.ForeGroundColor = Colors.Black;
+            this.CurrentTool = ToolType.Freehand_DrawLine;
         }
 
         private void MenuItem_File_New_Click(object sender, RoutedEventArgs e)
@@ -77,25 +81,47 @@ namespace ComputerGraphics
             bmp.FillBackgroundColor(System.Drawing.Color.FromName(name));
             bmp.Apply();
         }
+        private Color ForeGroundColor { get; set; }
         private void imgMain_MouseMove(object sender, MouseEventArgs e)
         {
             var mouse = this.MousePosition;
             this.UpdateStatusBar(mouse);
             if (e.LeftButton==MouseButtonState.Pressed)
             {
-                bmp.SetPixel(mouse.X, mouse.Y, Colors.Black);
+                switch (CurrentTool)
+                {
+                    case ToolType.Freehand_PutPixels:
+                        bmp.SetPixel(mouse.X, mouse.Y, this.ForeGroundColor);
+                        break;
+                    case ToolType.Freehand_DrawLine:
+                        bmp.Line_DDA(SourcePoint, mouse, this.ForeGroundColor);
+                        this.SourcePoint = mouse;
+                        break;
+                    default:
+                        break;
+                }
                 
                 bmp.Apply();
             }
         }
-
+        private IntPoint SourcePoint { get; set; }
         private void imgMain_MouseDown(object sender, MouseButtonEventArgs e)
         {
             var mouse = this.MousePosition;
             if (e.ChangedButton == MouseButton.Left)
             {
-                bmp.SetPixel(mouse.X, mouse.Y, Colors.Black);
-
+                switch (CurrentTool)
+                {
+                    case ToolType.Freehand_PutPixels:
+                        bmp.SetPixel(mouse.X, mouse.Y, this.ForeGroundColor);
+                        break;
+                    case ToolType.Freehand_DrawLine:
+                        bmp.SetPixel(mouse.X, mouse.Y, this.ForeGroundColor);
+                        this.SourcePoint = mouse;
+                        break;
+                    default:
+                        break;
+                }
                 bmp.Apply();
             }
         }
@@ -107,11 +133,13 @@ namespace ComputerGraphics
         
         private void imgMain_MouseEnter(object sender, MouseEventArgs e)
         {
+            this.UpdateStatusBar();
 
         }
         private void imgMain_MouseLeave(object sender, MouseEventArgs e)
         {
             this.UpdateStatusBar(new IntPoint(0, 0));
+
         }
 
         private void MenuItem_File_Open_Click(object sender, RoutedEventArgs e)
@@ -122,6 +150,40 @@ namespace ComputerGraphics
             {
                 bmp = new Bgra32BitmapTool(new Uri(ofd.FileName, UriKind.RelativeOrAbsolute));
                 imgMain.Source = bmp.WritableBitmap;
+            }
+        }
+
+        private void MenuItem_Tools_Freehand_PutPixels_Click(object sender, RoutedEventArgs e)
+        {
+            this.CurrentTool = ToolType.Freehand_PutPixels;
+        }
+
+        private void MenuItem_Tools_Freehand_DrawLine_Click(object sender, RoutedEventArgs e)
+        {
+            this.CurrentTool = ToolType.Freehand_DrawLine;
+        }
+        Dictionary<ToolType, string> ToolNames = new Dictionary<ToolType, string>()
+        {
+            {ToolType.Freehand_PutPixels,"Freehand -> PutPixels" },
+            {ToolType.Freehand_DrawLine,"Freehand -> DrawLine" },
+        };
+        private enum ToolType
+        {
+            Freehand_PutPixels,
+            Freehand_DrawLine,
+
+        }
+        private ToolType _CurrentTool;
+        private ToolType CurrentTool
+        {
+            get
+            {
+                return _CurrentTool;
+            }
+            set
+            {
+                this._CurrentTool = value;
+                lblToolName.Text = ToolNames[value];
             }
         }
     }

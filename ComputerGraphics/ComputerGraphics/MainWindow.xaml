@@ -47,7 +47,10 @@
           <Separator />
           <MenuItem Header='_Advanced'></MenuItem>
         </MenuItem>
-        <MenuItem Header='_Pencil' />
+        <MenuItem Header='_Free Hand'>
+          <MenuItem Header='_Put pixels' Click='MenuItem_Tools_Freehand_PutPixels_Click' />
+          <MenuItem Header='_Draw line' Click='MenuItem_Tools_Freehand_DrawLine_Click' />
+        </MenuItem>
       </MenuItem>
       <MenuItem Header='_Help'>
         <MenuItem Header='_GitHub'
@@ -66,25 +69,34 @@
               <ColumnDefinition />
               <ColumnDefinition Width='auto' />
               <ColumnDefinition />
+              <ColumnDefinition Width='auto' />
+              <ColumnDefinition />
             </Grid.ColumnDefinitions>
           </Grid>
         </ItemsPanelTemplate>
       </StatusBar.ItemsPanel>
       <StatusBarItem Grid.Column='0'>
-        <TextBlock Name='lblSourcePoint'
-                   Text='Free' />
+        <TextBlock Name='lblToolName'
+                   Text='FreeHand -> DrawLine' />
       </StatusBarItem>
       
       <Separator Grid.Column='1' />
       
       <StatusBarItem Grid.Column='2'>
+        <TextBlock Name='lblSourcePoint'
+                   Text='0,0 px' />
+      </StatusBarItem>
+      
+      <Separator Grid.Column='3' />
+      
+      <StatusBarItem Grid.Column='4'>
         <TextBlock Name='lblCursorPosition'
                    Text='Mouse not in range' />
       </StatusBarItem>
       
-      <Separator  Grid.Column='3'/>
+      <Separator  Grid.Column='5'/>
       
-      <StatusBarItem Grid.Column='4'>
+      <StatusBarItem Grid.Column='6'>
         <TextBlock Name='lblImageSize'
                    Text='Image size' />
       </StatusBarItem>
