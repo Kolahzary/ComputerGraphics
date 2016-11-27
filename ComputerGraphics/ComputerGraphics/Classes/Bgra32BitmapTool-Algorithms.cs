@@ -22,27 +22,80 @@ namespace ComputerGraphics.Classes
                 }
             }
         }
+
+        public void Line_Naive(IntPoint source, IntPoint destination, Color color) => this.Line_Naive(source.X, source.Y, destination.X, destination.Y, color);
+        public void Line_Naive(int x0, int y0, int x1, int y1, Color color) => this.Line_Naive(x0, y0, x1, y1, color.A, color.R, color.G, color.B);
+        public void Line_Naive(int x0, int y0, int x1, int y1, byte alpha, byte red, byte green, byte blue)
+        {
+            int y,
+                dx = x1 - x0,
+                dy = y1 - y0;
+
+            if (dx == 0) return; // Prevent division by zero
+
+            for (int x = x0; x <= x1; x++)
+            {
+                y = y0 + dy * (x - x0) / dx;
+                this.SetPixel(x, y, alpha, red, green, blue);
+            }
+        }
+
         public void Line_DDA(IntPoint source, IntPoint destination, Color color) => this.Line_DDA(source.X, source.Y, destination.X, destination.Y, color);
         public void Line_DDA(int x0, int y0, int x1, int y1, Color color) => this.Line_DDA(x0, y0, x1, y1, color.A, color.R, color.G, color.B);
-        public void Line_DDA(int x0,int y0, int x1,int y1, byte alpha, byte red, byte green, byte blue)
+        public void Line_DDA(int x0, int y0, int x1, int y1, byte alpha, byte red, byte green, byte blue)
         {
-            int 
+            int
                 dx = x1 - x0,
                 dy = y1 - y0;
 
             int step = Math.Abs(dx) > Math.Abs(dy) ? Math.Abs(dx) : Math.Abs(dy); //if (Math.Abs(dx) > Math.Abs(dy)) step = Math.Abs(dx); else step = Math.Abs(dy);
 
-            float 
-                x=x0,
-                y=y0,
+            float
+                x = x0,
+                y = y0,
                 incX = dx / (float)step,
                 incY = dy / (float)step;
 
-            for (int i = 0; i < step; i++)
+            for (int i = 0; i <= step; i++)
             {
                 this.SetPixel((int)Math.Round(x), (int)Math.Round(y), alpha, red, green, blue);
                 x += incX;
                 y += incY;
+            }
+        }
+
+        public void Line_Bresenham(IntPoint source, IntPoint destination, Color color) => this.Line_Bresenham(source.X, source.Y, destination.X, destination.Y, color);
+        public void Line_Bresenham(int x0, int y0, int x1, int y1, Color color) => this.Line_Bresenham(x0, y0, x1, y1, color.A, color.R, color.G, color.B);
+        public void Line_Bresenham(int x0, int y0, int x1, int y1, byte alpha, byte red, byte green, byte blue)
+        {
+            // TODO
+        }
+
+        public void Rectangle_Empty(IntPoint source, IntPoint destination, Color color) => this.Rectangle_Empty(source.X, source.Y, destination.X, destination.Y, color);
+        public void Rectangle_Empty(int x0, int y0, int x1, int y1, Color color) => this.Rectangle_Empty(x0, y0, x1, y1, color.A, color.R, color.G, color.B);
+        public void Rectangle_Empty(int x0, int y0, int x1, int y1, byte alpha, byte red, byte green, byte blue)
+        {
+            this.Line_DDA(x0, y0, x1, y0, alpha, red, green, blue);
+            this.Line_DDA(x0, y0, x0, y1, alpha, red, green, blue);
+
+            this.Line_DDA(x1, y1, x1, y0, alpha, red, green, blue);
+            this.Line_DDA(x1, y1, x0, y1, alpha, red, green, blue);
+        }
+
+
+        public void Rectangle_Filled(IntPoint source, IntPoint destination, Color color) => this.Rectangle_Filled(source.X, source.Y, destination.X, destination.Y, color);
+        public void Rectangle_Filled(int x0, int y0, int x1, int y1, Color color) => this.Rectangle_Filled(x0, y0, x1, y1, color.A, color.R, color.G, color.B);
+        public void Rectangle_Filled(int x0, int y0, int x1, int y1, byte alpha, byte red, byte green, byte blue)
+        {
+            if (x0>x1)
+            {
+                int tmp=x0;
+                x0 = x1;
+                x1 = tmp;
+            }
+            for (int x = x0; x <= x1; x++)
+            {
+                this.Line_DDA(x, y0, x, y1, alpha, red, green, blue);
             }
         }
 

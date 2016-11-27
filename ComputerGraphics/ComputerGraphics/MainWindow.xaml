@@ -48,8 +48,31 @@
           <MenuItem Header='_Advanced'></MenuItem>
         </MenuItem>
         <MenuItem Header='_Free Hand'>
-          <MenuItem Header='_Put pixels' Click='MenuItem_Tools_Freehand_PutPixels_Click' />
-          <MenuItem Header='_Draw line' Click='MenuItem_Tools_Freehand_DrawLine_Click' />
+          <MenuItem Tag='Freehand_PutPixels'
+                    Header='_Put pixels'
+                    Click='MenuItem_Tools_ToolSelected' />
+          <MenuItem Tag='Freehand_DrawLine'
+                    Header='_Draw line'
+                    Click='MenuItem_Tools_ToolSelected' />
+        </MenuItem>
+        <MenuItem Header='_Line'>
+          <MenuItem Tag='Line_Naive'
+                    Header='_Naive line drawing algorithm'
+                    Click='MenuItem_Tools_ToolSelected' />
+          <MenuItem Tag='Line_DDA'
+                    Header='_DDA (Digital Differential Analyzer)'
+                    Click='MenuItem_Tools_ToolSelected' />
+          <MenuItem Tag='Line_Bresenham'
+                    Header="_Bresenham's Line Algorithm"
+                    Click='MenuItem_Tools_ToolSelected' />
+        </MenuItem>
+        <MenuItem Header='_Rectangle'>
+          <MenuItem Tag='Rectangle_Empty'
+                    Header='_Empty Rectangle'
+                    Click='MenuItem_Tools_ToolSelected' />
+          <MenuItem Tag='Rectangle_Filled'
+                    Header='_Filled Rectangle'
+                    Click='MenuItem_Tools_ToolSelected' />
         </MenuItem>
       </MenuItem>
       <MenuItem Header='_Help'>
@@ -79,23 +102,23 @@
         <TextBlock Name='lblToolName'
                    Text='FreeHand -> DrawLine' />
       </StatusBarItem>
-      
+
       <Separator Grid.Column='1' />
-      
+
       <StatusBarItem Grid.Column='2'>
         <TextBlock Name='lblSourcePoint'
                    Text='0,0 px' />
       </StatusBarItem>
-      
+
       <Separator Grid.Column='3' />
-      
+
       <StatusBarItem Grid.Column='4'>
         <TextBlock Name='lblCursorPosition'
                    Text='Mouse not in range' />
       </StatusBarItem>
-      
-      <Separator  Grid.Column='5'/>
-      
+
+      <Separator  Grid.Column='5' />
+
       <StatusBarItem Grid.Column='6'>
         <TextBlock Name='lblImageSize'
                    Text='Image size' />

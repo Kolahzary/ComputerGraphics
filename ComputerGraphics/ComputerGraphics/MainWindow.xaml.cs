@@ -24,6 +24,72 @@ namespace ComputerGraphics
     public partial class MainWindow : Window
     {
         Bgra32BitmapTool bmp;
+
+        private IntPoint? _SourcePoint;
+        private IntPoint? SourcePoint
+        {
+            get
+            {
+                return _SourcePoint;
+            }
+            set
+            {
+                _SourcePoint = value;
+                lblSourcePoint.Text = value.HasValue ? $"{value.Value.X}, {value.Value.Y} px" : "";
+            }
+        }
+        private Color CurrentBackColor { get; set; }
+        private Color CurrentForeColor { get; set; }
+        private enum ToolType
+        {
+            Freehand_PutPixels,
+            Freehand_DrawLine,
+
+            Line_Naive,
+            Line_DDA,
+            Line_Bresenham,
+
+            Rectangle_Empty,
+            Rectangle_Filled,
+        }
+        private Dictionary<ToolType, string> ToolNames = new Dictionary<ToolType, string>()
+        {
+            {ToolType.Freehand_PutPixels,"Freehand -> PutPixels" },
+            {ToolType.Freehand_DrawLine,"Freehand -> DrawLine" },
+
+            {ToolType.Line_Naive,"Line -> Naive" },
+            {ToolType.Line_DDA,"Line -> DDA" },
+            {ToolType.Line_Bresenham,"Line -> Bresenham" },
+
+            {ToolType.Rectangle_Empty,"Empty Rectangle" },
+            {ToolType.Rectangle_Filled,"Filled Rectangle" },
+        };
+        private Dictionary<string, ToolType> ToolTypeByTag = new Dictionary<string, ToolType>()
+        {
+            {"Freehand_PutPixels",ToolType.Freehand_PutPixels },
+            {"Freehand_DrawLine",ToolType.Freehand_DrawLine },
+
+            {"Line_Naive",ToolType.Line_Naive },
+            {"Line_DDA",ToolType.Line_DDA },
+            {"Line_Bresenham",ToolType.Line_Bresenham },
+
+            {"Rectangle_Empty",ToolType.Rectangle_Empty },
+            {"Rectangle_Filled",ToolType.Rectangle_Filled },
+        };
+        private ToolType _CurrentTool;
+        private ToolType CurrentTool
+        {
+            get
+            {
+                return _CurrentTool;
+            }
+            set
+            {
+                this._CurrentTool = value;
+                lblToolName.Text = ToolNames[value];
+            }
+        }
+
         public IntPoint MousePosition => Mouse.GetPosition(imgMain).ToIntPointWithResolution(bmp.Resolution);
         private void UpdateStatusBar() => this.UpdateStatusBar(this.MousePosition);
         private void UpdateStatusBar(IntPoint mouse)
@@ -41,7 +107,7 @@ namespace ComputerGraphics
             bmp = new Bgra32BitmapTool(100,100,10);
             imgMain.Source = bmp.WritableBitmap;
 
-            this.ForeGroundColor = Colors.Black;
+            this.CurrentForeColor = Colors.Black;
             this.CurrentTool = ToolType.Freehand_DrawLine;
         }
 
@@ -75,13 +141,6 @@ namespace ComputerGraphics
             System.Diagnostics.Process.Start("https://github.com/Kolahzary/ComputerGraphics");
         }
 
-        private void MenuItem_ApplyBackgroundColor_Click(object sender, RoutedEventArgs e)
-        {
-            string name=(sender as MenuItem).Header.ToString().Replace("_","");
-            bmp.FillBackgroundColor(System.Drawing.Color.FromName(name));
-            bmp.Apply();
-        }
-        private Color ForeGroundColor { get; set; }
         private void imgMain_MouseMove(object sender, MouseEventArgs e)
         {
             var mouse = this.MousePosition;
@@ -91,10 +150,10 @@ namespace ComputerGraphics
                 switch (CurrentTool)
                 {
                     case ToolType.Freehand_PutPixels:
-                        bmp.SetPixel(mouse.X, mouse.Y, this.ForeGroundColor);
+                        bmp.SetPixel(mouse.X, mouse.Y, this.CurrentForeColor);
                         break;
                     case ToolType.Freehand_DrawLine:
-                        bmp.Line_DDA(SourcePoint, mouse, this.ForeGroundColor);
+                        bmp.Line_DDA(SourcePoint??mouse, mouse, this.CurrentForeColor);
                         this.SourcePoint = mouse;
                         break;
                     default:
@@ -104,7 +163,6 @@ namespace ComputerGraphics
                 bmp.Apply();
             }
         }
-        private IntPoint SourcePoint { get; set; }
         private void imgMain_MouseDown(object sender, MouseButtonEventArgs e)
         {
             var mouse = this.MousePosition;
@@ -113,22 +171,66 @@ namespace ComputerGraphics
                 switch (CurrentTool)
                 {
                     case ToolType.Freehand_PutPixels:
-                        bmp.SetPixel(mouse.X, mouse.Y, this.ForeGroundColor);
+                        bmp.SetPixel(mouse.X, mouse.Y, this.CurrentForeColor);
+                        bmp.Apply();
                         break;
                     case ToolType.Freehand_DrawLine:
-                        bmp.SetPixel(mouse.X, mouse.Y, this.ForeGroundColor);
+                        bmp.SetPixel(mouse.X, mouse.Y, this.CurrentForeColor);
+                        this.SourcePoint = mouse;
+                        bmp.Apply();
+                        break;
+
+                    case ToolType.Line_Naive:
+                    case ToolType.Line_DDA:
+                    case ToolType.Line_Bresenham:
+                    case ToolType.Rectangle_Empty:
+                    case ToolType.Rectangle_Filled:
                         this.SourcePoint = mouse;
                         break;
                     default:
                         break;
                 }
-                bmp.Apply();
             }
         }
 
         private void imgMain_MouseUp(object sender, MouseButtonEventArgs e)
         {
+            var mouse = this.MousePosition;
+            if (e.ChangedButton == MouseButton.Left)
+            {
+                if (!this.SourcePoint.HasValue) return;
+                switch (CurrentTool)
+                {
+                    //case ToolType.Freehand_PutPixels:
+                    //    break;
+                    //case ToolType.Freehand_DrawLine:
+                    //    break;
 
+                    case ToolType.Line_Naive:
+                        bmp.Line_Naive(this.SourcePoint.Value, mouse, this.CurrentForeColor);
+                        bmp.Apply();
+                        break;
+                    case ToolType.Line_DDA:
+                        bmp.Line_DDA(this.SourcePoint.Value, mouse, this.CurrentForeColor);
+                        bmp.Apply();
+                        break;
+                    case ToolType.Line_Bresenham:
+                        bmp.Line_Bresenham(this.SourcePoint.Value, mouse, this.CurrentForeColor);
+                        bmp.Apply();
+                        break;
+                    case ToolType.Rectangle_Empty:
+                        bmp.Rectangle_Empty(this.SourcePoint.Value, mouse, this.CurrentForeColor);
+                        bmp.Apply();
+                        break;
+                    case ToolType.Rectangle_Filled:
+                        bmp.Rectangle_Filled(this.SourcePoint.Value, mouse, this.CurrentForeColor);
+                        bmp.Apply();
+                        break;
+                    default:
+                        break;
+                }
+                this.SourcePoint = null;
+            }
         }
         
         private void imgMain_MouseEnter(object sender, MouseEventArgs e)
@@ -152,39 +254,13 @@ namespace ComputerGraphics
                 imgMain.Source = bmp.WritableBitmap;
             }
         }
-
-        private void MenuItem_Tools_Freehand_PutPixels_Click(object sender, RoutedEventArgs e)
+        private void MenuItem_ApplyBackgroundColor_Click(object sender, RoutedEventArgs e)
         {
-            this.CurrentTool = ToolType.Freehand_PutPixels;
+            string name = (sender as MenuItem).Header.ToString().Replace("_", "");
+            bmp.FillBackgroundColor(System.Drawing.Color.FromName(name));
+            bmp.Apply();
         }
-
-        private void MenuItem_Tools_Freehand_DrawLine_Click(object sender, RoutedEventArgs e)
-        {
-            this.CurrentTool = ToolType.Freehand_DrawLine;
-        }
-        Dictionary<ToolType, string> ToolNames = new Dictionary<ToolType, string>()
-        {
-            {ToolType.Freehand_PutPixels,"Freehand -> PutPixels" },
-            {ToolType.Freehand_DrawLine,"Freehand -> DrawLine" },
-        };
-        private enum ToolType
-        {
-            Freehand_PutPixels,
-            Freehand_DrawLine,
-
-        }
-        private ToolType _CurrentTool;
-        private ToolType CurrentTool
-        {
-            get
-            {
-                return _CurrentTool;
-            }
-            set
-            {
-                this._CurrentTool = value;
-                lblToolName.Text = ToolNames[value];
-            }
-        }
+        public void MenuItem_Tools_ToolSelected(object sender, RoutedEventArgs e)
+            => this.CurrentTool = ToolTypeByTag[(string)(sender as MenuItem).Tag];
     }
 }
