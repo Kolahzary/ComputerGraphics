@@ -16,7 +16,8 @@
         <MenuItem Header="_New..."
                   Click='MenuItem_File_New_Click' />
         <Separator />
-        <MenuItem Header="_Open..." />
+        <MenuItem Header="_Open..."
+                  Click='MenuItem_File_Open_Click' />
         <Separator />
         <MenuItem Header="_Save" />
         <MenuItem Header="_Save As..." />
@@ -24,7 +25,10 @@
         <MenuItem Header="_Exit"
                   Click='MenuItem_File_Exit_Click' />
       </MenuItem>
-      <MenuItem Header='_Edit'></MenuItem>
+      <MenuItem Header='_Edit'>
+        <MenuItem Header='_Undo' />
+        <MenuItem Header='_Redo' />
+      </MenuItem>
       <MenuItem Header='_Tools'>
         <MenuItem Header='_Apply background color'>
           <MenuItem Header='_Black'
@@ -52,6 +56,39 @@
         <MenuItem Header='_About' />
       </MenuItem>
     </Menu>
+    <StatusBar DockPanel.Dock='Bottom'>
+      <StatusBar.ItemsPanel>
+        <ItemsPanelTemplate>
+          <Grid>
+            <Grid.ColumnDefinitions>
+              <ColumnDefinition />
+              <ColumnDefinition Width='auto' />
+              <ColumnDefinition />
+              <ColumnDefinition Width='auto' />
+              <ColumnDefinition />
+            </Grid.ColumnDefinitions>
+          </Grid>
+        </ItemsPanelTemplate>
+      </StatusBar.ItemsPanel>
+      <StatusBarItem Grid.Column='0'>
+        <TextBlock Name='lblSourcePoint'
+                   Text='Free' />
+      </StatusBarItem>
+      
+      <Separator Grid.Column='1' />
+      
+      <StatusBarItem Grid.Column='2'>
+        <TextBlock Name='lblCursorPosition'
+                   Text='Mouse not in range' />
+      </StatusBarItem>
+      
+      <Separator  Grid.Column='3'/>
+      
+      <StatusBarItem Grid.Column='4'>
+        <TextBlock Name='lblImageSize'
+                   Text='Image size' />
+      </StatusBarItem>
+    </StatusBar>
     <ScrollViewer HorizontalScrollBarVisibility='Auto'
                   VerticalScrollBarVisibility='Auto'>
       <Border BorderThickness='1'
@@ -61,9 +98,12 @@
         <Image  Name='imgMain'
                 RenderOptions.BitmapScalingMode='NearestNeighbor'
                 RenderOptions.EdgeMode='Aliased'
-                Stretch='None' MouseDown='imgMain_MouseDown'
+                Stretch='None'
+                MouseEnter='imgMain_MouseEnter'
+                MouseLeave='imgMain_MouseLeave'
+                MouseDown='imgMain_MouseDown'
                 MouseMove='imgMain_MouseMove'
-                />
+                MouseUp='imgMain_MouseUp' />
       </Border>
     </ScrollViewer>
   </DockPanel>

@@ -1,4 +1,6 @@
-﻿using System;
+﻿using ComputerGraphics.Classes;
+using Microsoft.Win32;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -21,6 +23,13 @@ namespace ComputerGraphics
     public partial class MainWindow : Window
     {
         Bgra32BitmapTool bmp;
+        public IntPoint MousePosition => Mouse.GetPosition(imgMain).ToIntPointWithResolution(bmp.Resolution);
+        private void UpdateStatusBar() => this.UpdateStatusBar(this.MousePosition);
+        private void UpdateStatusBar(IntPoint mouse)
+        {
+            lblCursorPosition.Text = $"{mouse.X}, {mouse.Y} px";
+            lblImageSize.Text = $"{bmp.Width} * {bmp.Height} px";
+        }
         public MainWindow()
         {
             InitializeComponent();
@@ -28,7 +37,7 @@ namespace ComputerGraphics
 
         private void Window_Loaded(object sender, RoutedEventArgs e)
         {
-            bmp = new Bgra32BitmapTool(100,100,96.0);
+            bmp = new Bgra32BitmapTool(100,100,10);
             imgMain.Source = bmp.WritableBitmap;
         }
 
@@ -37,8 +46,7 @@ namespace ComputerGraphics
             NewDialogBox ndb = new NewDialogBox();
             ndb.Owner = this;
             var res = ndb.ShowDialog();
-
-
+            
             if (res.HasValue)
             {
                 if (res.Value)
@@ -66,26 +74,16 @@ namespace ComputerGraphics
         private void MenuItem_ApplyBackgroundColor_Click(object sender, RoutedEventArgs e)
         {
             string name=(sender as MenuItem).Header.ToString().Replace("_","");
-            var c = System.Drawing.Color.FromName(name);
-
-            for (int y = 0; y < bmp.Height; y++)
-            {
-                for (int x = 0; x < bmp.Width; x++)
-                {
-                    bmp.SetPixel(x, y, c.A, c.R, c.G, c.B);
-                }
-            }
-
+            bmp.FillBackgroundColor(System.Drawing.Color.FromName(name));
             bmp.Apply();
         }
-
         private void imgMain_MouseMove(object sender, MouseEventArgs e)
         {
+            var mouse = this.MousePosition;
+            this.UpdateStatusBar(mouse);
             if (e.LeftButton==MouseButtonState.Pressed)
             {
-                Point p = Mouse.GetPosition(imgMain);
-                
-                bmp.SetPixel((int)(p.X/96*bmp.Resolution), (int)(p.Y / 96 * bmp.Resolution), Colors.Black);
+                bmp.SetPixel(mouse.X, mouse.Y, Colors.Black);
                 
                 bmp.Apply();
             }
@@ -93,13 +91,37 @@ namespace ComputerGraphics
 
         private void imgMain_MouseDown(object sender, MouseButtonEventArgs e)
         {
+            var mouse = this.MousePosition;
             if (e.ChangedButton == MouseButton.Left)
             {
-                Point p = Mouse.GetPosition(imgMain);
-
-                bmp.SetPixel((int)(p.X/96*bmp.Resolution), (int)(p.Y / 96 * bmp.Resolution), Colors.Black);
+                bmp.SetPixel(mouse.X, mouse.Y, Colors.Black);
 
                 bmp.Apply();
+            }
+        }
+
+        private void imgMain_MouseUp(object sender, MouseButtonEventArgs e)
+        {
+
+        }
+        
+        private void imgMain_MouseEnter(object sender, MouseEventArgs e)
+        {
+
+        }
+        private void imgMain_MouseLeave(object sender, MouseEventArgs e)
+        {
+            this.UpdateStatusBar(new IntPoint(0, 0));
+        }
+
+        private void MenuItem_File_Open_Click(object sender, RoutedEventArgs e)
+        {
+            OpenFileDialog ofd = new OpenFileDialog();
+            ofd.Filter = "Supported image files (*.jpg;*.jpeg;*.png;*.bmp;*.gif;*.tif;*.tiff;*.ico)|*.jpg;*.jpeg;*.png;*.bmp;*.gif;*.tif;*.tiff;*.ico|All files (*.*)|*.*";
+            if (ofd.ShowDialog() == true)
+            {
+                bmp = new Bgra32BitmapTool(new Uri(ofd.FileName, UriKind.RelativeOrAbsolute));
+                imgMain.Source = bmp.WritableBitmap;
             }
         }
     }
