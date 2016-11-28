@@ -364,5 +364,19 @@ namespace ComputerGraphics
         }
         public void MenuItem_Tools_ToolSelected(object sender, RoutedEventArgs e)
             => this.CurrentTool = ToolTypeByTag[(string)(sender as MenuItem).Tag];
+
+        private void MenuItem_Tools_ColorPicker_Click(object sender, RoutedEventArgs e)
+        {
+            ColorPicker cp = new ColorPicker();
+            cp.Owner = this;
+            var res=cp.ShowDialog();
+            if (res.HasValue)
+            {
+                if (res.Value)
+                {
+                    this.CurrentForeColor=cp.PickedColor;
+                }
+            }
+        }
     }
 }

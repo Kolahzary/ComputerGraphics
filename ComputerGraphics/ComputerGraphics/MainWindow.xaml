@@ -109,6 +109,8 @@
                     Header="_Bresenham's algorithm"
                     Click='MenuItem_Tools_ToolSelected' />
         </MenuItem>
+        <MenuItem Header='C_olor Picker'
+                  Click='MenuItem_Tools_ColorPicker_Click' />
       </MenuItem>
       <MenuItem Header='_Help'>
         <MenuItem Header='_GitHub'
