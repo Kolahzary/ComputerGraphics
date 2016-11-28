@@ -207,6 +207,7 @@ namespace ComputerGraphics
         private void imgMain_MouseUp(object sender, MouseButtonEventArgs e)
         {
             var mouse = this.MousePosition;
+            int radius;
             if (e.ChangedButton == MouseButton.Left)
             {
                 if (!this.SourcePoint.HasValue) return;
@@ -238,11 +239,15 @@ namespace ComputerGraphics
                         bmp.Apply();
                         break;
                     case ToolType.Circle_Midpoint:
-                        bmp.Circle_Midpoint(this.SourcePoint.Value, Math.Abs(mouse.X - this.SourcePoint.Value.X), this.CurrentForeColor);
+                        radius = Math.Max(Math.Abs(mouse.X - this.SourcePoint.Value.X), Math.Abs(mouse.Y - this.SourcePoint.Value.Y));
+
+                        bmp.Circle_Midpoint(this.SourcePoint.Value,radius, this.CurrentForeColor);
                         bmp.Apply();
                         break;
                     case ToolType.Circle_Bresenham:
-                        bmp.Circle_Bresenham(this.SourcePoint.Value, Math.Abs(mouse.X - this.SourcePoint.Value.X), this.CurrentForeColor);
+                        radius = Math.Max(Math.Abs(mouse.X - this.SourcePoint.Value.X), Math.Abs(mouse.Y - this.SourcePoint.Value.Y));
+
+                        bmp.Circle_Bresenham(this.SourcePoint.Value, radius, this.CurrentForeColor);
                         bmp.Apply();
                         break;
                     default:
