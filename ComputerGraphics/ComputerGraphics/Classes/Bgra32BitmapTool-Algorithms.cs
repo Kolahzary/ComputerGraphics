@@ -151,16 +151,16 @@ namespace ComputerGraphics.Classes
             this.Line_DDA(x2, y2, x0, y0, alpha, red, green, blue);
         }
 
-        public void Triangle_Equilateral(IntPoint source, int radius, Color color)
-            => this.Triangle_Equilateral(source.X, source.Y, radius, color);
-        public void Triangle_Equilateral(int x, int y, int radius, Color color)
-            => this.Triangle_Equilateral(x, y, radius, color.A, color.R, color.G, color.B);
-        public void Triangle_Equilateral(int x, int y, int radius, byte alpha, byte red, byte green, byte blue)
+        public void Triangle_Equilateral(IntPoint center, int radius, Color color)
+            => this.Triangle_Equilateral(center.X, center.Y, radius, color);
+        public void Triangle_Equilateral(int xc, int yc, int radius, Color color)
+            => this.Triangle_Equilateral(xc, yc, radius, color.A, color.R, color.G, color.B);
+        public void Triangle_Equilateral(int xc, int yc, int radius, byte alpha, byte red, byte green, byte blue)
         {
             this.Triangle(
-                x-radius, y+radius,
-                x+radius, y+radius,
-                x, y-radius,
+                xc-radius, yc+radius,
+                xc+radius, yc+radius,
+                xc, yc-radius,
                 alpha, red, green, blue);
         }
 
@@ -193,9 +193,9 @@ namespace ComputerGraphics.Classes
 
         public void Circle_Midpoint(IntPoint center, int radius, Color color)
             => this.Circle_Midpoint(center.X, center.Y, radius, color);
-        public void Circle_Midpoint(int x0, int y0, int radius, Color color)
-            => this.Circle_Midpoint(x0, y0, radius, color.A, color.R, color.G, color.B);
-        public void Circle_Midpoint(int x0, int y0, int radius, byte alpha, byte red, byte green, byte blue)
+        public void Circle_Midpoint(int xc, int yc, int radius, Color color)
+            => this.Circle_Midpoint(xc, yc, radius, color.A, color.R, color.G, color.B);
+        public void Circle_Midpoint(int xc, int yc, int radius, byte alpha, byte red, byte green, byte blue)
         {
             int x = radius;
             int y = 0;
@@ -203,14 +203,14 @@ namespace ComputerGraphics.Classes
 
             while (x >= y)
             {
-                this.TrySetPixel(x0 + x, y0 + y, alpha, red, green, blue);
-                this.TrySetPixel(x0 + y, y0 + x, alpha, red, green, blue);
-                this.TrySetPixel(x0 - y, y0 + x, alpha, red, green, blue);
-                this.TrySetPixel(x0 - x, y0 + y, alpha, red, green, blue);
-                this.TrySetPixel(x0 - x, y0 - y, alpha, red, green, blue);
-                this.TrySetPixel(x0 - y, y0 - x, alpha, red, green, blue);
-                this.TrySetPixel(x0 + y, y0 - x, alpha, red, green, blue);
-                this.TrySetPixel(x0 + x, y0 - y, alpha, red, green, blue);
+                this.TrySetPixel(xc + x, yc + y, alpha, red, green, blue);
+                this.TrySetPixel(xc + y, yc + x, alpha, red, green, blue);
+                this.TrySetPixel(xc - y, yc + x, alpha, red, green, blue);
+                this.TrySetPixel(xc - x, yc + y, alpha, red, green, blue);
+                this.TrySetPixel(xc - x, yc - y, alpha, red, green, blue);
+                this.TrySetPixel(xc - y, yc - x, alpha, red, green, blue);
+                this.TrySetPixel(xc + y, yc - x, alpha, red, green, blue);
+                this.TrySetPixel(xc + x, yc - y, alpha, red, green, blue);
 
                 y += 1;
                 err += 1 + 2 * y;
@@ -224,9 +224,77 @@ namespace ComputerGraphics.Classes
 
         public void Circle_Bresenham(IntPoint center, int radius, Color color)
             => this.Circle_Bresenham(center.X, center.Y, radius, color);
-        public void Circle_Bresenham(int x, int y, int radius, Color color)
-            => this.Circle_Bresenham(x, y, radius, color.A, color.R, color.G, color.B);
-        public void Circle_Bresenham(int x, int y, int radius, byte alpha, byte red, byte green, byte blue)
+        public void Circle_Bresenham(int xc, int yc, int radius, Color color)
+            => this.Circle_Bresenham(xc, yc, radius, color.A, color.R, color.G, color.B);
+        public void Circle_Bresenham(int xc, int yc, int radius, byte alpha, byte red, byte green, byte blue)
+        {
+            // TODO
+        }
+
+        public void Ellipse_Midpoint(IntPoint center, int radiusX, int radiusY, Color color)
+            => this.Ellipse_Midpoint(center.X, center.Y, radiusX, radiusY, color);
+        public void Ellipse_Midpoint(int xc, int yc, int radiusX, int radiusY, Color color)
+            => this.Ellipse_Midpoint(xc, yc, radiusX, radiusY, color.A, color.R, color.G, color.B);
+        public void Ellipse_Midpoint(int xc, int yc, int radiusX, int radiusY, byte alpha, byte red, byte green, byte blue)
+        {
+            float rxSq = radiusX * radiusX;
+            float rySq = radiusY * radiusY;
+            float x = 0, y = radiusY, p;
+            float px = 0, py = 2 * rxSq * y;
+
+            this.TrySetPixel(xc + x, yc + y, alpha, red, green, blue);
+            this.TrySetPixel(xc - x, yc + y, alpha, red, green, blue);
+            this.TrySetPixel(xc + x, yc - y, alpha, red, green, blue);
+            this.TrySetPixel(xc - x, yc - y, alpha, red, green, blue);
+
+            //Region 1
+            p = rySq - (rxSq * radiusY) + ((float)0.25 * rxSq);
+            while (px < py)
+            {
+                x++;
+                px = px + 2 * rySq;
+                if (p < 0)
+                    p = p + rySq + px;
+                else
+                {
+                    y--;
+                    py = py - 2 * rxSq;
+                    p = p + rySq + px - py;
+                }
+
+                this.TrySetPixel(xc + x, yc + y, alpha, red, green, blue);
+                this.TrySetPixel(xc - x, yc + y, alpha, red, green, blue);
+                this.TrySetPixel(xc + x, yc - y, alpha, red, green, blue);
+                this.TrySetPixel(xc - x, yc - y, alpha, red, green, blue);
+            }
+
+            //Region 2
+            p = rySq * (x + (float)0.5) * (x + (float)0.5) + rxSq * (y - 1) * (y - 1) - rxSq * rySq;
+            while (y > 0)
+            {
+                y--;
+                py = py - 2 * rxSq;
+                if (p > 0)
+                    p = p + rxSq - py;
+                else
+                {
+                    x++;
+                    px = px + 2 * rySq;
+                    p = p + rxSq - py + px;
+                }
+
+                this.TrySetPixel(xc + x, yc + y, alpha, red, green, blue);
+                this.TrySetPixel(xc - x, yc + y, alpha, red, green, blue);
+                this.TrySetPixel(xc + x, yc - y, alpha, red, green, blue);
+                this.TrySetPixel(xc - x, yc - y, alpha, red, green, blue);
+            }
+        }
+
+        public void Ellipse_Bresenham(IntPoint center, int radiusX, int radiusY, Color color)
+            => this.Ellipse_Bresenham(center.X, center.Y, radiusX, radiusY, color);
+        public void Ellipse_Bresenham(int xc, int yc, int radiusX, int radiusY, Color color)
+            => this.Ellipse_Bresenham(xc, yc, radiusX, radiusY, color.A, color.R, color.G, color.B);
+        public void Ellipse_Bresenham(int xc, int yc, int radiusX, int radiusY, byte alpha, byte red, byte green, byte blue)
         {
             // TODO
         }

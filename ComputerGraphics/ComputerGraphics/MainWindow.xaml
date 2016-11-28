@@ -101,6 +101,14 @@
                     Header="_Bresenham's algorithm"
                     Click='MenuItem_Tools_ToolSelected' />
         </MenuItem>
+        <MenuItem Header='_Ellipse'>
+          <MenuItem Tag='Ellipse_Midpoint'
+                    Header='_Midpoint algorithm'
+                    Click='MenuItem_Tools_ToolSelected' />
+          <MenuItem Tag='Ellipse_Bresenham'
+                    Header="_Bresenham's algorithm"
+                    Click='MenuItem_Tools_ToolSelected' />
+        </MenuItem>
       </MenuItem>
       <MenuItem Header='_Help'>
         <MenuItem Header='_GitHub'

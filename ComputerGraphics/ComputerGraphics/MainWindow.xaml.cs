@@ -61,6 +61,9 @@ namespace ComputerGraphics
 
             Circle_Midpoint,
             Circle_Bresenham,
+
+            Ellipse_Midpoint,
+            Ellipse_Bresenham,
         }
         private Dictionary<ToolType, string> ToolNames = new Dictionary<ToolType, string>()
         {
@@ -83,6 +86,9 @@ namespace ComputerGraphics
 
             {ToolType.Circle_Midpoint,"Circle -> Midpoint" },
             {ToolType.Circle_Bresenham,"Circle -> Bresenham" },
+
+            {ToolType.Ellipse_Midpoint,"Circle -> Midpoint" },
+            {ToolType.Ellipse_Bresenham,"Circle -> Bresenham" },
         };
         private Dictionary<string, ToolType> ToolTypeByTag = new Dictionary<string, ToolType>()
         {
@@ -105,6 +111,9 @@ namespace ComputerGraphics
 
             {"Circle_Midpoint",ToolType.Circle_Midpoint },
             {"Circle_Bresenham",ToolType.Circle_Bresenham },
+
+            {"Ellipse_Midpoint",ToolType.Ellipse_Midpoint },
+            {"Ellipse_Bresenham",ToolType.Ellipse_Bresenham },
         };
         private ToolType _CurrentTool;
         private ToolType CurrentTool
@@ -224,8 +233,11 @@ namespace ComputerGraphics
                     case ToolType.Triangle_Isosceles:
                     case ToolType.Triangle_Right:
 
-                    case ToolType.Circle_Bresenham:
                     case ToolType.Circle_Midpoint:
+                    case ToolType.Circle_Bresenham:
+
+                    case ToolType.Ellipse_Midpoint:
+                    case ToolType.Ellipse_Bresenham:
                         this.SourcePoint = mouse;
                         break;
                     default:
@@ -237,7 +249,7 @@ namespace ComputerGraphics
         private void imgMain_MouseUp(object sender, MouseButtonEventArgs e)
         {
             var mouse = this.MousePosition;
-            int radius;
+            int radius,radiusX,radiusY;
             if (e.ChangedButton == MouseButton.Left)
             {
                 if (!this.SourcePoint.HasValue) return;
@@ -293,13 +305,27 @@ namespace ComputerGraphics
                     case ToolType.Circle_Midpoint:
                         radius = Math.Max(Math.Abs(mouse.X - this.SourcePoint.Value.X), Math.Abs(mouse.Y - this.SourcePoint.Value.Y));
 
-                        bmp.Circle_Midpoint(this.SourcePoint.Value,radius, this.CurrentForeColor);
+                        bmp.Circle_Midpoint(this.SourcePoint.Value, radius, this.CurrentForeColor);
                         bmp.Apply();
                         break;
                     case ToolType.Circle_Bresenham:
                         radius = Math.Max(Math.Abs(mouse.X - this.SourcePoint.Value.X), Math.Abs(mouse.Y - this.SourcePoint.Value.Y));
 
                         bmp.Circle_Bresenham(this.SourcePoint.Value, radius, this.CurrentForeColor);
+                        bmp.Apply();
+                        break;
+                    case ToolType.Ellipse_Midpoint:
+                        radiusX = Math.Abs(mouse.X - this.SourcePoint.Value.X);
+                        radiusY = Math.Abs(mouse.Y - this.SourcePoint.Value.Y);
+
+                        bmp.Ellipse_Midpoint(this.SourcePoint.Value, radiusX, radiusY, this.CurrentForeColor);
+                        bmp.Apply();
+                        break;
+                    case ToolType.Ellipse_Bresenham:
+                        radiusX = Math.Abs(mouse.X - this.SourcePoint.Value.X);
+                        radiusY = Math.Abs(mouse.Y - this.SourcePoint.Value.Y);
+
+                        bmp.Ellipse_Bresenham(this.SourcePoint.Value, radiusX, radiusY, this.CurrentForeColor);
                         bmp.Apply();
                         break;
                     default:
