@@ -66,6 +66,14 @@
                     Header="_Bresenham's Line Algorithm"
                     Click='MenuItem_Tools_ToolSelected' />
         </MenuItem>
+        <MenuItem Header='_Square'>
+          <MenuItem Tag='Square_Empty'
+                    Header='_Empty Square'
+                    Click='MenuItem_Tools_ToolSelected' />
+          <MenuItem Tag='Square_Filled'
+                    Header='_Filled Square'
+                    Click='MenuItem_Tools_ToolSelected' />
+        </MenuItem>
         <MenuItem Header='_Rectangle'>
           <MenuItem Tag='Rectangle_Empty'
                     Header='_Empty Rectangle'

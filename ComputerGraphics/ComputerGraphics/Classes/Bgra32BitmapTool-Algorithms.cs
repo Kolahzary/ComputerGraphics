@@ -58,7 +58,7 @@ namespace ComputerGraphics.Classes
 
             for (int i = 0; i <= step; i++)
             {
-                this.SetPixel((int)Math.Round(x), (int)Math.Round(y), alpha, red, green, blue);
+                this.TrySetPixel((int)Math.Round(x), (int)Math.Round(y), alpha, red, green, blue);
                 x += incX;
                 y += incY;
             }
@@ -69,6 +69,32 @@ namespace ComputerGraphics.Classes
         public void Line_Bresenham(int x0, int y0, int x1, int y1, byte alpha, byte red, byte green, byte blue)
         {
             // TODO
+        }
+
+        public void Square_Empty(IntPoint source, IntPoint destination, Color color) => this.Square_Empty(source.X, source.Y, destination.X, destination.Y, color);
+        public void Square_Empty(int x0, int y0, int x1, int y1, Color color) => this.Square_Empty(x0, y0, x1, y1, color.A, color.R, color.G, color.B);
+        public void Square_Empty(int x0, int y0, int x1, int y1, byte alpha, byte red, byte green, byte blue)
+        {
+            int dx = x1 - x0,
+                dy = y1 - y0;
+
+            if (Math.Abs(dx) >= Math.Abs(dy))
+                this.Rectangle_Empty(x0, y0, x1, y0 + dx, alpha, red, green, blue);
+            else
+                this.Rectangle_Empty(x0, y0, x0 + dy, y1, alpha, red, green, blue);
+        }
+
+        public void Square_Filled(IntPoint source, IntPoint destination, Color color) => this.Square_Filled(source.X, source.Y, destination.X, destination.Y, color);
+        public void Square_Filled(int x0, int y0, int x1, int y1, Color color) => this.Square_Filled(x0, y0, x1, y1, color.A, color.R, color.G, color.B);
+        public void Square_Filled(int x0, int y0, int x1, int y1, byte alpha, byte red, byte green, byte blue)
+        {
+            int dx = x1 - x0,
+                dy = y1 - y0;
+
+            if (Math.Abs(dx) >= Math.Abs(dy))
+                this.Rectangle_Filled(x0, y0, x1, y0 + dx, alpha, red, green, blue);
+            else
+                this.Rectangle_Filled(x0, y0, x0 + dy, y1, alpha, red, green, blue);
         }
 
         public void Rectangle_Empty(IntPoint source, IntPoint destination, Color color) => this.Rectangle_Empty(source.X, source.Y, destination.X, destination.Y, color);
@@ -126,6 +152,7 @@ namespace ComputerGraphics.Classes
                 }
             }
         }
+
         public void Circle_Bresenham(IntPoint center, int radius, Color color) => this.Circle_Bresenham(center.X, center.Y, radius, color);
         public void Circle_Bresenham(int x0, int y0, int radius, Color color) => this.Circle_Bresenham(x0, y0, radius, color.A, color.R, color.G, color.B);
         public void Circle_Bresenham(int x0, int y0, int radius, byte alpha, byte red, byte green, byte blue)

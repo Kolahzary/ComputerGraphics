@@ -49,6 +49,9 @@ namespace ComputerGraphics
             Line_DDA,
             Line_Bresenham,
 
+            Square_Empty,
+            Square_Filled,
+
             Rectangle_Empty,
             Rectangle_Filled,
 
@@ -64,6 +67,9 @@ namespace ComputerGraphics
             {ToolType.Line_DDA,"Line -> DDA" },
             {ToolType.Line_Bresenham,"Line -> Bresenham" },
 
+            {ToolType.Square_Empty,"Empty Square" },
+            {ToolType.Square_Filled,"Filled Square" },
+
             {ToolType.Rectangle_Empty,"Empty Rectangle" },
             {ToolType.Rectangle_Filled,"Filled Rectangle" },
 
@@ -78,6 +84,9 @@ namespace ComputerGraphics
             {"Line_Naive",ToolType.Line_Naive },
             {"Line_DDA",ToolType.Line_DDA },
             {"Line_Bresenham",ToolType.Line_Bresenham },
+
+            {"Square_Empty",ToolType.Square_Empty },
+            {"Square_Filled",ToolType.Square_Filled },
 
             {"Rectangle_Empty",ToolType.Rectangle_Empty },
             {"Rectangle_Filled",ToolType.Rectangle_Filled },
@@ -192,8 +201,13 @@ namespace ComputerGraphics
                     case ToolType.Line_Naive:
                     case ToolType.Line_DDA:
                     case ToolType.Line_Bresenham:
+
+                    case ToolType.Square_Empty:
+                    case ToolType.Square_Filled:
+
                     case ToolType.Rectangle_Empty:
                     case ToolType.Rectangle_Filled:
+
                     case ToolType.Circle_Bresenham:
                     case ToolType.Circle_Midpoint:
                         this.SourcePoint = mouse;
@@ -228,6 +242,14 @@ namespace ComputerGraphics
                         break;
                     case ToolType.Line_Bresenham:
                         bmp.Line_Bresenham(this.SourcePoint.Value, mouse, this.CurrentForeColor);
+                        bmp.Apply();
+                        break;
+                    case ToolType.Square_Empty:
+                        bmp.Square_Empty(this.SourcePoint.Value, mouse, this.CurrentForeColor);
+                        bmp.Apply();
+                        break;
+                    case ToolType.Square_Filled:
+                        bmp.Square_Filled(this.SourcePoint.Value, mouse, this.CurrentForeColor);
                         bmp.Apply();
                         break;
                     case ToolType.Rectangle_Empty:
