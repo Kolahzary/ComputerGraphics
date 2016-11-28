@@ -55,6 +55,10 @@ namespace ComputerGraphics
             Rectangle_Empty,
             Rectangle_Filled,
 
+            Triangle_Equilateral,
+            Triangle_Isosceles,
+            Triangle_Right,
+
             Circle_Midpoint,
             Circle_Bresenham,
         }
@@ -73,6 +77,10 @@ namespace ComputerGraphics
             {ToolType.Rectangle_Empty,"Empty Rectangle" },
             {ToolType.Rectangle_Filled,"Filled Rectangle" },
 
+            {ToolType.Triangle_Equilateral,"Equilateral Triangle" },
+            {ToolType.Triangle_Isosceles,"Isosceles Triangle" },
+            {ToolType.Triangle_Right,"Right Triangle" },
+
             {ToolType.Circle_Midpoint,"Circle -> Midpoint" },
             {ToolType.Circle_Bresenham,"Circle -> Bresenham" },
         };
@@ -90,6 +98,10 @@ namespace ComputerGraphics
 
             {"Rectangle_Empty",ToolType.Rectangle_Empty },
             {"Rectangle_Filled",ToolType.Rectangle_Filled },
+
+            {"Triangle_Equilateral",ToolType.Triangle_Equilateral },
+            {"Triangle_Isosceles",ToolType.Triangle_Isosceles },
+            {"Triangle_Right",ToolType.Triangle_Right },
 
             {"Circle_Midpoint",ToolType.Circle_Midpoint },
             {"Circle_Bresenham",ToolType.Circle_Bresenham },
@@ -208,6 +220,10 @@ namespace ComputerGraphics
                     case ToolType.Rectangle_Empty:
                     case ToolType.Rectangle_Filled:
 
+                    case ToolType.Triangle_Equilateral:
+                    case ToolType.Triangle_Isosceles:
+                    case ToolType.Triangle_Right:
+
                     case ToolType.Circle_Bresenham:
                     case ToolType.Circle_Midpoint:
                         this.SourcePoint = mouse;
@@ -258,6 +274,18 @@ namespace ComputerGraphics
                         break;
                     case ToolType.Rectangle_Filled:
                         bmp.Rectangle_Filled(this.SourcePoint.Value, mouse, this.CurrentForeColor);
+                        bmp.Apply();
+                        break;
+                    case ToolType.Triangle_Equilateral:
+                        bmp.Triangle_Equilateral(this.SourcePoint.Value, mouse, this.CurrentForeColor);
+                        bmp.Apply();
+                        break;
+                    case ToolType.Triangle_Isosceles:
+                        bmp.Triangle_Isosceles(this.SourcePoint.Value, mouse, this.CurrentForeColor);
+                        bmp.Apply();
+                        break;
+                    case ToolType.Triangle_Right:
+                        bmp.Triangle_Right(this.SourcePoint.Value, mouse, this.CurrentForeColor);
                         bmp.Apply();
                         break;
                     case ToolType.Circle_Midpoint:
