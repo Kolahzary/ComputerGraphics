@@ -51,7 +51,7 @@ namespace ComputerGraphics.Classes
         public void TrySetPixel(int x, int y, byte red, byte green, byte blue) => this.TrySetPixel(x, y, byte.MaxValue, red, green, blue);
         public unsafe bool TrySetPixel(int x, int y, byte alpha, byte red, byte green, byte blue)
         {
-            if (x < 0 || y < 0 || this.Width < x || this.Height < y) return false;
+            if (x < 0 || y < 0 || this.Width <= x || this.Height <= y) return false;
             this.SetPixel(x, y, alpha, red, green, blue);
             return true;
         }

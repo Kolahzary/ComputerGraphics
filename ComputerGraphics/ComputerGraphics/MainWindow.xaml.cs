@@ -277,7 +277,9 @@ namespace ComputerGraphics
                         bmp.Apply();
                         break;
                     case ToolType.Triangle_Equilateral:
-                        bmp.Triangle_Equilateral(this.SourcePoint.Value, mouse, this.CurrentForeColor);
+                        radius = Math.Max(Math.Abs(mouse.X - this.SourcePoint.Value.X), Math.Abs(mouse.Y - this.SourcePoint.Value.Y));
+
+                        bmp.Triangle_Equilateral(this.SourcePoint.Value, radius, this.CurrentForeColor);
                         bmp.Apply();
                         break;
                     case ToolType.Triangle_Isosceles:

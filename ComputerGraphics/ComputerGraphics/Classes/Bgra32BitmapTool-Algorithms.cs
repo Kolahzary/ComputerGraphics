@@ -151,14 +151,19 @@ namespace ComputerGraphics.Classes
             this.Line_DDA(x2, y2, x0, y0, alpha, red, green, blue);
         }
 
-        public void Triangle_Equilateral(IntPoint source, IntPoint destination, Color color)
-            => this.Triangle_Equilateral(source.X, source.Y, destination.X, destination.Y, color);
-        public void Triangle_Equilateral(int x0, int y0, int x1, int y1, Color color)
-            => this.Triangle_Equilateral(x0, y0, x1, y1, color.A, color.R, color.G, color.B);
-        public void Triangle_Equilateral(int x0, int y0, int x1, int y1, byte alpha, byte red, byte green, byte blue)
+        public void Triangle_Equilateral(IntPoint source, int radius, Color color)
+            => this.Triangle_Equilateral(source.X, source.Y, radius, color);
+        public void Triangle_Equilateral(int x, int y, int radius, Color color)
+            => this.Triangle_Equilateral(x, y, radius, color.A, color.R, color.G, color.B);
+        public void Triangle_Equilateral(int x, int y, int radius, byte alpha, byte red, byte green, byte blue)
         {
-            //TODO
+            this.Triangle(
+                x-radius, y+radius,
+                x+radius, y+radius,
+                x, y-radius,
+                alpha, red, green, blue);
         }
+
         public void Triangle_Isosceles(IntPoint source, IntPoint destination, Color color)
             => this.Triangle_Isosceles(source.X, source.Y, destination.X, destination.Y, color);
         public void Triangle_Isosceles(int x0, int y0, int x1, int y1, Color color)
@@ -186,8 +191,10 @@ namespace ComputerGraphics.Classes
         }
 
 
-        public void Circle_Midpoint(IntPoint center, int radius, Color color) => this.Circle_Midpoint(center.X, center.Y, radius, color);
-        public void Circle_Midpoint(int x0, int y0, int radius, Color color) => this.Circle_Midpoint(x0, y0, radius, color.A, color.R, color.G, color.B);
+        public void Circle_Midpoint(IntPoint center, int radius, Color color)
+            => this.Circle_Midpoint(center.X, center.Y, radius, color);
+        public void Circle_Midpoint(int x0, int y0, int radius, Color color)
+            => this.Circle_Midpoint(x0, y0, radius, color.A, color.R, color.G, color.B);
         public void Circle_Midpoint(int x0, int y0, int radius, byte alpha, byte red, byte green, byte blue)
         {
             int x = radius;
@@ -215,9 +222,11 @@ namespace ComputerGraphics.Classes
             }
         }
 
-        public void Circle_Bresenham(IntPoint center, int radius, Color color) => this.Circle_Bresenham(center.X, center.Y, radius, color);
-        public void Circle_Bresenham(int x0, int y0, int radius, Color color) => this.Circle_Bresenham(x0, y0, radius, color.A, color.R, color.G, color.B);
-        public void Circle_Bresenham(int x0, int y0, int radius, byte alpha, byte red, byte green, byte blue)
+        public void Circle_Bresenham(IntPoint center, int radius, Color color)
+            => this.Circle_Bresenham(center.X, center.Y, radius, color);
+        public void Circle_Bresenham(int x, int y, int radius, Color color)
+            => this.Circle_Bresenham(x, y, radius, color.A, color.R, color.G, color.B);
+        public void Circle_Bresenham(int x, int y, int radius, byte alpha, byte red, byte green, byte blue)
         {
             // TODO
         }
