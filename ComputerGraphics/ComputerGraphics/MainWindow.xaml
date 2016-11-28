@@ -74,6 +74,14 @@
                     Header='_Filled Rectangle'
                     Click='MenuItem_Tools_ToolSelected' />
         </MenuItem>
+        <MenuItem Header='_Circle'>
+          <MenuItem Tag='Circle_Midpoint'
+                    Header='_Midpoint algorithm'
+                    Click='MenuItem_Tools_ToolSelected' />
+          <MenuItem Tag='Circle_Bresenham'
+                    Header="_Bresenham's algorithm"
+                    Click='MenuItem_Tools_ToolSelected' />
+        </MenuItem>
       </MenuItem>
       <MenuItem Header='_Help'>
         <MenuItem Header='_GitHub'

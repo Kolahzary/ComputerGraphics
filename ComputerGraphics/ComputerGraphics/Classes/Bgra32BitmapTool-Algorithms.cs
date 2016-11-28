@@ -82,14 +82,13 @@ namespace ComputerGraphics.Classes
             this.Line_DDA(x1, y1, x0, y1, alpha, red, green, blue);
         }
 
-
         public void Rectangle_Filled(IntPoint source, IntPoint destination, Color color) => this.Rectangle_Filled(source.X, source.Y, destination.X, destination.Y, color);
         public void Rectangle_Filled(int x0, int y0, int x1, int y1, Color color) => this.Rectangle_Filled(x0, y0, x1, y1, color.A, color.R, color.G, color.B);
         public void Rectangle_Filled(int x0, int y0, int x1, int y1, byte alpha, byte red, byte green, byte blue)
         {
-            if (x0>x1)
+            if (x0 > x1)
             {
-                int tmp=x0;
+                int tmp = x0;
                 x0 = x1;
                 x1 = tmp;
             }
@@ -98,6 +97,42 @@ namespace ComputerGraphics.Classes
                 this.Line_DDA(x, y0, x, y1, alpha, red, green, blue);
             }
         }
+
+        public void Circle_Midpoint(IntPoint center, int radius, Color color) => this.Circle_Midpoint(center.X, center.Y, radius, color);
+        public void Circle_Midpoint(int x0, int y0, int radius, Color color) => this.Circle_Midpoint(x0, y0, radius, color.A, color.R, color.G, color.B);
+        public void Circle_Midpoint(int x0, int y0, int radius, byte alpha, byte red, byte green, byte blue)
+        {
+            int x = radius;
+            int y = 0;
+            int err = 0;
+
+            while (x >= y)
+            {
+                this.TrySetPixel(x0 + x, y0 + y, alpha, red, green, blue);
+                this.TrySetPixel(x0 + y, y0 + x, alpha, red, green, blue);
+                this.TrySetPixel(x0 - y, y0 + x, alpha, red, green, blue);
+                this.TrySetPixel(x0 - x, y0 + y, alpha, red, green, blue);
+                this.TrySetPixel(x0 - x, y0 - y, alpha, red, green, blue);
+                this.TrySetPixel(x0 - y, y0 - x, alpha, red, green, blue);
+                this.TrySetPixel(x0 + y, y0 - x, alpha, red, green, blue);
+                this.TrySetPixel(x0 + x, y0 - y, alpha, red, green, blue);
+
+                y += 1;
+                err += 1 + 2 * y;
+                if (2 * (err - x) + 1 > 0)
+                {
+                    x -= 1;
+                    err += 1 - 2 * x;
+                }
+            }
+        }
+        public void Circle_Bresenham(IntPoint center, int radius, Color color) => this.Circle_Bresenham(center.X, center.Y, radius, color);
+        public void Circle_Bresenham(int x0, int y0, int radius, Color color) => this.Circle_Bresenham(x0, y0, radius, color.A, color.R, color.G, color.B);
+        public void Circle_Bresenham(int x0, int y0, int radius, byte alpha, byte red, byte green, byte blue)
+        {
+            // TODO
+        }
+
 
 
     }

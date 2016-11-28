@@ -51,6 +51,9 @@ namespace ComputerGraphics
 
             Rectangle_Empty,
             Rectangle_Filled,
+
+            Circle_Midpoint,
+            Circle_Bresenham,
         }
         private Dictionary<ToolType, string> ToolNames = new Dictionary<ToolType, string>()
         {
@@ -63,6 +66,9 @@ namespace ComputerGraphics
 
             {ToolType.Rectangle_Empty,"Empty Rectangle" },
             {ToolType.Rectangle_Filled,"Filled Rectangle" },
+
+            {ToolType.Circle_Midpoint,"Circle -> Midpoint" },
+            {ToolType.Circle_Bresenham,"Circle -> Bresenham" },
         };
         private Dictionary<string, ToolType> ToolTypeByTag = new Dictionary<string, ToolType>()
         {
@@ -75,6 +81,9 @@ namespace ComputerGraphics
 
             {"Rectangle_Empty",ToolType.Rectangle_Empty },
             {"Rectangle_Filled",ToolType.Rectangle_Filled },
+
+            {"Circle_Midpoint",ToolType.Circle_Midpoint },
+            {"Circle_Bresenham",ToolType.Circle_Bresenham },
         };
         private ToolType _CurrentTool;
         private ToolType CurrentTool
@@ -185,6 +194,8 @@ namespace ComputerGraphics
                     case ToolType.Line_Bresenham:
                     case ToolType.Rectangle_Empty:
                     case ToolType.Rectangle_Filled:
+                    case ToolType.Circle_Bresenham:
+                    case ToolType.Circle_Midpoint:
                         this.SourcePoint = mouse;
                         break;
                     default:
@@ -224,6 +235,14 @@ namespace ComputerGraphics
                         break;
                     case ToolType.Rectangle_Filled:
                         bmp.Rectangle_Filled(this.SourcePoint.Value, mouse, this.CurrentForeColor);
+                        bmp.Apply();
+                        break;
+                    case ToolType.Circle_Midpoint:
+                        bmp.Circle_Midpoint(this.SourcePoint.Value, Math.Abs(mouse.X - this.SourcePoint.Value.X), this.CurrentForeColor);
+                        bmp.Apply();
+                        break;
+                    case ToolType.Circle_Bresenham:
+                        bmp.Circle_Bresenham(this.SourcePoint.Value, Math.Abs(mouse.X - this.SourcePoint.Value.X), this.CurrentForeColor);
                         bmp.Apply();
                         break;
                     default:
