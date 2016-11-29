@@ -7,14 +7,17 @@
         mc:Ignorable="d"
         ShowInTaskbar='False'
         WindowStartupLocation='CenterOwner'
-        Title="Color Picker"
+        Title="Color Picker" Name='wColorPicker'
         Height="220"
         MinHeight='230'
         MaxHeight='240'
-        Width="300"
+        Width="400"
         MinWidth='300'
         Loaded='Window_Loaded'>
   <Window.Resources>
+    <ObjectDataProvider ObjectInstance="{x:Type Colors}"
+                        MethodName="GetProperties"
+                        x:Key="odpColorProperties" />
     <Style TargetType='Slider'>
       <Setter Property='Margin'
               Value='10 5' />
@@ -126,9 +129,34 @@
                 Content='Cancel'
                 Click='btnCancel_Click' />
       </StackPanel>
-      <Canvas Name='cColorPreview'
-              Background='Black'
-              Margin='10 5' />
+      <Border Name='cColorPreview'
+              Background='{Binding Path=PickedColor_Brush, ElementName=wColorPicker}'
+              Width='30'
+              Height='30'
+              DockPanel.Dock='Left' />
+      
+      <ComboBox  Margin='8'
+                 Name="cbKnownColors"
+                 ItemsSource="{Binding Source={StaticResource odpColorProperties}}"
+                 SelectedValuePath="Name"
+                 SelectionChanged='cbKnownColors_Selected'>
+        <ComboBox.ItemTemplate>
+          <DataTemplate>
+            <StackPanel Orientation="Horizontal"
+                        Height="18"
+                        Margin="0,0,0,2">
+              <Border BorderThickness="1"
+                      CornerRadius="2"
+                      BorderBrush="Black"
+                      Width="30"
+                      VerticalAlignment="Stretch"
+                      Background="{Binding Name}" />
+              <TextBlock Text="{Binding Name}"
+                         Margin="8,0,0,0" />
+            </StackPanel>
+          </DataTemplate>
+        </ComboBox.ItemTemplate>
+      </ComboBox>
     </DockPanel>
   </Grid>
 </Window>
