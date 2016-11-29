@@ -11,7 +11,7 @@ namespace ComputerGraphics.Classes
 {
     public partial class Bgra32BitmapTool
     {
-        public void FillBackgroundColor(System.Drawing.Color color)
+        public void FillBackgroundColor(Color color)
             => this.FillBackgroundColor(color.A, color.R, color.G, color.B);
         public void FillBackgroundColor(byte alpha, byte red, byte green, byte blue)
         {

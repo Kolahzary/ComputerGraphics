@@ -30,23 +30,6 @@
         <MenuItem Header='_Redo' />
       </MenuItem>
       <MenuItem Header='_Tools'>
-        <MenuItem Header='_Apply background color'>
-          <MenuItem Header='_Black'
-                    Click='MenuItem_ApplyBackgroundColor_Click' />
-          <MenuItem Header='_Gray'
-                    Click='MenuItem_ApplyBackgroundColor_Click' />
-          <MenuItem Header='_White'
-                    Click='MenuItem_ApplyBackgroundColor_Click' />
-          <Separator />
-          <MenuItem Header='_Red'
-                    Click='MenuItem_ApplyBackgroundColor_Click' />
-          <MenuItem Header='Gr_een'
-                    Click='MenuItem_ApplyBackgroundColor_Click' />
-          <MenuItem Header='B_lue'
-                    Click='MenuItem_ApplyBackgroundColor_Click' />
-          <Separator />
-          <MenuItem Header='_Advanced'></MenuItem>
-        </MenuItem>
         <MenuItem Header='_Free Hand'>
           <MenuItem Tag='Freehand_PutPixels'
                     Header='_Put pixels'
@@ -55,6 +38,7 @@
                     Header='_Draw line'
                     Click='MenuItem_Tools_ToolSelected' />
         </MenuItem>
+        <Separator />
         <MenuItem Header='_Line'>
           <MenuItem Tag='Line_Naive'
                     Header='_Naive line drawing algorithm'
@@ -93,6 +77,7 @@
                     Header='_Right Triangle'
                     Click='MenuItem_Tools_ToolSelected' />
         </MenuItem>
+
         <MenuItem Header='_Circle'>
           <MenuItem Tag='Circle_Midpoint'
                     Header='_Midpoint algorithm'
@@ -109,7 +94,10 @@
                     Header="_Bresenham's algorithm"
                     Click='MenuItem_Tools_ToolSelected' />
         </MenuItem>
-        <MenuItem Header='C_olor Picker'
+        <Separator />
+        <MenuItem Header='Pick and Apply _background color'
+                  Click='MenuItem_Tools_PickBackgroundColor_Click' />
+        <MenuItem Header='_Pick foreground Color'
                   Click='MenuItem_Tools_ColorPicker_Click' />
       </MenuItem>
       <MenuItem Header='_Help'>

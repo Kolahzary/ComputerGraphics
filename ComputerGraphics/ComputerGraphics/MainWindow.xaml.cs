@@ -356,12 +356,6 @@ namespace ComputerGraphics
                 imgMain.Source = bmp.WritableBitmap;
             }
         }
-        private void MenuItem_ApplyBackgroundColor_Click(object sender, RoutedEventArgs e)
-        {
-            string name = (sender as MenuItem).Header.ToString().Replace("_", "");
-            bmp.FillBackgroundColor(System.Drawing.Color.FromName(name));
-            bmp.Apply();
-        }
         public void MenuItem_Tools_ToolSelected(object sender, RoutedEventArgs e)
             => this.CurrentTool = ToolTypeByTag[(string)(sender as MenuItem).Tag];
 
@@ -375,6 +369,22 @@ namespace ComputerGraphics
                 if (res.Value)
                 {
                     this.CurrentForeColor=cp.PickedColor;
+                }
+            }
+        }
+
+        private void MenuItem_Tools_PickBackgroundColor_Click(object sender, RoutedEventArgs e)
+        {
+            ColorPicker cp = new ColorPicker();
+            cp.Owner = this;
+            var res = cp.ShowDialog();
+            if (res.HasValue)
+            {
+                if (res.Value)
+                {
+                    this.CurrentBackColor = cp.PickedColor;
+                    bmp.FillBackgroundColor(this.CurrentBackColor);
+                    bmp.Apply();
                 }
             }
         }
