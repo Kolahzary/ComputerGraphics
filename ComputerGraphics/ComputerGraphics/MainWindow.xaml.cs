@@ -40,6 +40,7 @@ namespace ComputerGraphics
         }
         private Color CurrentBackColor { get; set; }
         private Color CurrentForeColor { get; set; }
+
         private enum ToolType
         {
             Freehand_PutPixels,
@@ -67,6 +68,10 @@ namespace ComputerGraphics
 
             FloodFill_BF4_Recursive,
         }
+
+        public void MenuItem_Tools_ToolSelected(object sender, RoutedEventArgs e)
+            => this.CurrentTool = (ToolType)Enum.Parse(typeof(ToolType), (string)(sender as MenuItem).Tag);
+
         private Dictionary<ToolType, string> ToolNames = new Dictionary<ToolType, string>()
         {
             {ToolType.Freehand_PutPixels,"Freehand -> PutPixels" },
@@ -94,33 +99,7 @@ namespace ComputerGraphics
 
             {ToolType.FloodFill_BF4_Recursive,"FloodFill -> BF4 Recursive" },
         };
-        private Dictionary<string, ToolType> ToolTypeByTag = new Dictionary<string, ToolType>()
-        {
-            {"Freehand_PutPixels",ToolType.Freehand_PutPixels },
-            {"Freehand_DrawLine",ToolType.Freehand_DrawLine },
 
-            {"Line_Naive",ToolType.Line_Naive },
-            {"Line_DDA",ToolType.Line_DDA },
-            {"Line_Bresenham",ToolType.Line_Bresenham },
-
-            {"Square_Empty",ToolType.Square_Empty },
-            {"Square_Filled",ToolType.Square_Filled },
-
-            {"Rectangle_Empty",ToolType.Rectangle_Empty },
-            {"Rectangle_Filled",ToolType.Rectangle_Filled },
-
-            {"Triangle_Equilateral",ToolType.Triangle_Equilateral },
-            {"Triangle_Isosceles",ToolType.Triangle_Isosceles },
-            {"Triangle_Right",ToolType.Triangle_Right },
-
-            {"Circle_Midpoint",ToolType.Circle_Midpoint },
-            {"Circle_Bresenham",ToolType.Circle_Bresenham },
-
-            {"Ellipse_Midpoint",ToolType.Ellipse_Midpoint },
-            {"Ellipse_Bresenham",ToolType.Ellipse_Bresenham },
-
-            {"FloodFill_BF4_Recursive",ToolType.FloodFill_BF4_Recursive },
-        };
         private ToolType _CurrentTool;
         private ToolType CurrentTool
         {
@@ -371,8 +350,6 @@ namespace ComputerGraphics
                 imgMain.Source = bmp.WritableBitmap;
             }
         }
-        public void MenuItem_Tools_ToolSelected(object sender, RoutedEventArgs e)
-            => this.CurrentTool = ToolTypeByTag[(string)(sender as MenuItem).Tag];
 
         private void MenuItem_Tools_ForegroundColorPicker_Click(object sender, RoutedEventArgs e)
         {
