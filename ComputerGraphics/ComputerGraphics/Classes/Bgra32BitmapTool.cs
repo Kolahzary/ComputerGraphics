@@ -47,44 +47,63 @@ namespace ComputerGraphics.Classes
             this.wb = writableBitmap;
         }
 
-        public void TrySetPixel(int x, int y, Color color) => this.TrySetPixel(x, y, color.A, color.R, color.G, color.B);
-        public void TrySetPixel(int x, int y, byte red, byte green, byte blue) => this.TrySetPixel(x, y, byte.MaxValue, red, green, blue);
+        public void TrySetPixel(int x, int y, Color color)
+            => this.TrySetPixel(x, y, ColorTool.ColorToInt(color));
+        public void TrySetPixel(int x, int y, byte red, byte green, byte blue)
+            => this.TrySetPixel(x, y, ColorTool.ArgbToInt(byte.MaxValue, red, green, blue));
         public bool TrySetPixel(float x, float y, byte alpha, byte red, byte green, byte blue)
             => this.TrySetPixel((int)Math.Round(x), (int)Math.Round(y), alpha, red, green, blue);
         public bool TrySetPixel(int x, int y, byte alpha, byte red, byte green, byte blue)
+            => this.TrySetPixel(x, y, ColorTool.ArgbToInt(alpha, red, green, blue));
+        public bool TrySetPixel(float x, float y, int color)
+            => this.TrySetPixel((int)Math.Round(x), (int)Math.Round(y), color);
+        public bool TrySetPixel(int x, int y, int color)
         {
-            if (x < 0 || y < 0 || this.Width <= x || this.Height <= y) return false;
-            this.SetPixel(x, y, alpha, red, green, blue);
-            return true;
+            if (this.IsAllowd(x,y))
+            {
+                this.SetPixel(x, y, color);
+                return true;
+            }
+            else
+            {
+                return false;
+            }
         }
 
-        public void SetPixel(int x, int y, Color color) => this.SetPixel(x, y, color.A, color.R, color.G, color.B);
-        public void SetPixel(int x, int y, byte red, byte green, byte blue) => this.SetPixel(x, y, byte.MaxValue, red, green, blue);
+        /// <summary>
+        /// Check if coordinate is inside canvas
+        /// </summary>
+        /// <param name="x">column</param>
+        /// <param name="y">row</param>
+        /// <returns>true if x,y is inside canvas else false</returns>
+        public bool IsAllowd(int x, int y)
+            => !(x < 0 || y < 0 || this.Width <= x || this.Height <= y);
+
+        public void SetPixel(int x, int y, Color color)
+            => this.SetPixel(x, y, ColorTool.ColorToInt(color));
+        public void SetPixel(int x, int y, byte red, byte green, byte blue)
+            => this.SetPixel(x, y, ColorTool.ArgbToInt(byte.MaxValue, red, green, blue));
         public unsafe void SetPixel(int x, int y, byte alpha, byte red, byte green, byte blue)
+            => this.SetPixel(x, y, ColorTool.ArgbToInt(alpha, red, green, blue));
+        public unsafe void SetPixel(int x, int y, int color)
         {
-            ((int*)wb.BackBuffer)[(y * wb.PixelWidth + x)] = (alpha << 24) | (red << 16) | (green << 8) | blue;
-
-            //((byte*)wb.BackBuffer)[(y * wb.BackBufferStride + x * 4)] = alpha;
-            //((byte*)wb.BackBuffer)[(y * wb.BackBufferStride + x * 4) + 1] = red;
-            //((byte*)wb.BackBuffer)[(y * wb.BackBufferStride + x * 4) + 2] = green;
-            //((byte*)wb.BackBuffer)[(y * wb.BackBufferStride + x * 4) + 3] = blue;
+            ((int*)wb.BackBuffer)[(y * wb.PixelWidth + x)] = color;
         }
-        public unsafe Color GetPixel(int x, int y)
+
+        public Color GetPixel(int x, int y)
         {
-            int c = ((int*)wb.BackBuffer)[y * wb.PixelWidth + x];
+            int c = this.GetPixeli(x, y);
             return Color.FromArgb(
                 a: (byte)(c >> 24),
                 r: (byte)((c >> 16) & 0xFF),
                 g: (byte)((c >> 8) & 0xFF),
                 b: (byte)(c & 0xFF));
-
-
-            //byte alpha = (byte)(c >> 24);
-            //byte red = (byte)((c >> 16) & 0xFF);
-            //byte green = (byte)((c >> 8) & 0xFF);
-            //byte blue = (byte)(c & 0xFF);
-            //return Color.FromArgb(alpha, red, green, blue);
         }
+        public unsafe int GetPixeli(int x, int y)
+        {
+            return ((int*)wb.BackBuffer)[y * wb.PixelWidth + x];
+        }
+
 
         public void Apply()
         {
