@@ -64,6 +64,8 @@ namespace ComputerGraphics
 
             Ellipse_Midpoint,
             Ellipse_Bresenham,
+
+            FloodFill_BF4_Recursive,
         }
         private Dictionary<ToolType, string> ToolNames = new Dictionary<ToolType, string>()
         {
@@ -89,6 +91,8 @@ namespace ComputerGraphics
 
             {ToolType.Ellipse_Midpoint,"Circle -> Midpoint" },
             {ToolType.Ellipse_Bresenham,"Circle -> Bresenham" },
+
+            {ToolType.FloodFill_BF4_Recursive,"FloodFill -> BF4 Recursive" },
         };
         private Dictionary<string, ToolType> ToolTypeByTag = new Dictionary<string, ToolType>()
         {
@@ -114,6 +118,8 @@ namespace ComputerGraphics
 
             {"Ellipse_Midpoint",ToolType.Ellipse_Midpoint },
             {"Ellipse_Bresenham",ToolType.Ellipse_Bresenham },
+
+            {"FloodFill_BF4_Recursive",ToolType.FloodFill_BF4_Recursive },
         };
         private ToolType _CurrentTool;
         private ToolType CurrentTool
@@ -146,7 +152,9 @@ namespace ComputerGraphics
             bmp = new Bgra32BitmapTool(100,100,10);
             imgMain.Source = bmp.WritableBitmap;
 
+            this.CurrentBackColor = Colors.White;
             this.CurrentForeColor = Colors.Black;
+
             this.CurrentTool = ToolType.Freehand_DrawLine;
         }
 
@@ -252,6 +260,12 @@ namespace ComputerGraphics
             int radius,radiusX,radiusY;
             if (e.ChangedButton == MouseButton.Left)
             {
+                if (CurrentTool== ToolType.FloodFill_BF4_Recursive)
+                {
+                    bmp.FloodFill_BF4_Recursive(mouse.X, mouse.Y, this.CurrentForeColor, this.CurrentBackColor);
+                    bmp.Apply();
+                    return;
+                }
                 if (!this.SourcePoint.HasValue) return;
                 switch (CurrentTool)
                 {
@@ -328,6 +342,7 @@ namespace ComputerGraphics
                         bmp.Ellipse_Bresenham(this.SourcePoint.Value, radiusX, radiusY, this.CurrentForeColor);
                         bmp.Apply();
                         break;
+
                     default:
                         break;
                 }
@@ -359,7 +374,7 @@ namespace ComputerGraphics
         public void MenuItem_Tools_ToolSelected(object sender, RoutedEventArgs e)
             => this.CurrentTool = ToolTypeByTag[(string)(sender as MenuItem).Tag];
 
-        private void MenuItem_Tools_ColorPicker_Click(object sender, RoutedEventArgs e)
+        private void MenuItem_Tools_ForegroundColorPicker_Click(object sender, RoutedEventArgs e)
         {
             ColorPicker cp = new ColorPicker();
             cp.Owner = this;
@@ -373,7 +388,7 @@ namespace ComputerGraphics
             }
         }
 
-        private void MenuItem_Tools_PickBackgroundColor_Click(object sender, RoutedEventArgs e)
+        private void MenuItem_Tools_BackgroundColorPicker_Click(object sender, RoutedEventArgs e)
         {
             ColorPicker cp = new ColorPicker();
             cp.Owner = this;
@@ -383,10 +398,14 @@ namespace ComputerGraphics
                 if (res.Value)
                 {
                     this.CurrentBackColor = cp.PickedColor;
-                    bmp.FillBackgroundColor(this.CurrentBackColor);
-                    bmp.Apply();
                 }
             }
+        }
+
+        private void MenuItem_Fill_BackgroundColor_Click(object sender, RoutedEventArgs e)
+        {
+            bmp.FillBackgroundColor(this.CurrentBackColor);
+            bmp.Apply();
         }
     }
 }

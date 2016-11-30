@@ -95,10 +95,20 @@
                     Click='MenuItem_Tools_ToolSelected' />
         </MenuItem>
         <Separator />
-        <MenuItem Header='Pick and Apply _background color'
-                  Click='MenuItem_Tools_PickBackgroundColor_Click' />
-        <MenuItem Header='_Pick foreground Color'
-                  Click='MenuItem_Tools_ColorPicker_Click' />
+        <MenuItem Header='_Flood Fill'>
+          <MenuItem Header='Apply _background color to all pixels'
+                    Click='MenuItem_Fill_BackgroundColor_Click' />
+          <MenuItem Tag='FloodFill_BF4_Recursive'
+                    Header='_4-Way Recursive Boundary Fill Method (BF4)'
+                    Click='MenuItem_Tools_ToolSelected' />
+        </MenuItem>
+        <Separator />
+        <MenuItem Header='C_olor Picker'>
+          <MenuItem Header='Pick _background color'
+                    Click='MenuItem_Tools_BackgroundColorPicker_Click' />
+          <MenuItem Header='Pick _foreground Color'
+                    Click='MenuItem_Tools_ForegroundColorPicker_Click' />
+        </MenuItem>
       </MenuItem>
       <MenuItem Header='_Help'>
         <MenuItem Header='_GitHub'
@@ -159,11 +169,12 @@
                 RenderOptions.BitmapScalingMode='NearestNeighbor'
                 RenderOptions.EdgeMode='Aliased'
                 Stretch='None'
+                
                 MouseEnter='imgMain_MouseEnter'
                 MouseLeave='imgMain_MouseLeave'
-                MouseDown='imgMain_MouseDown'
-                MouseMove='imgMain_MouseMove'
-                MouseUp='imgMain_MouseUp' />
+                MouseLeftButtonDown='imgMain_MouseDown'
+                MouseLeftButtonUp='imgMain_MouseUp'
+                MouseMove='imgMain_MouseMove' />
       </Border>
     </ScrollViewer>
   </DockPanel>

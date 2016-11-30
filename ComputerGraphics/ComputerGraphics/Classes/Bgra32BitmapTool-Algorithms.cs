@@ -299,7 +299,37 @@ namespace ComputerGraphics.Classes
             // TODO
         }
 
+        public void FloodFill_BF4_Recursive(int x, int y, Color border, Color fill)
+            => this.FloodFill_BF4_Recursive(x, y, border.A, border.R, border.G, border.B, fill.A, fill.R, fill.G, fill.B);
+        public void FloodFill_BF4_Recursive(int x,int y, 
+            byte border_alpha, byte border_red, byte border_green, byte border_blue, 
+            byte fill_alpha, byte fill_red, byte fill_green, byte fill_blue)
+        {
+            Color cPresent = this.GetPixel(x, y);
 
-
+            //if (present_color!=border_color & present_color!=fill_color)
+            if (
+                !(
+                    cPresent.A == border_alpha && 
+                    cPresent.R == border_red &&
+                    cPresent.G == border_green && 
+                    cPresent.B == border_blue
+                )
+                &&
+                !(
+                    cPresent.A == fill_alpha &&
+                    cPresent.R == fill_red &&
+                    cPresent.G == fill_green &&
+                    cPresent.B == fill_blue
+                )
+                )
+            {
+                this.SetPixel(x, y, fill_alpha, fill_red, fill_green, fill_blue);
+                this.FloodFill_BF4_Recursive(x + 1, y, border_alpha, border_red, border_green, border_blue, fill_alpha, fill_red, fill_green, fill_blue);
+                this.FloodFill_BF4_Recursive(x - 1, y, border_alpha, border_red, border_green, border_blue, fill_alpha, fill_red, fill_green, fill_blue);
+                this.FloodFill_BF4_Recursive(x, y + 1, border_alpha, border_red, border_green, border_blue, fill_alpha, fill_red, fill_green, fill_blue);
+                this.FloodFill_BF4_Recursive(x, y - 1, border_alpha, border_red, border_green, border_blue, fill_alpha, fill_red, fill_green, fill_blue);
+            }
+        }
     }
 }
