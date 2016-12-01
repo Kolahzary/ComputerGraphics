@@ -6,7 +6,9 @@ using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
-
+/// <summary>
+/// Thanks to http://members.chello.at/easyfilter/bresenham.html
+/// </summary>
 namespace ComputerGraphics.Classes
 {
     public partial class Bgra32BitmapTool
@@ -81,7 +83,18 @@ namespace ComputerGraphics.Classes
             => this.Line_Bresenham(x0, y0, x1, y1, ColorTool.ArgbToInt(alpha, red, green, blue));
         public void Line_Bresenham(int x0, int y0, int x1, int y1, int color)
         {
-            // TODO
+            int dx = Math.Abs(x1 - x0), sx = x0 < x1 ? 1 : -1;
+            int dy = -Math.Abs(y1 - y0), sy = y0 < y1 ? 1 : -1;
+            int err = dx + dy, e2; /* error value e_xy */
+
+            for (;;)
+            {  /* loop */
+                this.TrySetPixel(x0, y0, color);
+                if (x0 == x1 && y0 == y1) break;
+                e2 = 2 * err;
+                if (e2 >= dy) { err += dy; x0 += sx; } /* e_xy+e_x > 0 */
+                if (e2 <= dx) { err += dx; y0 += sy; } /* e_xy+e_y < 0 */
+            }
         }
         
 
@@ -257,7 +270,17 @@ namespace ComputerGraphics.Classes
             => this.Circle_Bresenham(xc, yc, radius, ColorTool.ArgbToInt(alpha, red, green, blue));
         public void Circle_Bresenham(int xc, int yc, int radius, int color)
         {
-            // TODO
+            int x = -radius, y = 0, err = 2 - 2 * radius; /* II. Quadrant */
+            do
+            {
+                this.TrySetPixel(xc - x, yc + y,color); /*   I. Quadrant */
+                this.TrySetPixel(xc - y, yc - x,color); /*  II. Quadrant */
+                this.TrySetPixel(xc + x, yc - y,color); /* III. Quadrant */
+                this.TrySetPixel(xc + y, yc + x,color); /*  IV. Quadrant */
+                radius = err;
+                if (radius <= y) err += ++y * 2 + 1;           /* e_xy+e_y < 0 */
+                if (radius > x || err > y) err += ++x * 2 + 1; /* e_xy+e_x > 0 or no 2nd y-step */
+            } while (x < 0);
         }
 
         public void Ellipse_Midpoint(IntPoint center, int radiusX, int radiusY, Color color)
@@ -321,15 +344,41 @@ namespace ComputerGraphics.Classes
             }
         }
         
-        public void Ellipse_Bresenham(IntPoint center, int radiusX, int radiusY, Color color)
-            => this.Ellipse_Bresenham(center.X, center.Y, radiusX, radiusY, ColorTool.ColorToInt(color));
-        public void Ellipse_Bresenham(int xc, int yc, int radiusX, int radiusY, Color color)
-            => this.Ellipse_Bresenham(xc, yc, radiusX, radiusY, ColorTool.ColorToInt(color));
-        public void Ellipse_Bresenham(int xc, int yc, int radiusX, int radiusY, byte alpha, byte red, byte green, byte blue)
-            => this.Ellipse_Bresenham(xc, yc, radiusX, radiusY, ColorTool.ArgbToInt(alpha, red, green, blue));
-        public void Ellipse_Bresenham(int xc, int yc, int radiusX, int radiusY, int color)
+        public void Ellipse_BresenhamRect(IntPoint source, IntPoint target, Color color)
+            => this.Ellipse_BresenhamRect(source.X, source.Y, target.X, target.Y, ColorTool.ColorToInt(color));
+        public void Ellipse_BresenhamRect(int x0, int y0, int x1, int y1, Color color)
+            => this.Ellipse_BresenhamRect(x0, y0, x1, y1, ColorTool.ColorToInt(color));
+        public void Ellipse_BresenhamRect(int x0, int y0, int x1, int y1, byte alpha, byte red, byte green, byte blue)
+            => this.Ellipse_BresenhamRect(x0, y0, x1, y1, ColorTool.ArgbToInt(alpha, red, green, blue));
+        public void Ellipse_BresenhamRect(int x0, int y0, int x1, int y1, int color)
         {
-            // TODO
+            int a = Math.Abs(x1 - x0), b = Math.Abs(y1 - y0), b1 = b & 1; /* values of diameter */
+            long dx = 4 * (1 - a) * b * b, dy = 4 * (b1 + 1) * a * a; /* error increment */
+            long err = dx + dy + b1 * a * a, e2; /* error of 1.step */
+
+            if (x0 > x1) { x0 = x1; x1 += a; } /* if called with swapped points */
+            if (y0 > y1) y0 = y1; /* .. exchange them */
+            y0 += (b + 1) / 2; y1 = y0 - b1;   /* starting pixel */
+            a *= 8 * a; b1 = 8 * b * b;
+
+            do
+            {
+                this.TrySetPixel(x1, y0,color); /*   I. Quadrant */
+                this.TrySetPixel(x0, y0,color); /*  II. Quadrant */
+                this.TrySetPixel(x0, y1,color); /* III. Quadrant */
+                this.TrySetPixel(x1, y1,color); /*  IV. Quadrant */
+                e2 = 2 * err;
+                if (e2 <= dy) { y0++; y1--; err += dy += a; }  /* y step */
+                if (e2 >= dx || 2 * err > dy) { x0++; x1--; err += dx += b1; } /* x step */
+            } while (x0 <= x1);
+
+            while (y0 - y1 < b)
+            {  /* too early stop of flat ellipses a=1 */
+                this.TrySetPixel(x0 - 1, y0, color); /* -> finish tip of ellipse */
+                this.TrySetPixel(x1 + 1, y0++, color);
+                this.TrySetPixel(x0 - 1, y1, color);
+                this.TrySetPixel(x1 + 1, y1--, color);
+            }
         }
 
         public void FloodFill_BF4_Recursive(int x, int y, Color border, Color fill)

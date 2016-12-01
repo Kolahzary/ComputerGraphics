@@ -37,6 +37,7 @@ namespace ComputerGraphics
             set
             {
                 this._bmp = value;
+                imgMain.Source = bmp.WritableBitmap;
                 this.NotifyPropertyChanged("StringImageSize");
             }
         }
@@ -80,7 +81,7 @@ namespace ComputerGraphics
             Circle_Bresenham,
 
             Ellipse_Midpoint,
-            Ellipse_Bresenham,
+            Ellipse_BresenhamRect,
 
             FloodFill_BF4_Recursive,
         }
@@ -96,7 +97,7 @@ namespace ComputerGraphics
             {ToolType.Line_Naive,"Line -> Naive" },
             {ToolType.Line_DDA,"Line -> DDA" },
             {ToolType.Line_Bresenham,"Line -> Bresenham" },
-
+            
             {ToolType.Square_Empty,"Empty Square" },
             {ToolType.Square_Filled,"Filled Square" },
 
@@ -111,7 +112,7 @@ namespace ComputerGraphics
             {ToolType.Circle_Bresenham,"Circle -> Bresenham" },
 
             {ToolType.Ellipse_Midpoint,"Circle -> Midpoint" },
-            {ToolType.Ellipse_Bresenham,"Circle -> Bresenham" },
+            {ToolType.Ellipse_BresenhamRect,"Circle -> Bresenham Rect" },
 
             {ToolType.FloodFill_BF4_Recursive,"FloodFill -> BF4 Recursive" },
         };
@@ -142,13 +143,11 @@ namespace ComputerGraphics
         private void Window_Loaded(object sender, RoutedEventArgs e)
         {
             bmp = new Bgra32BitmapTool(100,100,10);
-            imgMain.Source = bmp.WritableBitmap;
 
             this.CurrentBackColor = Colors.White;
             this.CurrentForeColor = Colors.Black;
 
             this.CurrentTool = ToolType.Freehand_DrawLine;
-            
         }
 
         private void MenuItem_File_New_Click(object sender, RoutedEventArgs e)
@@ -238,7 +237,7 @@ namespace ComputerGraphics
                     case ToolType.Circle_Bresenham:
 
                     case ToolType.Ellipse_Midpoint:
-                    case ToolType.Ellipse_Bresenham:
+                    case ToolType.Ellipse_BresenhamRect:
                         this.SourcePoint = mouse;
                         break;
                     default:
@@ -328,11 +327,8 @@ namespace ComputerGraphics
                         bmp.Ellipse_Midpoint(this.SourcePoint.Value, radiusX, radiusY, this.CurrentForeColor);
                         bmp.Apply();
                         break;
-                    case ToolType.Ellipse_Bresenham:
-                        radiusX = Math.Abs(mouse.X - this.SourcePoint.Value.X);
-                        radiusY = Math.Abs(mouse.Y - this.SourcePoint.Value.Y);
-
-                        bmp.Ellipse_Bresenham(this.SourcePoint.Value, radiusX, radiusY, this.CurrentForeColor);
+                    case ToolType.Ellipse_BresenhamRect:
+                        bmp.Ellipse_BresenhamRect(this.SourcePoint.Value, mouse, this.CurrentForeColor);
                         bmp.Apply();
                         break;
 
@@ -351,8 +347,6 @@ namespace ComputerGraphics
         private void imgMain_MouseLeave(object sender, MouseEventArgs e)
         {
             this.NotifyPropertyChanged("MousePosition");
-            //this.UpdateStatusBar(new IntPoint(0, 0)); // TODO Check
-
         }
 
         private void MenuItem_File_Open_Click(object sender, RoutedEventArgs e)
@@ -362,7 +356,6 @@ namespace ComputerGraphics
             if (ofd.ShowDialog() == true)
             {
                 bmp = new Bgra32BitmapTool(new Uri(ofd.FileName, UriKind.RelativeOrAbsolute));
-                imgMain.Source = bmp.WritableBitmap;
             }
         }
 
