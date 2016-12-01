@@ -381,11 +381,11 @@ namespace ComputerGraphics.Classes
             }
         }
 
-        public void FloodFill_BF4_Recursive(int x, int y, Color border, Color fill)
-            => this.FloodFill_BF4_Recursive(x, y, ColorTool.ColorToInt(border), ColorTool.ColorToInt(fill));
-        public void FloodFill_BF4_Recursive(int x, int y, byte border_alpha, byte border_red, byte border_green, byte border_blue, byte fill_alpha, byte fill_red, byte fill_green, byte fill_blue)
-            => this.FloodFill_BF4_Recursive(x, y, ColorTool.ArgbToInt(border_alpha, border_red, border_green, border_blue), ColorTool.ArgbToInt(fill_alpha, fill_red, fill_green, fill_blue));
-        public void FloodFill_BF4_Recursive(int x, int y, int border_color,int fill_color)
+        public void Fill_BF4_Recursive(int x, int y, Color border, Color fill)
+            => this.Fill_BF4_Recursive(x, y, ColorTool.ColorToInt(border), ColorTool.ColorToInt(fill));
+        public void Fill_BF4_Recursive(int x, int y, byte border_alpha, byte border_red, byte border_green, byte border_blue, byte fill_alpha, byte fill_red, byte fill_green, byte fill_blue)
+            => this.Fill_BF4_Recursive(x, y, ColorTool.ArgbToInt(border_alpha, border_red, border_green, border_blue), ColorTool.ArgbToInt(fill_alpha, fill_red, fill_green, fill_blue));
+        public void Fill_BF4_Recursive(int x, int y, int border_color,int fill_color)
         {
             if (!this.IsAllowd(x, y)) return; // make sure it doesn't get out of canvas
             int present_color = this.GetPixeli(x, y);
@@ -393,11 +393,91 @@ namespace ComputerGraphics.Classes
             if (present_color != border_color && present_color != fill_color)
             {
                 this.SetPixel(x, y, fill_color);
-                this.FloodFill_BF4_Recursive(x + 1, y, border_color, fill_color);
-                this.FloodFill_BF4_Recursive(x - 1, y, border_color, fill_color);
-                this.FloodFill_BF4_Recursive(x, y + 1, border_color, fill_color);
-                this.FloodFill_BF4_Recursive(x, y - 1, border_color, fill_color);
+                this.Fill_BF4_Recursive(x + 1, y, border_color, fill_color);
+                this.Fill_BF4_Recursive(x - 1, y, border_color, fill_color);
+                this.Fill_BF4_Recursive(x, y + 1, border_color, fill_color);
+                this.Fill_BF4_Recursive(x, y - 1, border_color, fill_color);
             }
         }
+
+
+
+        public void Fill_BF8_Recursive(int x, int y, Color border, Color fill)
+            => this.Fill_BF8_Recursive(x, y, ColorTool.ColorToInt(border), ColorTool.ColorToInt(fill));
+        public void Fill_BF8_Recursive(int x, int y, byte border_alpha, byte border_red, byte border_green, byte border_blue, byte fill_alpha, byte fill_red, byte fill_green, byte fill_blue)
+            => this.Fill_BF8_Recursive(x, y, ColorTool.ArgbToInt(border_alpha, border_red, border_green, border_blue), ColorTool.ArgbToInt(fill_alpha, fill_red, fill_green, fill_blue));
+        public void Fill_BF8_Recursive(int x, int y, int border_color, int fill_color)
+        {
+            if (!this.IsAllowd(x, y)) return; // make sure it doesn't get out of canvas
+            int present_color = this.GetPixeli(x, y);
+
+            if (present_color != border_color && present_color != fill_color)
+            {
+                this.SetPixel(x, y, fill_color);
+                this.Fill_BF8_Recursive(x + 1, y, border_color, fill_color);
+                this.Fill_BF8_Recursive(x - 1, y, border_color, fill_color);
+
+                this.Fill_BF8_Recursive(x, y + 1, border_color, fill_color);
+                this.Fill_BF8_Recursive(x, y - 1, border_color, fill_color);
+
+                this.Fill_BF8_Recursive(x + 1, y + 1, border_color, fill_color);
+                this.Fill_BF8_Recursive(x + 1, y - 1, border_color, fill_color);
+
+                this.Fill_BF8_Recursive(x - 1, y + 1, border_color, fill_color);
+                this.Fill_BF8_Recursive(x - 1, y - 1, border_color, fill_color);
+            }
+        }
+        
+        public void Fill_FF4_Recursive(int x, int y, Color fill)
+            => this.Fill_FF4_Recursive(x, y, ColorTool.ColorToInt(fill));
+        public void Fill_FF4_Recursive(int x, int y, byte fill_alpha, byte fill_red, byte fill_green, byte fill_blue)
+            => this.Fill_FF4_Recursive(x, y, ColorTool.ArgbToInt(fill_alpha, fill_red, fill_green, fill_blue));
+        public void Fill_FF4_Recursive(int x, int y, int fill_color)
+            => this.Fill_FF4_Recursive(x, y, this.GetPixeli(x, y), fill_color);
+        public void Fill_FF4_Recursive(int x, int y, int old_color, int fill_color)
+        {
+            if (!this.IsAllowd(x, y)) return; // make sure it doesn't get out of canvas
+            int present_color = this.GetPixeli(x, y);
+
+            if (present_color == old_color)
+            {
+                this.SetPixel(x, y, fill_color);
+                this.Fill_FF4_Recursive(x + 1, y, old_color, fill_color);
+                this.Fill_FF4_Recursive(x - 1, y, old_color, fill_color);
+
+                this.Fill_FF4_Recursive(x, y + 1, old_color, fill_color);
+                this.Fill_FF4_Recursive(x, y - 1, old_color, fill_color);
+            }
+        }
+
+        public void Fill_FF8_Recursive(int x, int y, Color fill)
+            => this.Fill_FF8_Recursive(x, y, ColorTool.ColorToInt(fill));
+        public void Fill_FF8_Recursive(int x, int y, byte fill_alpha, byte fill_red, byte fill_green, byte fill_blue)
+            => this.Fill_FF8_Recursive(x, y, ColorTool.ArgbToInt(fill_alpha, fill_red, fill_green, fill_blue));
+        public void Fill_FF8_Recursive(int x, int y, int fill_color)
+            => this.Fill_FF8_Recursive(x, y, this.GetPixeli(x, y), fill_color);
+        public void Fill_FF8_Recursive(int x, int y, int old_color, int fill_color)
+        {
+            if (!this.IsAllowd(x, y)) return; // make sure it doesn't get out of canvas
+            int present_color = this.GetPixeli(x, y);
+
+            if (present_color == old_color)
+            {
+                this.SetPixel(x, y, fill_color);
+                this.Fill_FF8_Recursive(x + 1, y, old_color, fill_color);
+                this.Fill_FF8_Recursive(x - 1, y, old_color, fill_color);
+
+                this.Fill_FF8_Recursive(x, y + 1, old_color, fill_color);
+                this.Fill_FF8_Recursive(x, y - 1, old_color, fill_color);
+
+                this.Fill_FF8_Recursive(x + 1, y + 1, old_color, fill_color);
+                this.Fill_FF8_Recursive(x + 1, y - 1, old_color, fill_color);
+
+                this.Fill_FF8_Recursive(x - 1, y + 1, old_color, fill_color);
+                this.Fill_FF8_Recursive(x - 1, y - 1, old_color, fill_color);
+            }
+        }
+
+
     }
 }

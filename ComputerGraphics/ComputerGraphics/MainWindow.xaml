@@ -97,11 +97,25 @@
         </MenuItem>
         <Separator />
         <MenuItem Header='_Flood Fill'>
-          <MenuItem Header='Apply _background color to all pixels'
+          <MenuItem Header='_Apply background color to all pixels'
                     Click='MenuItem_Fill_BackgroundColor_Click' />
-          <MenuItem Tag='FloodFill_BF4_Recursive'
-                    Header='_4-Way Recursive Boundary Fill Method (BF4)'
-                    Click='MenuItem_Tools_ToolSelected' />
+          <Separator />
+          <MenuItem Header='_Boundary Fill'>
+            <MenuItem Tag='Fill_BF4_Recursive'
+                      Header='_4-Way Recursive Boundary Fill Method (BF4)'
+                      Click='MenuItem_Tools_ToolSelected' />
+            <MenuItem Tag='Fill_BF8_Recursive'
+                      Header='_8-Way Recursive Boundary Fill Method (BF8)'
+                      Click='MenuItem_Tools_ToolSelected' />
+          </MenuItem>
+          <MenuItem Header='_Flood Fill'>
+            <MenuItem Tag='Fill_FF4_Recursive'
+                      Header='_4-Way Recursive Flood Fill Method (FF4)'
+                      Click='MenuItem_Tools_ToolSelected' />
+            <MenuItem Tag='Fill_FF8_Recursive'
+                      Header='_8-Way Recursive Flood Fill Method (FF8)'
+                      Click='MenuItem_Tools_ToolSelected' />
+          </MenuItem>
         </MenuItem>
         <Separator />
         <MenuItem Header='C_olor Picker'>

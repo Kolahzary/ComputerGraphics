@@ -83,7 +83,11 @@ namespace ComputerGraphics
             Ellipse_Midpoint,
             Ellipse_BresenhamRect,
 
-            FloodFill_BF4_Recursive,
+            Fill_BF4_Recursive,
+            Fill_BF8_Recursive,
+
+            Fill_FF4_Recursive,
+            Fill_FF8_Recursive,
         }
 
         public void MenuItem_Tools_ToolSelected(object sender, RoutedEventArgs e)
@@ -114,7 +118,11 @@ namespace ComputerGraphics
             {ToolType.Ellipse_Midpoint,"Circle -> Midpoint" },
             {ToolType.Ellipse_BresenhamRect,"Circle -> Bresenham Rect" },
 
-            {ToolType.FloodFill_BF4_Recursive,"FloodFill -> BF4 Recursive" },
+            {ToolType.Fill_BF4_Recursive,"Fill -> 4-Way Boundary Fill Recursive" },
+            {ToolType.Fill_BF8_Recursive,"Fill -> 8-Way Boundary Fil Recursive" },
+
+            {ToolType.Fill_FF4_Recursive,"Fill -> 4-Way Flood Fill Recursive" },
+            {ToolType.Fill_FF8_Recursive,"Fill -> 8-Way Flood Fill Recursive" },
         };
 
         private ToolType _CurrentTool;
@@ -252,11 +260,26 @@ namespace ComputerGraphics
             int radius,radiusX,radiusY;
             if (e.ChangedButton == MouseButton.Left)
             {
-                if (CurrentTool== ToolType.FloodFill_BF4_Recursive)
+                switch (CurrentTool)
                 {
-                    bmp.FloodFill_BF4_Recursive(mouse.X, mouse.Y, this.CurrentForeColor, this.CurrentBackColor);
-                    bmp.Apply();
-                    return;
+                    case ToolType.Fill_BF4_Recursive:
+                        bmp.Fill_BF4_Recursive(mouse.X, mouse.Y, this.CurrentForeColor, this.CurrentBackColor);
+                        bmp.Apply();
+                        break;
+                    case ToolType.Fill_BF8_Recursive:
+                        bmp.Fill_BF8_Recursive(mouse.X, mouse.Y, this.CurrentForeColor, this.CurrentBackColor);
+                        bmp.Apply();
+                        break;
+                    case ToolType.Fill_FF4_Recursive:
+                        bmp.Fill_FF4_Recursive(mouse.X, mouse.Y, this.CurrentBackColor);
+                        bmp.Apply();
+                        break;
+                    case ToolType.Fill_FF8_Recursive:
+                        bmp.Fill_FF8_Recursive(mouse.X, mouse.Y, this.CurrentBackColor);
+                        bmp.Apply();
+                        break;
+                    default:
+                        break;
                 }
                 if (!this.SourcePoint.HasValue) return;
                 switch (CurrentTool)
