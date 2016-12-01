@@ -2,6 +2,7 @@
 using Microsoft.Win32;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -21,9 +22,24 @@ namespace ComputerGraphics
     /// Interaction logic for MainWindow.xaml
     /// </summary>
     /// 
-    public partial class MainWindow : Window
+    public partial class MainWindow : Window, INotifyPropertyChanged
     {
-        Bgra32BitmapTool bmp;
+        public event PropertyChangedEventHandler PropertyChanged;
+        public void NotifyPropertyChanged(string propName) => this.PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propName));
+
+        private Bgra32BitmapTool _bmp;
+        private Bgra32BitmapTool bmp
+        {
+            get
+            {
+                return _bmp;
+            }
+            set
+            {
+                this._bmp = value;
+                this.NotifyPropertyChanged("StringImageSize");
+            }
+        }
 
         private IntPoint? _SourcePoint;
         private IntPoint? SourcePoint
@@ -101,6 +117,7 @@ namespace ComputerGraphics
         };
 
         private ToolType _CurrentTool;
+        public string CurrentToolName => ToolNames[this.CurrentTool];
         private ToolType CurrentTool
         {
             get
@@ -110,17 +127,13 @@ namespace ComputerGraphics
             set
             {
                 this._CurrentTool = value;
-                lblToolName.Text = ToolNames[value];
+                this.NotifyPropertyChanged("CurrentToolName");
             }
         }
 
         public IntPoint MousePosition => Mouse.GetPosition(imgMain).ToIntPointWithResolution(bmp.Resolution);
-        private void UpdateStatusBar() => this.UpdateStatusBar(this.MousePosition);
-        private void UpdateStatusBar(IntPoint mouse)
-        {
-            lblCursorPosition.Text = $"{mouse.X}, {mouse.Y} px";
-            lblImageSize.Text = $"{bmp.Width} * {bmp.Height} px";
-        }
+        public string StringImageSize => $"{bmp.Width} * {bmp.Height} px";
+
         public MainWindow()
         {
             InitializeComponent();
@@ -135,6 +148,7 @@ namespace ComputerGraphics
             this.CurrentForeColor = Colors.Black;
 
             this.CurrentTool = ToolType.Freehand_DrawLine;
+            
         }
 
         private void MenuItem_File_New_Click(object sender, RoutedEventArgs e)
@@ -169,8 +183,8 @@ namespace ComputerGraphics
 
         private void imgMain_MouseMove(object sender, MouseEventArgs e)
         {
+            this.NotifyPropertyChanged("MousePosition");
             var mouse = this.MousePosition;
-            this.UpdateStatusBar(mouse);
             if (e.LeftButton==MouseButtonState.Pressed)
             {
                 switch (CurrentTool)
@@ -331,12 +345,13 @@ namespace ComputerGraphics
         
         private void imgMain_MouseEnter(object sender, MouseEventArgs e)
         {
-            this.UpdateStatusBar();
+            this.NotifyPropertyChanged("MousePosition");
 
         }
         private void imgMain_MouseLeave(object sender, MouseEventArgs e)
         {
-            this.UpdateStatusBar(new IntPoint(0, 0));
+            this.NotifyPropertyChanged("MousePosition");
+            //this.UpdateStatusBar(new IntPoint(0, 0)); // TODO Check
 
         }
 

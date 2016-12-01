@@ -8,6 +8,7 @@
         Title="MainWindow"
         Height="350"
         Width="525"
+        Name='wMainWindow'
         Loaded='Window_Loaded'>
   <DockPanel>
     <Menu IsMainMenu='True'
@@ -135,28 +136,35 @@
       </StatusBar.ItemsPanel>
       <StatusBarItem Grid.Column='0'>
         <TextBlock Name='lblToolName'
-                   Text='FreeHand -> DrawLine' />
+                   Text='{Binding ElementName=wMainWindow,Path=CurrentToolName}' />
       </StatusBarItem>
 
       <Separator Grid.Column='1' />
 
       <StatusBarItem Grid.Column='2'>
-        <TextBlock Name='lblSourcePoint'
-                   Text='0,0 px' />
+        <TextBlock Name='lblSourcePoint' />
       </StatusBarItem>
 
       <Separator Grid.Column='3' />
 
       <StatusBarItem Grid.Column='4'>
-        <TextBlock Name='lblCursorPosition'
-                   Text='Mouse not in range' />
+        <TextBlock Name='lblCursorPosition'>
+          <TextBlock.Text>
+            <MultiBinding Mode='OneWay' StringFormat='{}{0}, {1} px'>
+              <Binding ElementName='wMainWindow'
+                       Path='MousePosition.X' />
+              <Binding ElementName='wMainWindow'
+                       Path='MousePosition.Y' />
+            </MultiBinding>
+          </TextBlock.Text>
+        </TextBlock>
       </StatusBarItem>
 
       <Separator  Grid.Column='5' />
 
       <StatusBarItem Grid.Column='6'>
         <TextBlock Name='lblImageSize'
-                   Text='Image size' />
+                   Text='{Binding ElementName=wMainWindow,Path=StringImageSize,Mode=OneWay}' />
       </StatusBarItem>
     </StatusBar>
     <ScrollViewer HorizontalScrollBarVisibility='Auto'
@@ -169,7 +177,6 @@
                 RenderOptions.BitmapScalingMode='NearestNeighbor'
                 RenderOptions.EdgeMode='Aliased'
                 Stretch='None'
-                
                 MouseEnter='imgMain_MouseEnter'
                 MouseLeave='imgMain_MouseLeave'
                 MouseLeftButtonDown='imgMain_MouseDown'
