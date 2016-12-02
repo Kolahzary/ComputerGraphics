@@ -143,9 +143,6 @@
         <MenuItem Header='_GitHub'
                   Icon='{iconPacks:PackIconEntypo Kind=Github}'
                   Click='MenuItem_Help_GitHub_Click' />
-        <Separator />
-        <MenuItem Header='_About'
-                  Icon='{iconPacks:PackIconModern Kind=Information}' />
       </MenuItem>
     </Menu>
     <StatusBar DockPanel.Dock='Bottom'>
