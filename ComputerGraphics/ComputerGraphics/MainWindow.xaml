@@ -3,6 +3,7 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:iconPacks="http://metro.mahapps.com/winfx/xaml/iconpacks"
         xmlns:local="clr-namespace:ComputerGraphics"
         mc:Ignorable="d"
         Title="MainWindow"
@@ -15,23 +16,30 @@
           DockPanel.Dock='Top'>
       <MenuItem Header='_File'>
         <MenuItem Header="_New..."
+                  Icon='{iconPacks:PackIconModern Kind=PageNew}'
                   Click='MenuItem_File_New_Click' />
         <Separator />
         <MenuItem Header="_Open..."
+                  Icon='{iconPacks:PackIconModern Kind=FolderOpen}'
                   Click='MenuItem_File_Open_Click' />
         <Separator />
-        <MenuItem Header="_Save" />
+        <MenuItem Header="_Save"
+                  Icon='{iconPacks:PackIconModern Kind=Save}' />
         <MenuItem Header="_Save As..." />
         <Separator />
         <MenuItem Header="_Exit"
+                  Icon='{iconPacks:PackIconMaterial Kind=CloseCircleOutline}'
                   Click='MenuItem_File_Exit_Click' />
       </MenuItem>
       <MenuItem Header='_Edit'>
-        <MenuItem Header='_Undo' />
-        <MenuItem Header='_Redo' />
+        <MenuItem Header='_Undo'
+                  Icon='{iconPacks:PackIconModern Kind=UndoCurve}' />
+        <MenuItem Header='_Redo'
+                  Icon='{iconPacks:PackIconModern Kind=RedoCurve}' />
       </MenuItem>
       <MenuItem Header='_Tools'>
-        <MenuItem Header='_Free Hand'>
+        <MenuItem Header='_Free Hand'
+                  Icon='{iconPacks:PackIconModern Kind=DrawPencilReflection}'>
           <MenuItem Tag='Freehand_PutPixels'
                     Header='_Put pixels'
                     Click='MenuItem_Tools_ToolSelected' />
@@ -40,7 +48,8 @@
                     Click='MenuItem_Tools_ToolSelected' />
         </MenuItem>
         <Separator />
-        <MenuItem Header='_Line'>
+        <MenuItem Header='_Line'
+                  Icon='{iconPacks:PackIconModern Kind=VectorLine}'>
           <MenuItem Tag='Line_Naive'
                     Header='_Naive line drawing algorithm'
                     Click='MenuItem_Tools_ToolSelected' />
@@ -59,7 +68,8 @@
                     Header='_Filled Square'
                     Click='MenuItem_Tools_ToolSelected' />
         </MenuItem>
-        <MenuItem Header='_Rectangle'>
+        <MenuItem Header='_Rectangle'
+                  Icon='{iconPacks:PackIconModern Kind=VectorRectangle}'>
           <MenuItem Tag='Rectangle_Empty'
                     Header='_Empty Rectangle'
                     Click='MenuItem_Tools_ToolSelected' />
@@ -67,7 +77,8 @@
                     Header='_Filled Rectangle'
                     Click='MenuItem_Tools_ToolSelected' />
         </MenuItem>
-        <MenuItem Header='_Triangle'>
+        <MenuItem Header='_Triangle'
+                  Icon='{iconPacks:PackIconModern Kind=VectorPolygon}'>
           <MenuItem Tag='Triangle_Equilateral'
                     Header='_Equilateral Triangle'
                     Click='MenuItem_Tools_ToolSelected' />
@@ -79,7 +90,8 @@
                     Click='MenuItem_Tools_ToolSelected' />
         </MenuItem>
 
-        <MenuItem Header='_Circle'>
+        <MenuItem Header='_Circle'
+                  Icon='{iconPacks:PackIconModern Kind=VectorCircle}'>
           <MenuItem Tag='Circle_Midpoint'
                     Header='_Midpoint algorithm'
                     Click='MenuItem_Tools_ToolSelected' />
@@ -96,7 +108,8 @@
                     Click='MenuItem_Tools_ToolSelected' />
         </MenuItem>
         <Separator />
-        <MenuItem Header='_Flood Fill'>
+        <MenuItem Header='_Flood Fill'
+                  Icon='{iconPacks:PackIconOcticons Kind=Paintcan}'>
           <MenuItem Header='_Apply background color to all pixels'
                     Click='MenuItem_Fill_BackgroundColor_Click' />
           <Separator />
@@ -118,7 +131,8 @@
           </MenuItem>
         </MenuItem>
         <Separator />
-        <MenuItem Header='C_olor Picker'>
+        <MenuItem Header='C_olor Picker'
+                  Icon='{iconPacks:PackIconFontAwesome Kind=Eyedropper}'>
           <MenuItem Header='Pick _background color'
                     Click='MenuItem_Tools_BackgroundColorPicker_Click' />
           <MenuItem Header='Pick _foreground Color'
@@ -127,9 +141,11 @@
       </MenuItem>
       <MenuItem Header='_Help'>
         <MenuItem Header='_GitHub'
+                  Icon='{iconPacks:PackIconEntypo Kind=Github}'
                   Click='MenuItem_Help_GitHub_Click' />
         <Separator />
-        <MenuItem Header='_About' />
+        <MenuItem Header='_About'
+                  Icon='{iconPacks:PackIconModern Kind=Information}' />
       </MenuItem>
     </Menu>
     <StatusBar DockPanel.Dock='Bottom'>
@@ -164,7 +180,8 @@
       <StatusBarItem Grid.Column='4'>
         <TextBlock Name='lblCursorPosition'>
           <TextBlock.Text>
-            <MultiBinding Mode='OneWay' StringFormat='{}{0}, {1} px'>
+            <MultiBinding Mode='OneWay'
+                          StringFormat='{}{0}, {1} px'>
               <Binding ElementName='wMainWindow'
                        Path='MousePosition.X' />
               <Binding ElementName='wMainWindow'
