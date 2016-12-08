@@ -11,30 +11,74 @@
         Width="525"
         Name='wMainWindow'
         Loaded='Window_Loaded'>
+  <Window.CommandBindings>
+    <CommandBinding Command='New'
+                    Executed='CommandBinding_New_Executed' />
+    <CommandBinding Command='Open'
+                    Executed='CommandBinding_Open_Executed' />
+    <CommandBinding Command='Save'
+                    Executed='CommandBinding_Save_Executed' />
+    <CommandBinding Command='SaveAs'
+                    Executed='CommandBinding_SaveAs_Executed' />
+    <CommandBinding Command='Close'
+                    Executed='CommandBinding_Close_Executed' />
+
+    <CommandBinding Command='Undo'
+                    Executed='CommandBinding_Undo_Executed' />
+    <CommandBinding Command='Redo'
+                    Executed='CommandBinding_Undo_Executed' />
+  </Window.CommandBindings>
+  <Window.InputBindings>
+    <KeyBinding Modifiers='Ctrl'
+                Key='N'
+                Command='New' />
+    <KeyBinding Modifiers='Ctrl'
+                Key='O'
+                Command='Open' />
+    <KeyBinding Modifiers='Ctrl'
+                Key='S'
+                Command='Save' />
+    <KeyBinding Modifiers='Ctrl'
+                Key='Z'
+                Command='Undo' />
+    <KeyBinding Modifiers='Ctrl'
+                Key='Y'
+                Command='Redo' />
+  </Window.InputBindings>
   <DockPanel>
     <Menu IsMainMenu='True'
           DockPanel.Dock='Top'>
       <MenuItem Header='_File'>
         <MenuItem Header="_New..."
-                  Icon='{iconPacks:PackIconModern Kind=PageNew}'
-                  Click='MenuItem_File_New_Click' />
+                  Command='New'
+                  InputGestureText='Ctrl+N'
+                  Icon='{iconPacks:PackIconModern Kind=PageNew}' />
         <Separator />
         <MenuItem Header="_Open..."
-                  Icon='{iconPacks:PackIconModern Kind=FolderOpen}'
-                  Click='MenuItem_File_Open_Click' />
+                  Command='Open'
+                  InputGestureText='Ctrl+O'
+                  Icon='{iconPacks:PackIconModern Kind=FolderOpen}' />
         <Separator />
         <MenuItem Header="_Save"
+                  Command='Save'
+                  InputGestureText='Ctrl+S'
                   Icon='{iconPacks:PackIconModern Kind=Save}' />
-        <MenuItem Header="_Save As..." />
+        <MenuItem Header="Save _As..."
+                  Command='SaveAs' />
         <Separator />
         <MenuItem Header="_Exit"
-                  Icon='{iconPacks:PackIconMaterial Kind=CloseCircleOutline}'
-                  Click='MenuItem_File_Exit_Click' />
+                  Command='Close'
+                  InputGestureText='Alt+F4'
+                  Icon='{iconPacks:PackIconMaterial Kind=CloseCircleOutline}' />
       </MenuItem>
       <MenuItem Header='_Edit'>
         <MenuItem Header='_Undo'
+                  Command='Undo'
+                  InputGestureText='Ctrl+Z'
                   Icon='{iconPacks:PackIconModern Kind=UndoCurve}' />
         <MenuItem Header='_Redo'
+                  Command='Redo'
+                  InputGestureText='Ctrl+Y'
                   Icon='{iconPacks:PackIconModern Kind=RedoCurve}' />
       </MenuItem>
       <MenuItem Header='_Tools'>

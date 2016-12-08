@@ -3,6 +3,7 @@ using Microsoft.Win32;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.IO;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
@@ -16,6 +17,9 @@ namespace ComputerGraphics
     /// 
     public partial class MainWindow : Window, INotifyPropertyChanged
     {
+        public string CurrentFilePath;
+        public string CurrentFileExtension => Path.GetExtension(this.CurrentFilePath);
+
         public event PropertyChangedEventHandler PropertyChanged;
         public void NotifyPropertyChanged(string propName) => this.PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propName));
 
@@ -93,7 +97,7 @@ namespace ComputerGraphics
             {ToolType.Line_Naive,"Line -> Naive" },
             {ToolType.Line_DDA,"Line -> DDA" },
             {ToolType.Line_Bresenham,"Line -> Bresenham" },
-            
+
             {ToolType.Square_Empty,"Empty Square" },
             {ToolType.Square_Filled,"Filled Square" },
 
@@ -142,7 +146,7 @@ namespace ComputerGraphics
 
         private void Window_Loaded(object sender, RoutedEventArgs e)
         {
-            bmp = new Bgra32BitmapTool(100,100,10);
+            bmp = new Bgra32BitmapTool(100, 100, 10);
 
             this.CurrentBackColor = Colors.White;
             this.CurrentForeColor = Colors.Black;
@@ -150,30 +154,6 @@ namespace ComputerGraphics
             this.CurrentTool = ToolType.Freehand_DrawLine;
         }
 
-        private void MenuItem_File_New_Click(object sender, RoutedEventArgs e)
-        {
-            NewDialogBox ndb = new NewDialogBox();
-            ndb.Owner = this;
-            var res = ndb.ShowDialog();
-            
-            if (res.HasValue)
-            {
-                if (res.Value)
-                {
-                    bmp = new Bgra32BitmapTool(
-                        ndb.Values_Width, 
-                        ndb.Values_Height, 
-                        ndb.Values_Resolution
-                        );
-                    imgMain.Source = bmp.WritableBitmap;
-                }
-            }
-        }
-
-        private void MenuItem_File_Exit_Click(object sender, RoutedEventArgs e)
-        {
-            Application.Current.Shutdown();
-        }
 
         private void MenuItem_Help_GitHub_Click(object sender, RoutedEventArgs e)
         {
@@ -184,7 +164,7 @@ namespace ComputerGraphics
         {
             this.NotifyPropertyChanged("MousePosition");
             var mouse = this.MousePosition;
-            if (e.LeftButton==MouseButtonState.Pressed)
+            if (e.LeftButton == MouseButtonState.Pressed)
             {
                 switch (CurrentTool)
                 {
@@ -192,13 +172,13 @@ namespace ComputerGraphics
                         bmp.SetPixel(mouse.X, mouse.Y, this.CurrentForeColor);
                         break;
                     case ToolType.Freehand_DrawLine:
-                        bmp.Line_DDA(SourcePoint??mouse, mouse, this.CurrentForeColor);
+                        bmp.Line_DDA(SourcePoint ?? mouse, mouse, this.CurrentForeColor);
                         this.SourcePoint = mouse;
                         break;
                     default:
                         break;
                 }
-                
+
                 bmp.Apply();
             }
         }
@@ -249,7 +229,7 @@ namespace ComputerGraphics
         private void imgMain_MouseUp(object sender, MouseButtonEventArgs e)
         {
             var mouse = this.MousePosition;
-            int radius,radiusX,radiusY;
+            int radius, radiusX, radiusY;
             if (e.ChangedButton == MouseButton.Left)
             {
                 switch (CurrentTool)
@@ -353,7 +333,7 @@ namespace ComputerGraphics
                 this.SourcePoint = null;
             }
         }
-        
+
         private void imgMain_MouseEnter(object sender, MouseEventArgs e)
         {
             this.NotifyPropertyChanged("MousePosition");
@@ -364,26 +344,17 @@ namespace ComputerGraphics
             this.NotifyPropertyChanged("MousePosition");
         }
 
-        private void MenuItem_File_Open_Click(object sender, RoutedEventArgs e)
-        {
-            OpenFileDialog ofd = new OpenFileDialog();
-            ofd.Filter = "Supported image files (*.jpg;*.jpeg;*.png;*.bmp;*.gif;*.tif;*.tiff;*.ico)|*.jpg;*.jpeg;*.png;*.bmp;*.gif;*.tif;*.tiff;*.ico|All files (*.*)|*.*";
-            if (ofd.ShowDialog() == true)
-            {
-                bmp = new Bgra32BitmapTool(new Uri(ofd.FileName, UriKind.RelativeOrAbsolute));
-            }
-        }
 
         private void MenuItem_Tools_ForegroundColorPicker_Click(object sender, RoutedEventArgs e)
         {
             ColorPicker cp = new ColorPicker();
             cp.Owner = this;
-            var res=cp.ShowDialog();
+            var res = cp.ShowDialog();
             if (res.HasValue)
             {
                 if (res.Value)
                 {
-                    this.CurrentForeColor=cp.PickedColor;
+                    this.CurrentForeColor = cp.PickedColor;
                 }
             }
         }
@@ -406,6 +377,105 @@ namespace ComputerGraphics
         {
             bmp.FillBackgroundColor(this.CurrentBackColor);
             bmp.Apply();
+        }
+
+        private void CommandBinding_New_Executed(object sender, ExecutedRoutedEventArgs e)
+        {
+            NewDialogBox ndb = new NewDialogBox();
+            ndb.Owner = this;
+            var res = ndb.ShowDialog();
+
+            if (res.HasValue)
+            {
+                if (res.Value)
+                {
+                    bmp = new Bgra32BitmapTool(
+                        ndb.Values_Width,
+                        ndb.Values_Height,
+                        ndb.Values_Resolution
+                        );
+                    imgMain.Source = bmp.WritableBitmap;
+                }
+            }
+        }
+        private void CommandBinding_Open_Executed(object sender, ExecutedRoutedEventArgs e)
+        {
+            OpenFileDialog ofd = new OpenFileDialog();
+            ofd.Filter = "Supported image files (*.jpg;*.jpeg;*.png;*.bmp;*.gif;*.tif;*.tiff;*.ico)|*.jpg;*.jpeg;*.png;*.bmp;*.gif;*.tif;*.tiff;*.ico|All files (*.*)|*.*";
+            if (ofd.ShowDialog() == true)
+            {
+                bmp = new Bgra32BitmapTool(new Uri(ofd.FileName, UriKind.RelativeOrAbsolute));
+                this.CurrentFilePath = ofd.FileName;
+            }
+        }
+        private void CommandBinding_Save_Executed(object sender, ExecutedRoutedEventArgs e)
+        {
+            if (string.IsNullOrEmpty(this.CurrentFilePath))
+            {
+                this.CommandBinding_SaveAs_Executed(sender, e);
+            }
+            else
+            {
+                do
+                {
+                    try
+                    {
+                        switch (this.CurrentFileExtension)
+                        {
+                            case ".bmp":
+                                bmp.SaveBmp(this.CurrentFilePath);
+                                break;
+                            case ".gif":
+                                bmp.SaveGif(this.CurrentFilePath);
+                                break;
+                            case ".jpg":
+                            case ".jpeg":
+                                bmp.SaveJpeg(this.CurrentFilePath);
+                                break;
+                            case ".png":
+                                bmp.SavePng(this.CurrentFilePath);
+                                break;
+                            case ".tiff":
+                                bmp.SaveTiff(this.CurrentFilePath);
+                                break;
+                            case ".wmp":
+                                bmp.SaveWmp(this.CurrentFilePath);
+                                break;
+                            default:
+                                break;
+                        }
+                    }
+                    catch (Exception ex)
+                    {
+                        MessageBoxResult mbr = MessageBox.Show(ex.Message, "Try again?", MessageBoxButton.YesNo, MessageBoxImage.Error);
+                        if (mbr == MessageBoxResult.Yes) continue;
+                    }
+                    break;
+                } while (true);
+            }
+        }
+        private void CommandBinding_SaveAs_Executed(object sender, ExecutedRoutedEventArgs e)
+        {
+            SaveFileDialog sfd = new SaveFileDialog();
+            sfd.Filter = "Supported image files (*.jpg;*.jpeg;*.png;*.bmp;*.gif;*.tif;*.tiff;*.ico)|*.jpg;*.jpeg;*.png;*.bmp;*.gif;*.tif;*.tiff;*.ico|All files (*.*)|*.*";
+            if (sfd.ShowDialog() == true)
+            {
+                this.CurrentFilePath = sfd.FileName;
+                this.CommandBinding_Save_Executed(sender, e);
+            }
+        }
+        private void CommandBinding_Close_Executed(object sender, ExecutedRoutedEventArgs e)
+        {
+            Application.Current.Shutdown();
+        }
+
+        private void CommandBinding_Undo_Executed(object sender, ExecutedRoutedEventArgs e)
+        {
+            //TODO
+        }
+        private void CommandBinding_Redo_Executed(object sender, ExecutedRoutedEventArgs e)
+        {
+            //TODO
         }
     }
 }

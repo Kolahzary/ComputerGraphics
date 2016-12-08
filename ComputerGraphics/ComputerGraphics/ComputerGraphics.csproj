@@ -60,6 +60,7 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="Classes\Bgra32BitmapTool-IO.cs" />
     <Compile Include="Classes\Bgra32BitmapTool-Algorithms.cs" />
     <Compile Include="Classes\Bgra32BitmapTool.cs" />
     <Page Include="ColorPicker.xaml">
