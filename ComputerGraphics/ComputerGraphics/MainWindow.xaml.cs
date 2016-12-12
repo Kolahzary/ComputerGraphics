@@ -51,8 +51,39 @@ namespace ComputerGraphics
                 lblSourcePoint.Text = value.HasValue ? $"{value.Value.X}, {value.Value.Y} px" : "";
             }
         }
-        private Color CurrentBackColor { get; set; }
-        private Color CurrentForeColor { get; set; }
+
+        #region Current Back Color
+        private Color _CurrentBackColor;
+        public Color CurrentBackColor
+        {
+            get { return _CurrentBackColor; }
+            set
+            {
+                this._CurrentBackColor = value;
+                this.NotifyPropertyChanged("CurrentBackColorBrush");
+                this.NotifyPropertyChanged("CurrentNegativeBackColorBrush");
+            }
+        }
+        public Brush CurrentBackColorBrush => new SolidColorBrush(this.CurrentBackColor);
+        public Color CurrentNegativeBackColor => this.CurrentBackColor.GetNegative();
+        public Brush CurrentNegativeBackColorBrush => new SolidColorBrush(this.CurrentNegativeBackColor);
+        #endregion
+        #region Current Fore Color
+        private Color _CurrentForeColor;
+        public Color CurrentForeColor
+        {
+            get { return _CurrentForeColor; }
+            set
+            {
+                this._CurrentForeColor = value;
+                this.NotifyPropertyChanged("CurrentForeColorBrush");
+                this.NotifyPropertyChanged("CurrentNegativeForeColorBrush");
+            }
+        }
+        public Brush CurrentForeColorBrush => new SolidColorBrush(this.CurrentForeColor);
+        public Color CurrentNegativeForeColor => this.CurrentForeColor.GetNegative();
+        public Brush CurrentNegativeForeColorBrush => new SolidColorBrush(this.CurrentNegativeForeColor);
+        #endregion
 
         private enum ToolType
         {
@@ -86,8 +117,8 @@ namespace ComputerGraphics
             Fill_FF8_Recursive,
         }
 
-        public void MenuItem_Tools_ToolSelected(object sender, RoutedEventArgs e)
-            => this.CurrentTool = (ToolType)Enum.Parse(typeof(ToolType), (string)(sender as MenuItem).Tag);
+        public void ToolSelected(object sender, RoutedEventArgs e)
+            => this.CurrentTool = (ToolType)Enum.Parse(typeof(ToolType), (string)(sender as Control).Tag);
 
         private Dictionary<ToolType, string> ToolNames = new Dictionary<ToolType, string>()
         {

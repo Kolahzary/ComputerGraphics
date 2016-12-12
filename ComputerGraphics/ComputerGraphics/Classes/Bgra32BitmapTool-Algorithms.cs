@@ -436,6 +436,7 @@ namespace ComputerGraphics.Classes
             => this.Fill_FF4_Recursive(x, y, this.GetPixeli(x, y), fill_color);
         public void Fill_FF4_Recursive(int x, int y, int old_color, int fill_color)
         {
+            if (old_color == fill_color) return; // if old & new are equal, there's nothing to do by this algorithm!
             if (!this.IsAllowd(x, y)) return; // make sure it doesn't get out of canvas
             int present_color = this.GetPixeli(x, y);
 
@@ -458,6 +459,7 @@ namespace ComputerGraphics.Classes
             => this.Fill_FF8_Recursive(x, y, this.GetPixeli(x, y), fill_color);
         public void Fill_FF8_Recursive(int x, int y, int old_color, int fill_color)
         {
+            if (old_color == fill_color) return; // if old & new are equal, there's nothing to do by this algorithm!
             if (!this.IsAllowd(x, y)) return; // make sure it doesn't get out of canvas
             int present_color = this.GetPixeli(x, y);
 

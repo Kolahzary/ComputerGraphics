@@ -9,6 +9,9 @@ namespace ComputerGraphics.Classes
 {
     public static class ColorTool
     {
+        public static Color GetNegative(this Color c)
+            => Color.FromArgb(c.A, (byte)~c.R, (byte)~c.G, (byte)~c.B);
+
         public static Color IntToColor(int c)
         {
             return Color.FromArgb(

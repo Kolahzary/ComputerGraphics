@@ -83,76 +83,76 @@
       </MenuItem>
       <MenuItem Header='_Tools'>
         <MenuItem Header='_Free Hand'
-                  Icon='{iconPacks:PackIconModern Kind=DrawPencilReflection}'>
+                  Icon='{iconPacks:PackIconModern Kind=DrawPencilReflection}'> 
           <MenuItem Tag='Freehand_PutPixels'
                     Header='_Put pixels'
-                    Click='MenuItem_Tools_ToolSelected' />
+                    Click='ToolSelected' />
           <MenuItem Tag='Freehand_DrawLine'
                     Header='_Draw line'
-                    Click='MenuItem_Tools_ToolSelected' />
+                    Click='ToolSelected' />
         </MenuItem>
         <Separator />
         <MenuItem Header='_Line'
                   Icon='{iconPacks:PackIconModern Kind=VectorLine}'>
           <MenuItem Tag='Line_Naive'
                     Header='_Naive line drawing algorithm'
-                    Click='MenuItem_Tools_ToolSelected' />
+                    Click='ToolSelected' />
           <MenuItem Tag='Line_DDA'
                     Header='_DDA (Digital Differential Analyzer)'
-                    Click='MenuItem_Tools_ToolSelected' />
+                    Click='ToolSelected' />
           <MenuItem Tag='Line_Bresenham'
                     Header="_Bresenham's Line Algorithm"
-                    Click='MenuItem_Tools_ToolSelected' />
+                    Click='ToolSelected' />
         </MenuItem>
         <MenuItem Header='_Square'>
           <MenuItem Tag='Square_Empty'
                     Header='_Empty Square'
-                    Click='MenuItem_Tools_ToolSelected' />
+                    Click='ToolSelected' />
           <MenuItem Tag='Square_Filled'
                     Header='_Filled Square'
-                    Click='MenuItem_Tools_ToolSelected' />
+                    Click='ToolSelected' />
         </MenuItem>
         <MenuItem Header='_Rectangle'
                   Icon='{iconPacks:PackIconModern Kind=VectorRectangle}'>
           <MenuItem Tag='Rectangle_Empty'
                     Header='_Empty Rectangle'
-                    Click='MenuItem_Tools_ToolSelected' />
+                    Click='ToolSelected' />
           <MenuItem Tag='Rectangle_Filled'
                     Header='_Filled Rectangle'
-                    Click='MenuItem_Tools_ToolSelected' />
+                    Click='ToolSelected' />
         </MenuItem>
         <MenuItem Header='_Triangle'
                   Icon='{iconPacks:PackIconModern Kind=VectorPolygon}'>
           <MenuItem Tag='Triangle_Equilateral'
                     Header='_Equilateral Triangle'
-                    Click='MenuItem_Tools_ToolSelected' />
+                    Click='ToolSelected' />
           <MenuItem Tag='Triangle_Isosceles'
                     Header='_Isosceles Triangle'
-                    Click='MenuItem_Tools_ToolSelected' />
+                    Click='ToolSelected' />
           <MenuItem Tag='Triangle_Right'
                     Header='_Right Triangle'
-                    Click='MenuItem_Tools_ToolSelected' />
+                    Click='ToolSelected' />
         </MenuItem>
 
         <MenuItem Header='_Circle'
                   Icon='{iconPacks:PackIconModern Kind=VectorCircle}'>
           <MenuItem Tag='Circle_Midpoint'
                     Header='_Midpoint algorithm'
-                    Click='MenuItem_Tools_ToolSelected' />
+                    Click='ToolSelected' />
           <MenuItem Tag='Circle_Bresenham'
                     Header="_Bresenham's algorithm"
-                    Click='MenuItem_Tools_ToolSelected' />
+                    Click='ToolSelected' />
         </MenuItem>
         <MenuItem Header='_Ellipse'>
           <MenuItem Tag='Ellipse_Midpoint'
                     Header='_Midpoint algorithm'
-                    Click='MenuItem_Tools_ToolSelected' />
+                    Click='ToolSelected' />
           <MenuItem Tag='Ellipse_BresenhamRect'
                     Header="Rect _Bresenham's algorithm"
-                    Click='MenuItem_Tools_ToolSelected' />
+                    Click='ToolSelected' />
         </MenuItem>
         <Separator />
-        <MenuItem Header='_Flood Fill'
+        <MenuItem Header='_Fill'
                   Icon='{iconPacks:PackIconOcticons Kind=Paintcan}'>
           <MenuItem Header='_Apply background color to all pixels'
                     Click='MenuItem_Fill_BackgroundColor_Click' />
@@ -160,18 +160,18 @@
           <MenuItem Header='_Boundary Fill'>
             <MenuItem Tag='Fill_BF4_Recursive'
                       Header='_4-Way Recursive Boundary Fill Method (BF4)'
-                      Click='MenuItem_Tools_ToolSelected' />
+                      Click='ToolSelected' />
             <MenuItem Tag='Fill_BF8_Recursive'
                       Header='_8-Way Recursive Boundary Fill Method (BF8)'
-                      Click='MenuItem_Tools_ToolSelected' />
+                      Click='ToolSelected' />
           </MenuItem>
           <MenuItem Header='_Flood Fill'>
             <MenuItem Tag='Fill_FF4_Recursive'
                       Header='_4-Way Recursive Flood Fill Method (FF4)'
-                      Click='MenuItem_Tools_ToolSelected' />
+                      Click='ToolSelected' />
             <MenuItem Tag='Fill_FF8_Recursive'
                       Header='_8-Way Recursive Flood Fill Method (FF8)'
-                      Click='MenuItem_Tools_ToolSelected' />
+                      Click='ToolSelected' />
           </MenuItem>
         </MenuItem>
         <Separator />
@@ -239,6 +239,62 @@
                    Text='{Binding ElementName=wMainWindow,Path=StringImageSize,Mode=OneWay}' />
       </StatusBarItem>
     </StatusBar>
+    <ToolBarTray DockPanel.Dock='Top'
+                 Orientation='Horizontal'>
+      <ToolBar>
+        <Button Command='New'
+                ToolTip='New'
+                Content='{iconPacks:PackIconModern Kind=PageNew}' />
+        <Button Command='Open'
+                ToolTip='Open'
+                Content='{iconPacks:PackIconModern Kind=FolderOpen}' />
+        <Button Command='Save'
+                ToolTip='Save'
+                Content='{iconPacks:PackIconModern Kind=Save}' />
+      </ToolBar>
+      <ToolBar>
+        <Button Command='Undo'
+                ToolTip='Undo'
+                Content='{iconPacks:PackIconModern Kind=UndoCurve}' />
+        <Button Command='Redo'
+                ToolTip='Redo'
+                Content='{iconPacks:PackIconModern Kind=RedoCurve}' />
+      </ToolBar>
+      <ToolBar>
+        <Button ToolTip='Free Hand'
+                Tag='Freehand_DrawLine'
+                Click='ToolSelected'
+                Content='{iconPacks:PackIconModern Kind=DrawPencilReflection}' />
+        <Button ToolTip='Line'
+                Tag='Line_DDA'
+                Click='ToolSelected'
+                Content='{iconPacks:PackIconModern Kind=VectorLine}' />
+        <Button ToolTip='Rectangle'
+                Tag='Rectangle_Empty'
+                Click='ToolSelected'
+                Content='{iconPacks:PackIconModern Kind=VectorRectangle}' />
+        <Button ToolTip='Circle'
+                Tag='Circle_Midpoint'
+                Click='ToolSelected'
+                Content='{iconPacks:PackIconModern Kind=VectorCircle}' />
+        <Button ToolTip='Flood Fill'
+                Tag='Fill_FF4_Recursive'
+                Click='ToolSelected'
+                Content='{iconPacks:PackIconOcticons Kind=Paintcan}' />
+      </ToolBar>
+      <ToolBar>
+        <Button ToolTip='Pick background color'
+                Foreground='{Binding ElementName=wMainWindow,Path=CurrentNegativeBackColorBrush}'
+                Background='{Binding ElementName=wMainWindow,Path=CurrentBackColorBrush}'
+                Click='MenuItem_Tools_BackgroundColorPicker_Click'
+                Content='Background' />
+        <Button ToolTip='Pick foreground color'
+                Foreground='{Binding ElementName=wMainWindow,Path=CurrentNegativeForeColorBrush}'
+                Background='{Binding ElementName=wMainWindow,Path=CurrentForeColorBrush}'
+                Click='MenuItem_Tools_ForegroundColorPicker_Click'
+                Content='Foreground' />
+      </ToolBar>
+    </ToolBarTray>
     <ScrollViewer HorizontalScrollBarVisibility='Auto'
                   VerticalScrollBarVisibility='Auto'>
       <Border BorderThickness='1'
