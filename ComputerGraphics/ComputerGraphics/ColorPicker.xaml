@@ -3,11 +3,13 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:iconPacks="http://metro.mahapps.com/winfx/xaml/iconpacks"
         xmlns:local="clr-namespace:ComputerGraphics"
         mc:Ignorable="d"
         ShowInTaskbar='False'
         WindowStartupLocation='CenterOwner'
-        Title="Color Picker" Name='wColorPicker'
+        Title="Color Picker"
+        Name='wColorPicker'
         Height="220"
         MinHeight='230'
         MaxHeight='240'
@@ -134,7 +136,7 @@
               Width='30'
               Height='30'
               DockPanel.Dock='Left' />
-      
+
       <ComboBox  Margin='8'
                  Name="cbKnownColors"
                  ItemsSource="{Binding Source={StaticResource odpColorProperties}}"

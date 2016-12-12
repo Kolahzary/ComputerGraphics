@@ -349,6 +349,7 @@ namespace ComputerGraphics
         {
             ColorPicker cp = new ColorPicker();
             cp.Owner = this;
+            cp.PickedColor = this.CurrentForeColor;
             var res = cp.ShowDialog();
             if (res.HasValue)
             {
@@ -363,6 +364,7 @@ namespace ComputerGraphics
         {
             ColorPicker cp = new ColorPicker();
             cp.Owner = this;
+            cp.PickedColor = this.CurrentBackColor;
             var res = cp.ShowDialog();
             if (res.HasValue)
             {

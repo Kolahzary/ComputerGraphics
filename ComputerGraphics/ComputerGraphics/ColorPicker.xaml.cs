@@ -35,11 +35,11 @@ namespace ComputerGraphics
         public ColorPicker()
         {
             InitializeComponent();
+            this.PickedColor = Colors.Black;
         }
 
         private void Window_Loaded(object sender, RoutedEventArgs e)
         {
-            this.PickedColor = Colors.Black;
         }
 
         private void Sliders_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
