@@ -19,9 +19,10 @@ namespace ComputerGraphics
     {
         public string CurrentFilePath;
         public string CurrentFileExtension => Path.GetExtension(this.CurrentFilePath);
-
+        #region Property Change Notification
         public event PropertyChangedEventHandler PropertyChanged;
         public void NotifyPropertyChanged(string propName) => this.PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propName));
+        #endregion
 
         private Bgra32BitmapTool _bmp;
         private Bgra32BitmapTool bmp
