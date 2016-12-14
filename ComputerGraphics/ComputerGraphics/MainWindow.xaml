@@ -152,6 +152,10 @@
                     Click='ToolSelected' />
         </MenuItem>
         <Separator />
+        <MenuItem Tag='Etc_Arrow'
+                  Header='_Arrow'
+                  Click='ToolSelected' />
+        <Separator />
         <MenuItem Header='_Fill'
                   Icon='{iconPacks:PackIconOcticons Kind=Paintcan}'>
           <MenuItem Header='_Apply background color to all pixels'

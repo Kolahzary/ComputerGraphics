@@ -19,6 +19,7 @@ namespace ComputerGraphics
     {
         public string CurrentFilePath;
         public string CurrentFileExtension => Path.GetExtension(this.CurrentFilePath);
+
         #region Property Change Notification
         public event PropertyChangedEventHandler PropertyChanged;
         public void NotifyPropertyChanged(string propName) => this.PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propName));
@@ -116,6 +117,8 @@ namespace ComputerGraphics
 
             Fill_FF4_Recursive,
             Fill_FF8_Recursive,
+
+            Etc_Arrow,
         }
 
         public void ToolSelected(object sender, RoutedEventArgs e)
@@ -151,6 +154,9 @@ namespace ComputerGraphics
 
             {ToolType.Fill_FF4_Recursive,"Fill -> 4-Way Flood Fill Recursive" },
             {ToolType.Fill_FF8_Recursive,"Fill -> 8-Way Flood Fill Recursive" },
+
+            {ToolType.Etc_Arrow,"Etc -> Arrow" },
+            
         };
 
         private ToolType _CurrentTool;
@@ -250,6 +256,8 @@ namespace ComputerGraphics
 
                     case ToolType.Ellipse_Midpoint:
                     case ToolType.Ellipse_BresenhamRect:
+
+                    case ToolType.Etc_Arrow:
                         this.SourcePoint = mouse;
                         break;
                     default:
@@ -356,6 +364,11 @@ namespace ComputerGraphics
                         break;
                     case ToolType.Ellipse_BresenhamRect:
                         bmp.Ellipse_BresenhamRect(this.SourcePoint.Value, mouse, this.CurrentForeColor);
+                        bmp.Apply();
+                        break;
+
+                    case ToolType.Etc_Arrow:
+                        bmp.Etc_Arrow(this.SourcePoint.Value, mouse, this.CurrentForeColor);
                         bmp.Apply();
                         break;
 

@@ -212,7 +212,7 @@ namespace ComputerGraphics.Classes
                 x0 - dx, y1,
                 color);
         }
-        
+
         public void Triangle_Right(IntPoint source, IntPoint destination, Color color)
             => this.Triangle_Right(source.X, source.Y, destination.X, destination.Y, ColorTool.ColorToInt(color));
         public void Triangle_Right(int x0, int y0, int x1, int y1, Color color)
@@ -227,7 +227,26 @@ namespace ComputerGraphics.Classes
                 x0, y1,
                 color);
         }
-        
+        public void Etc_Arrow(IntPoint source, IntPoint destination, Color color)
+            => this.Etc_Arrow(source.X, source.Y, destination.X, destination.Y, ColorTool.ColorToInt(color));
+        public void Etc_Arrow(int x0, int y0, int x1, int y1, Color color)
+            => this.Etc_Arrow(x0, y0, x1, y1, ColorTool.ColorToInt(color));
+        public void Etc_Arrow(int x0, int y0, int x1, int y1, byte alpha, byte red, byte green, byte blue)
+            => this.Etc_Arrow(x0, y0, x1, y1, ColorTool.ArgbToInt(alpha, red, green, blue));
+        public void Etc_Arrow(int x0, int y0, int x1, int y1, int color)
+        {
+            int dx = x1 - x0,
+                dy = y1 - y0;
+
+            this.Rectangle_Empty(x0, y0, x1, y1, color);
+
+            this.Triangle(
+                x1, y1 - 3 * dy/2,
+                x1, y1 + dy/2,
+                x1 + dx / 2, y1 - dy / 2,
+                color);
+        }
+
         public void Circle_Midpoint(IntPoint center, int radius, Color color)
             => this.Circle_Midpoint(center.X, center.Y, radius, ColorTool.ColorToInt(color));
         public void Circle_Midpoint(int xc, int yc, int radius, Color color)
