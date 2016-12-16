@@ -1,8 +1,0 @@
-{
-  "language": "csharp",
-  "group": "stable",
-  "dist": "precise",
-  "os": "linux",
-  "solution":"ComputerGraphics/ComputerGraphics.sln"
-}
-
