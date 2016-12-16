@@ -185,11 +185,13 @@ namespace ComputerGraphics
         private void Window_Loaded(object sender, RoutedEventArgs e)
         {
             bmp = new Bgra32BitmapTool(100, 100, 10);
+            bmp.SaveCheckpoint();
 
             this.CurrentBackColor = Colors.White;
             this.CurrentForeColor = Colors.Black;
 
             this.CurrentTool = ToolType.Freehand_DrawLine;
+
         }
 
 
@@ -276,24 +278,25 @@ namespace ComputerGraphics
                 {
                     case ToolType.Fill_BF4_Recursive:
                         bmp.Fill_BF4_Recursive(mouse.X, mouse.Y, this.CurrentForeColor, this.CurrentBackColor);
-                        bmp.Apply();
                         break;
                     case ToolType.Fill_BF8_Recursive:
                         bmp.Fill_BF8_Recursive(mouse.X, mouse.Y, this.CurrentForeColor, this.CurrentBackColor);
-                        bmp.Apply();
                         break;
                     case ToolType.Fill_FF4_Recursive:
                         bmp.Fill_FF4_Recursive(mouse.X, mouse.Y, this.CurrentBackColor);
-                        bmp.Apply();
                         break;
                     case ToolType.Fill_FF8_Recursive:
                         bmp.Fill_FF8_Recursive(mouse.X, mouse.Y, this.CurrentBackColor);
-                        bmp.Apply();
                         break;
                     default:
                         break;
                 }
-                if (!this.SourcePoint.HasValue) return;
+                if (!this.SourcePoint.HasValue)
+                {
+                    bmp.Apply();
+                    bmp.SaveCheckpoint(); // for history
+                    return;
+                }
                 switch (CurrentTool)
                 {
                     //case ToolType.Freehand_PutPixels:
@@ -303,78 +306,67 @@ namespace ComputerGraphics
 
                     case ToolType.Line_Naive:
                         bmp.Line_Naive(this.SourcePoint.Value, mouse, this.CurrentForeColor);
-                        bmp.Apply();
                         break;
                     case ToolType.Line_DDA:
                         bmp.Line_DDA(this.SourcePoint.Value, mouse, this.CurrentForeColor);
-                        bmp.Apply();
                         break;
                     case ToolType.Line_Bresenham:
                         bmp.Line_Bresenham(this.SourcePoint.Value, mouse, this.CurrentForeColor);
-                        bmp.Apply();
                         break;
                     case ToolType.Square_Empty:
                         bmp.Square_Empty(this.SourcePoint.Value, mouse, this.CurrentForeColor);
-                        bmp.Apply();
                         break;
                     case ToolType.Square_Filled:
                         bmp.Square_Filled(this.SourcePoint.Value, mouse, this.CurrentForeColor);
-                        bmp.Apply();
                         break;
                     case ToolType.Rectangle_Empty:
                         bmp.Rectangle_Empty(this.SourcePoint.Value, mouse, this.CurrentForeColor);
-                        bmp.Apply();
                         break;
                     case ToolType.Rectangle_Filled:
                         bmp.Rectangle_Filled(this.SourcePoint.Value, mouse, this.CurrentForeColor);
-                        bmp.Apply();
                         break;
                     case ToolType.Triangle_Equilateral:
                         radius = Math.Max(Math.Abs(mouse.X - this.SourcePoint.Value.X), Math.Abs(mouse.Y - this.SourcePoint.Value.Y));
 
                         bmp.Triangle_Equilateral(this.SourcePoint.Value, radius, this.CurrentForeColor);
-                        bmp.Apply();
                         break;
                     case ToolType.Triangle_Isosceles:
                         bmp.Triangle_Isosceles(this.SourcePoint.Value, mouse, this.CurrentForeColor);
-                        bmp.Apply();
                         break;
                     case ToolType.Triangle_Right:
                         bmp.Triangle_Right(this.SourcePoint.Value, mouse, this.CurrentForeColor);
-                        bmp.Apply();
                         break;
                     case ToolType.Circle_Midpoint:
                         radius = Math.Max(Math.Abs(mouse.X - this.SourcePoint.Value.X), Math.Abs(mouse.Y - this.SourcePoint.Value.Y));
 
                         bmp.Circle_Midpoint(this.SourcePoint.Value, radius, this.CurrentForeColor);
-                        bmp.Apply();
                         break;
                     case ToolType.Circle_Bresenham:
                         radius = Math.Max(Math.Abs(mouse.X - this.SourcePoint.Value.X), Math.Abs(mouse.Y - this.SourcePoint.Value.Y));
 
                         bmp.Circle_Bresenham(this.SourcePoint.Value, radius, this.CurrentForeColor);
-                        bmp.Apply();
                         break;
                     case ToolType.Ellipse_Midpoint:
                         radiusX = Math.Abs(mouse.X - this.SourcePoint.Value.X);
                         radiusY = Math.Abs(mouse.Y - this.SourcePoint.Value.Y);
 
                         bmp.Ellipse_Midpoint(this.SourcePoint.Value, radiusX, radiusY, this.CurrentForeColor);
-                        bmp.Apply();
                         break;
                     case ToolType.Ellipse_BresenhamRect:
                         bmp.Ellipse_BresenhamRect(this.SourcePoint.Value, mouse, this.CurrentForeColor);
-                        bmp.Apply();
                         break;
 
                     case ToolType.Etc_Arrow:
                         bmp.Etc_Arrow(this.SourcePoint.Value, mouse, this.CurrentForeColor);
-                        bmp.Apply();
                         break;
 
                     default:
                         break;
                 }
+
+                bmp.Apply();
+                bmp.SaveCheckpoint(); // for history
+
                 this.SourcePoint = null;
             }
         }
@@ -424,6 +416,7 @@ namespace ComputerGraphics
         {
             bmp.FillBackgroundColor(this.CurrentBackColor);
             bmp.Apply();
+            bmp.SaveCheckpoint();
         }
 
         private void CommandBinding_New_Executed(object sender, ExecutedRoutedEventArgs e)
@@ -518,11 +511,19 @@ namespace ComputerGraphics
 
         private void CommandBinding_Undo_Executed(object sender, ExecutedRoutedEventArgs e)
         {
-            //TODO
+            bmp.Undo();
+            imgMain.Source = bmp.WritableBitmap;
         }
         private void CommandBinding_Redo_Executed(object sender, ExecutedRoutedEventArgs e)
         {
-            //TODO
+            bmp.Redo();
+            imgMain.Source = bmp.WritableBitmap;
         }
+
+        private void wMainWindow_Closed(object sender, EventArgs e)
+        {
+            bmp.Dispose();
+        }
+       
     }
 }

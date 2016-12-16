@@ -1,7 +1,5 @@
 ﻿using System;
 using System.IO;
-using System.Windows;
-using System.Windows.Media;
 using System.Windows.Media.Imaging;
 
 namespace ComputerGraphics.Classes
@@ -34,5 +32,10 @@ namespace ComputerGraphics.Classes
             be.Frames.Add(BitmapFrame.Create(this.WritableBitmap));
             be.Save(fs);
         }
+
+        public void Load(string filePath) => this.Load(new Uri(filePath));
+        public void Load(Uri filePath) => this.Load(new BitmapImage(filePath) { CreateOptions = BitmapCreateOptions.None });
+        public void Load(BitmapSource bs) => this.wb = new WriteableBitmap(bs);
+
     }
 }

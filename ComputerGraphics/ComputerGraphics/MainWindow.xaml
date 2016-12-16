@@ -9,7 +9,8 @@
         Title="MainWindow"
         Height="350"
         Width="525"
-        Name='wMainWindow'
+        Name='wMainWindow' 
+        Closed='wMainWindow_Closed'
         Loaded='Window_Loaded'>
   <Window.CommandBindings>
     <CommandBinding Command='New'
@@ -26,7 +27,7 @@
     <CommandBinding Command='Undo'
                     Executed='CommandBinding_Undo_Executed' />
     <CommandBinding Command='Redo'
-                    Executed='CommandBinding_Undo_Executed' />
+                    Executed='CommandBinding_Redo_Executed' />
   </Window.CommandBindings>
   <Window.InputBindings>
     <KeyBinding Modifiers='Ctrl'

@@ -181,7 +181,7 @@ namespace ComputerGraphics.Classes
             this.Line_DDA(x1, y1, x2, y2, color);
             this.Line_DDA(x2, y2, x0, y0, color);
         }
-
+        
         public void Triangle_Equilateral(IntPoint center, int radius, Color color)
             => this.Triangle_Equilateral(center.X, center.Y, radius, ColorTool.ColorToInt(color));
         public void Triangle_Equilateral(int xc, int yc, int radius, Color color)
