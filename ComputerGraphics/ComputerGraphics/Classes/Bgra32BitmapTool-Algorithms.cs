@@ -132,7 +132,7 @@ namespace ComputerGraphics.Classes
             else
                 this.Rectangle_Filled(x0, y0, x0 + dy, y1, color);
         }
-        
+
         public void Rectangle_Empty(IntPoint source, IntPoint destination, Color color)
             => this.Rectangle_Empty(source.X, source.Y, destination.X, destination.Y, ColorTool.ColorToInt(color));
         public void Rectangle_Empty(int x0, int y0, int x1, int y1, Color color)
@@ -146,6 +146,70 @@ namespace ComputerGraphics.Classes
 
             this.Line_DDA(x1, y1, x1, y0, color);
             this.Line_DDA(x1, y1, x0, y1, color);
+        }
+        public void Diamond(IntPoint source, IntPoint destination, Color color)
+            => this.Diamond(source.X, source.Y, destination.X, destination.Y, ColorTool.ColorToInt(color));
+        public void Diamond(int x0, int y0, int x1, int y1, Color color)
+            => this.Diamond(x0, y0, x1, y1, ColorTool.ColorToInt(color));
+        public void Diamond(int x0, int y0, int x1, int y1, byte alpha, byte red, byte green, byte blue)
+            => this.Diamond(x0, y0, x1, y1, ColorTool.ArgbToInt(alpha, red, green, blue));
+        public void Diamond(int x0, int y0, int x1, int y1, int color)
+        {
+            int ax = (x0 + x1) / 2,
+                ay = (y0 + y1) / 2,
+                dx = x1 - x0,
+                dy = y1 - y0;
+
+            this.Line_DDA(x0 - dx / 2, ay, ax, y0 - dy / 2, color);
+            this.Line_DDA(ax, y0 - dy / 2, x1+dx/2, ay, color);
+
+            this.Line_DDA(x1 + dx / 2, ay, ax, y1 + dy / 2, color);
+            this.Line_DDA(ax, y1 + dy / 2, x0 - dx / 2, ay, color);
+        }
+
+        public void Pentagon(IntPoint source, IntPoint destination, Color color)
+            => this.Pentagon(source.X, source.Y, destination.X, destination.Y, ColorTool.ColorToInt(color));
+        public void Pentagon(int x0, int y0, int x1, int y1, Color color)
+            => this.Pentagon(x0, y0, x1, y1, ColorTool.ColorToInt(color));
+        public void Pentagon(int x0, int y0, int x1, int y1, byte alpha, byte red, byte green, byte blue)
+            => this.Pentagon(x0, y0, x1, y1, ColorTool.ArgbToInt(alpha, red, green, blue));
+        public void Pentagon(int x0, int y0, int x1, int y1, int color)
+        {
+            int ax = (x0+x1)/2,
+                dy = y1-y0;
+
+
+            this.Line_DDA(x0, y0, ax, y0 - dy / 2, color);
+            this.Line_DDA(ax, y0 - dy / 2, x1, y0, color);
+
+
+            this.Line_DDA(x0, y0, x0, y1, color);
+
+            this.Line_DDA(x1, y1, x1, y0, color);
+            this.Line_DDA(x1, y1, x0, y1, color);
+        }
+        public void Hexagon(IntPoint source, IntPoint destination, Color color)
+            => this.Hexagon(source.X, source.Y, destination.X, destination.Y, ColorTool.ColorToInt(color));
+        public void Hexagon(int x0, int y0, int x1, int y1, Color color)
+            => this.Hexagon(x0, y0, x1, y1, ColorTool.ColorToInt(color));
+        public void Hexagon(int x0, int y0, int x1, int y1, byte alpha, byte red, byte green, byte blue)
+            => this.Hexagon(x0, y0, x1, y1, ColorTool.ArgbToInt(alpha, red, green, blue));
+        public void Hexagon(int x0, int y0, int x1, int y1, int color)
+        {
+            int dx = x1 - x0,
+                ay = (y0 + y1) / 2;
+
+            this.Line_DDA(x0, y0, x1, y0, color);
+
+            this.Line_DDA(x1, y0, x1 + dx / 2, ay, color);
+
+            this.Line_DDA(x1 + dx / 2, ay, x1, y1, color);
+
+            this.Line_DDA(x1, y1, x0, y1, color);
+
+            this.Line_DDA(x0, y1, x0 - dx / 2, ay, color);
+
+            this.Line_DDA(x0 - dx / 2, ay, x0, y0, color);
         }
 
         public void Rectangle_Filled(IntPoint source, IntPoint destination, Color color)
@@ -241,8 +305,8 @@ namespace ComputerGraphics.Classes
             this.Rectangle_Empty(x0, y0, x1, y1, color);
 
             this.Triangle(
-                x1, y1 - 3 * dy/2,
-                x1, y1 + dy/2,
+                x1, y1 - 3 * dy / 2,
+                x1, y1 + dy / 2,
                 x1 + dx / 2, y1 - dy / 2,
                 color);
         }

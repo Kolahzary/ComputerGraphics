@@ -102,6 +102,10 @@ namespace ComputerGraphics
             Rectangle_Empty,
             Rectangle_Filled,
 
+            Diamond,
+            Pentagon,
+            Hexagon,
+
             Triangle_Equilateral,
             Triangle_Isosceles,
             Triangle_Right,
@@ -138,6 +142,10 @@ namespace ComputerGraphics
 
             {ToolType.Rectangle_Empty,"Empty Rectangle" },
             {ToolType.Rectangle_Filled,"Filled Rectangle" },
+
+            {ToolType.Diamond,"Diamond" },
+            {ToolType.Pentagon,"Pentagon" },
+            {ToolType.Hexagon,"Hexagon" },
 
             {ToolType.Triangle_Equilateral,"Equilateral Triangle" },
             {ToolType.Triangle_Isosceles,"Isosceles Triangle" },
@@ -249,6 +257,10 @@ namespace ComputerGraphics
                     case ToolType.Rectangle_Empty:
                     case ToolType.Rectangle_Filled:
 
+                    case ToolType.Diamond:
+                    case ToolType.Pentagon:
+                    case ToolType.Hexagon:
+
                     case ToolType.Triangle_Equilateral:
                     case ToolType.Triangle_Isosceles:
                     case ToolType.Triangle_Right:
@@ -324,6 +336,15 @@ namespace ComputerGraphics
                         break;
                     case ToolType.Rectangle_Filled:
                         bmp.Rectangle_Filled(this.SourcePoint.Value, mouse, this.CurrentForeColor);
+                        break;
+                    case ToolType.Diamond:
+                        bmp.Diamond(this.SourcePoint.Value, mouse, this.CurrentForeColor);
+                        break;
+                    case ToolType.Pentagon:
+                        bmp.Pentagon(this.SourcePoint.Value, mouse, this.CurrentForeColor);
+                        break;
+                    case ToolType.Hexagon:
+                        bmp.Hexagon(this.SourcePoint.Value, mouse, this.CurrentForeColor);
                         break;
                     case ToolType.Triangle_Equilateral:
                         radius = Math.Max(Math.Abs(mouse.X - this.SourcePoint.Value.X), Math.Abs(mouse.Y - this.SourcePoint.Value.Y));

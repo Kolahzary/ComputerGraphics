@@ -122,6 +122,19 @@
                     Header='_Filled Rectangle'
                     Click='ToolSelected' />
         </MenuItem>
+        
+        <MenuItem Tag='Diamond'
+                  Header='_Diamond'
+                  Click='ToolSelected' />
+
+        <MenuItem Tag='Pentagon'
+                  Header='_Pentagon'
+                  Click='ToolSelected' />
+
+        <MenuItem Tag='Hexagon'
+                  Header='_Hexagon'
+                  Click='ToolSelected' />
+
         <MenuItem Header='_Triangle'
                   Icon='{iconPacks:PackIconModern Kind=VectorPolygon}'>
           <MenuItem Tag='Triangle_Equilateral'
