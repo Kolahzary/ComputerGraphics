@@ -14,12 +14,12 @@
         MinHeight='230'
         MaxHeight='240'
         Width="400"
-        MinWidth='300'
-        Loaded='Window_Loaded'>
+        MinWidth='300'>
   <Window.Resources>
     <ObjectDataProvider ObjectInstance="{x:Type Colors}"
                         MethodName="GetProperties"
                         x:Key="odpColorProperties" />
+    
     <Style TargetType='Slider'>
       <Setter Property='Margin'
               Value='10 5' />
@@ -141,7 +141,7 @@
                  Name="cbKnownColors"
                  ItemsSource="{Binding Source={StaticResource odpColorProperties}}"
                  SelectedValuePath="Name"
-                 SelectionChanged='cbKnownColors_Selected'>
+                 SelectedValue='{Binding ElementName=wColorPicker,Path=PickedColorName,UpdateSourceTrigger=PropertyChanged}'>
         <ComboBox.ItemTemplate>
           <DataTemplate>
             <StackPanel Orientation="Horizontal"

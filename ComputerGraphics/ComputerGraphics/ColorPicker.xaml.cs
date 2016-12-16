@@ -1,6 +1,8 @@
 ﻿using System.ComponentModel;
+using System.Reflection;
 using System.Windows;
 using System.Windows.Media;
+using System.Linq;
 
 namespace ComputerGraphics
 {
@@ -15,8 +17,21 @@ namespace ComputerGraphics
         {
             this.NotifyPropertyChanged("PickedColor");
             this.NotifyPropertyChanged("PickedColor_Brush");
+            this.NotifyPropertyChanged("PickedColorName"); 
         }
         public Brush PickedColor_Brush => new SolidColorBrush(this.PickedColor);
+        public string PickedColorName
+        {
+            get
+            {
+                return typeof(Colors).GetProperties(BindingFlags.Public | BindingFlags.Static).FirstOrDefault(a => (Color)a.GetValue(typeof(Colors)) == this.PickedColor)?.Name;
+            }
+            set
+            {
+                this.PickedColor = (Color)ColorConverter.ConvertFromString(value);
+                this.NotifyPropertyChanged_Colors();
+            }
+        }
         public Color PickedColor
         {
             get
@@ -38,14 +53,8 @@ namespace ComputerGraphics
             this.PickedColor = Colors.Black;
         }
 
-        private void Window_Loaded(object sender, RoutedEventArgs e)
-        {
-        }
-
         private void Sliders_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
-        {
-            this.NotifyPropertyChanged_Colors();
-        }
+            => this.NotifyPropertyChanged_Colors();
 
         private void btnOk_Click(object sender, RoutedEventArgs e)
         {
@@ -57,11 +66,6 @@ namespace ComputerGraphics
         {
             this.DialogResult = false;
             this.Close();
-        }
-
-        private void cbKnownColors_Selected(object sender, RoutedEventArgs e)
-        {
-            this.PickedColor = ((Color)ColorConverter.ConvertFromString((string)cbKnownColors.SelectedValue));
         }
     }
 }
