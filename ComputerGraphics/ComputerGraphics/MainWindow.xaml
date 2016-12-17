@@ -72,6 +72,24 @@
                   InputGestureText='Alt+F4'
                   Icon='{iconPacks:PackIconMaterial Kind=CloseCircleOutline}' />
       </MenuItem>
+      <MenuItem Header='_Image'>
+        <MenuItem Tag='Rotate_90C'
+                  Header='Rotate 90° Clockwise'
+                  Click='ActionSelected' />
+        <MenuItem Tag='Rotate_90CC'
+                  Header='Rotate 90° Counter-Clockwise'
+                  Click='ActionSelected' />
+        <MenuItem Tag='Rotate_180'
+                  Header='Rotate 180°'
+                  Click='ActionSelected' />
+        <Separator />
+        <MenuItem Tag='Flip_Horizontal'
+                  Header='Flip _Horizontal'
+                  Click='ActionSelected' />
+        <MenuItem Tag='Flip_Vertical'
+                  Header='Flip _Vertical'
+                  Click='ActionSelected' />
+      </MenuItem>
       <MenuItem Header='_Edit'>
         <MenuItem Header='_Undo'
                   Command='Undo'
@@ -313,12 +331,12 @@
                 Tag='Hexagon'
                 Click='ToolSelected'
                 Content='Hexagon' />
-        
+
         <Button ToolTip='Arrow'
                 Tag='Etc_Arrow'
                 Click='ToolSelected'
                 Content='Arrow' />
-        
+
         <Button ToolTip='Circle'
                 Tag='Circle_Midpoint'
                 Click='ToolSelected'

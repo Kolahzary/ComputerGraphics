@@ -60,6 +60,8 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="Classes\Bgra32BitmapExtensions.cs" />
+    <Compile Include="Classes\Bgra32BitmapTool-Actions.cs" />
     <Compile Include="Classes\Bgra32BitmapTool-IO.cs" />
     <Compile Include="Classes\Bgra32BitmapTool-Algorithms.cs" />
     <Compile Include="Classes\Bgra32BitmapTool.cs" />

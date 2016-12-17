@@ -557,6 +557,42 @@ namespace ComputerGraphics
         {
             bmp.Dispose();
         }
-       
+
+        private void ActionSelected(object sender, RoutedEventArgs e)
+        {
+            ActionType at = (ActionType)Enum.Parse(typeof(ActionType), (string)(sender as Control).Tag);
+            switch (at)
+            {
+                case ActionType.Rotate_90C:
+                    bmp.Rotate_90C();
+                    break;
+                case ActionType.Rotate_90CC:
+                    bmp.Rotate_90CC();
+                    break;
+                case ActionType.Rotate_180:
+                    bmp.Rotate_180();
+                    break;
+                case ActionType.Flip_Horizontal:
+                    bmp.Flip_Horizontal();
+                    break;
+                case ActionType.Flip_Vertical:
+                    bmp.Flip_Vertical();
+                    break;
+                default:
+                    break;
+            }
+            bmp.Apply();
+            bmp.SaveCheckpoint();
+            this.imgMain.Source = bmp.WritableBitmap;
+        }
+        private enum ActionType
+        {
+            Rotate_90C,
+            Rotate_90CC,
+            Rotate_180,
+
+            Flip_Horizontal,
+            Flip_Vertical,
+        }
     }
 }
