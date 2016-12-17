@@ -549,6 +549,7 @@ namespace ComputerGraphics.Classes
             if (present_color == old_color)
             {
                 this.SetPixel(x, y, fill_color);
+
                 this.Fill_FF8_Recursive(x + 1, y, old_color, fill_color);
                 this.Fill_FF8_Recursive(x - 1, y, old_color, fill_color);
 
@@ -564,5 +565,87 @@ namespace ComputerGraphics.Classes
         }
 
 
+        public void Fill_FF4_Dynamic(int x, int y, Color fill)
+            => this.Fill_FF4_Dynamic(x, y, ColorTool.ColorToInt(fill));
+        public void Fill_FF4_Dynamic(int x, int y, byte fill_alpha, byte fill_red, byte fill_green, byte fill_blue)
+            => this.Fill_FF4_Dynamic(x, y, ColorTool.ArgbToInt(fill_alpha, fill_red, fill_green, fill_blue));
+        public void Fill_FF4_Dynamic(int x, int y, int fill_color)
+        {
+            if (!this.IsAllowd(x, y)) return; // make sure it doesn't get out of canvas
+            int old_color = this.GetPixeli(x, y);
+            if (old_color == fill_color) return; // if old & new are equal, there's nothing to do by this algorithm!
+
+            Stack<IntPoint> st = new Stack<IntPoint>();
+            st.Push(new IntPoint(x, y));
+
+            IntPoint cp; // current point
+
+            while (st.Count > 0)
+            {
+                cp = st.Pop();
+                this.SetPixel(cp.X, cp.Y, fill_color);
+
+                foreach (IntPoint adjacent in this.AdjacentFinder4(cp))
+                {
+                    if (!this.IsAllowd(adjacent.X, adjacent.Y)) continue; // make sure it doesn't get out of canvas
+                    
+                    if (this.GetPixeli(adjacent.X, adjacent.Y) == old_color)
+                    {
+                        st.Push(adjacent);
+                    }
+                }
+            }
+        }
+        public void Fill_FF8_Dynamic(int x, int y, Color fill)
+            => this.Fill_FF8_Dynamic(x, y, ColorTool.ColorToInt(fill));
+        public void Fill_FF8_Dynamic(int x, int y, byte fill_alpha, byte fill_red, byte fill_green, byte fill_blue)
+            => this.Fill_FF8_Dynamic(x, y, ColorTool.ArgbToInt(fill_alpha, fill_red, fill_green, fill_blue));
+        public void Fill_FF8_Dynamic(int x, int y, int fill_color)
+        {
+            if (!this.IsAllowd(x, y)) return; // make sure it doesn't get out of canvas
+            int old_color = this.GetPixeli(x, y);
+            if (old_color == fill_color) return; // if old & new are equal, there's nothing to do by this algorithm!
+
+            Stack<IntPoint> st = new Stack<IntPoint>();
+            st.Push(new IntPoint(x, y));
+
+            IntPoint cp; // current point
+
+            while (st.Count > 0)
+            {
+                cp = st.Pop();
+                this.SetPixel(cp.X, cp.Y, fill_color);
+
+                foreach (IntPoint adjacent in this.AdjacentFinder8(cp))
+                {
+                    if (!this.IsAllowd(adjacent.X, adjacent.Y)) continue; // make sure it doesn't get out of canvas
+
+                    if (this.GetPixeli(adjacent.X, adjacent.Y) == old_color)
+                    {
+                        st.Push(adjacent);
+                    }
+                }
+            }
+        }
+        private IEnumerable<IntPoint> AdjacentFinder4(IntPoint center)
+        {
+            yield return new IntPoint(center.X + 1, center.Y);
+            yield return new IntPoint(center.X, center.Y + 1);
+            yield return new IntPoint(center.X - 1, center.Y);
+            yield return new IntPoint(center.X, center.Y - 1);
+        }
+        private IEnumerable<IntPoint> AdjacentFinder8(IntPoint center)
+        {
+            yield return new IntPoint(center.X + 1, center.Y);
+            yield return new IntPoint(center.X, center.Y + 1);
+            yield return new IntPoint(center.X - 1, center.Y);
+            yield return new IntPoint(center.X, center.Y - 1);
+
+            yield return new IntPoint(center.X + 1, center.Y + 1);
+            yield return new IntPoint(center.X - 1, center.Y - 1);
+
+            yield return new IntPoint(center.X - 1, center.Y + 1);
+            yield return new IntPoint(center.X + 1, center.Y - 1);
+        }
     }
 }

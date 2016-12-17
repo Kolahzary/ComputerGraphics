@@ -122,6 +122,9 @@ namespace ComputerGraphics
             Fill_FF4_Recursive,
             Fill_FF8_Recursive,
 
+            Fill_FF4_Dynamic,
+            Fill_FF8_Dynamic,
+
             Etc_Arrow,
         }
 
@@ -160,8 +163,11 @@ namespace ComputerGraphics
             {ToolType.Fill_BF4_Recursive,"Fill -> 4-Way Boundary Fill Recursive" },
             {ToolType.Fill_BF8_Recursive,"Fill -> 8-Way Boundary Fil Recursive" },
 
-            {ToolType.Fill_FF4_Recursive,"Fill -> 4-Way Flood Fill Recursive" },
-            {ToolType.Fill_FF8_Recursive,"Fill -> 8-Way Flood Fill Recursive" },
+            {ToolType.Fill_FF4_Recursive,"Fill -> 4-Way Recursive Flood Fill" },
+            {ToolType.Fill_FF8_Recursive,"Fill -> 8-Way Recursive Flood Fill" },
+
+            {ToolType.Fill_FF4_Dynamic,"Fill -> 4-Way Dynamic Flood Fill" },
+            {ToolType.Fill_FF8_Dynamic,"Fill -> 8-Way Dynamic Flood Fill" },
 
             {ToolType.Etc_Arrow,"Etc -> Arrow" },
             
@@ -299,6 +305,12 @@ namespace ComputerGraphics
                         break;
                     case ToolType.Fill_FF8_Recursive:
                         bmp.Fill_FF8_Recursive(mouse.X, mouse.Y, this.CurrentBackColor);
+                        break;
+                    case ToolType.Fill_FF4_Dynamic:
+                        bmp.Fill_FF4_Dynamic(mouse.X, mouse.Y, this.CurrentBackColor);
+                        break;
+                    case ToolType.Fill_FF8_Dynamic:
+                        bmp.Fill_FF8_Dynamic(mouse.X, mouse.Y, this.CurrentBackColor);
                         break;
                     default:
                         break;
