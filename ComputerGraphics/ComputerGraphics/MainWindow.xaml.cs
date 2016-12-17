@@ -4,6 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.IO;
+using System.Timers;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
@@ -19,11 +20,10 @@ namespace ComputerGraphics
     {
         public string CurrentFilePath;
         public string CurrentFileExtension => Path.GetExtension(this.CurrentFilePath);
-
-        #region Property Change Notification
+        
         public event PropertyChangedEventHandler PropertyChanged;
         public void NotifyPropertyChanged(string propName) => this.PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propName));
-        #endregion
+        
 
         private Bgra32BitmapTool _bmp;
         private Bgra32BitmapTool bmp
@@ -199,6 +199,7 @@ namespace ComputerGraphics
         private void Window_Loaded(object sender, RoutedEventArgs e)
         {
             bmp = new Bgra32BitmapTool(100, 100, 10);
+            bmp.PropertyChanged += Bmp_PropertyChanged;
             bmp.SaveCheckpoint();
 
             this.CurrentBackColor = Colors.White;
@@ -208,6 +209,14 @@ namespace ComputerGraphics
 
         }
 
+        private void Bmp_PropertyChanged(object sender, PropertyChangedEventArgs e)
+        {
+            if (e.PropertyName == "WritableBitmap")
+            {
+                imgMain.Source = bmp.WritableBitmap;
+                this.NotifyPropertyChanged("StringImageSize");
+            }
+        }
 
         private void MenuItem_Help_GitHub_Click(object sender, RoutedEventArgs e)
         {
@@ -475,7 +484,7 @@ namespace ComputerGraphics
                         sdb.Values_XResolution,
                         sdb.Values_YResolution
                         );
-                    imgMain.Source = bmp.WritableBitmap;
+                    bmp.PropertyChanged += Bmp_PropertyChanged;
                 }
             }
         }
@@ -486,6 +495,7 @@ namespace ComputerGraphics
             if (ofd.ShowDialog() == true)
             {
                 bmp = new Bgra32BitmapTool(new Uri(ofd.FileName, UriKind.RelativeOrAbsolute));
+                bmp.PropertyChanged += Bmp_PropertyChanged;
                 this.CurrentFilePath = ofd.FileName;
             }
         }
@@ -553,12 +563,10 @@ namespace ComputerGraphics
         private void CommandBinding_Undo_Executed(object sender, ExecutedRoutedEventArgs e)
         {
             bmp.Undo();
-            imgMain.Source = bmp.WritableBitmap;
         }
         private void CommandBinding_Redo_Executed(object sender, ExecutedRoutedEventArgs e)
         {
             bmp.Redo();
-            imgMain.Source = bmp.WritableBitmap;
         }
 
         private void wMainWindow_Closed(object sender, EventArgs e)
@@ -591,7 +599,6 @@ namespace ComputerGraphics
 
                         bmp.Apply();
                         bmp.SaveCheckpoint();
-                        imgMain.Source = bmp.WritableBitmap;
                     }
                 }
             }
@@ -617,7 +624,6 @@ namespace ComputerGraphics
             }
             bmp.Apply();
             bmp.SaveCheckpoint();
-            this.imgMain.Source = bmp.WritableBitmap;
         }
         private enum ActionType
         {
@@ -631,5 +637,76 @@ namespace ComputerGraphics
             Flip_Horizontal,
             Flip_Vertical,
         }
+
+        private Timer EasterEgg_Timer;
+        private bool EasterEgg_isGrowing = true;
+        private const int EasterEgg_MaxGrow = 3;
+        private int EasterEgg_Counter = 0;
+        private void MenuItem_EasterEgg_Click(object sender, RoutedEventArgs e)
+        {
+            if (EasterEgg_Timer != null)
+            {
+                EasterEgg_Timer.Stop();
+                EasterEgg_Timer = null;
+                EasterEgg_Counter = 0;
+                EasterEgg_isGrowing = true;
+                return;
+            }
+            bmp = new Bgra32BitmapTool(
+                width: 113,
+                height: 213,
+                xResolution: 96.0,
+                yResolution: 96.0);
+            bmp.PropertyChanged += Bmp_PropertyChanged;
+
+            bmp.Ellipse_BresenhamRect(10, 10, 100, 100, Colors.Orange);
+
+            bmp.Circle_Bresenham(40, 40, 5, Colors.Orange);
+            bmp.Fill_FF4_Dynamic(40, 40, Colors.LightGray);
+
+            bmp.Circle_Bresenham(70, 40, 5, Colors.Orange);
+            bmp.Fill_FF4_Dynamic(70, 40, Colors.LightGray);
+
+            bmp.QuadraticBezier(30, 75, 55, 95, 80, 75, Colors.Orange);
+
+            bmp.Rectangle_Empty(1, 100, 111, 210, Colors.Blue);
+            bmp.Rectangle_Empty(16, 115, 96, 195, Colors.Blue);
+            bmp.Fill_FF4_Dynamic(2, 101, Colors.SteelBlue);
+
+            bmp.Apply();
+            bmp.SaveCheckpoint();
+            EasterEgg_Timer = new Timer(2 * 1000);
+            EasterEgg_Timer.Elapsed += (_sender, _e) =>
+            {
+                if (EasterEgg_isGrowing)
+                    if (EasterEgg_Counter < EasterEgg_MaxGrow)
+                        EasterEgg_Counter++;
+                    else
+                    {
+                        EasterEgg_isGrowing = false;
+                        EasterEgg_Counter--;
+                    }
+                else
+                    if (EasterEgg_Counter > 0)
+                        EasterEgg_Counter--;
+                    else
+                    {
+                        EasterEgg_isGrowing = true;
+                        EasterEgg_Counter++;
+                    }
+                this.Dispatcher.Invoke(delegate
+                {
+                    bmp.Rotate_90C();
+                    if (EasterEgg_isGrowing)
+                        bmp.Scale(bmp.Width * 2, bmp.Height * 2, bmp.XResolution, bmp.YResolution);
+                    else
+                        bmp.Scale(bmp.Width / 2, bmp.Height / 2, bmp.XResolution, bmp.YResolution);
+                    bmp.Apply();
+                    bmp.SaveCheckpoint();
+                });
+            };
+            EasterEgg_Timer.Start();
+        }
+        
     }
 }

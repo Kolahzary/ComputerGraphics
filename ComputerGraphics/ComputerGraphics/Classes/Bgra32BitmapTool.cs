@@ -1,19 +1,38 @@
 ﻿using System;
+using System.ComponentModel;
 using System.Windows;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 
 namespace ComputerGraphics.Classes
 {
-    public partial class Bgra32BitmapTool : IDisposable
+    public partial class Bgra32BitmapTool : IDisposable, INotifyPropertyChanged
     {
-        private WriteableBitmap wb;
+        public event PropertyChangedEventHandler PropertyChanged;
+        private void NotifyPropertyChanged(string propName) => this.PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propName));
 
-        public WriteableBitmap WritableBitmap => this.wb;
-        public int Width => wb.PixelWidth;
-        public int Height => wb.PixelHeight;
-        public double XResolution => wb.DpiX;
-        public double YResolution => wb.DpiY;
+        private WriteableBitmap wb { get; set; }
+
+        public WriteableBitmap WritableBitmap
+        {
+            get
+            {
+                return this.wb;
+            }
+            set
+            {
+                this.wb = value;
+                this.NotifyPropertyChanged("WritableBitmap");
+                //this.NotifyPropertyChanged("Width");
+                //this.NotifyPropertyChanged("Height");
+                //this.NotifyPropertyChanged("XResolution");
+                //this.NotifyPropertyChanged("YResolution");
+            }
+        }
+        public int Width => this.WritableBitmap.PixelWidth;
+        public int Height => this.WritableBitmap.PixelHeight;
+        public double XResolution => this.WritableBitmap.DpiX;
+        public double YResolution => this.WritableBitmap.DpiY;
         public Bgra32BitmapTool(Uri filePath)
             : this(new BitmapImage(filePath) { CreateOptions = BitmapCreateOptions.None })
         {
@@ -21,7 +40,7 @@ namespace ComputerGraphics.Classes
         }
         public Bgra32BitmapTool(BitmapSource bs)
         {
-            this.wb = new WriteableBitmap(bs);
+            this.WritableBitmap = new WriteableBitmap(bs);
         }
         public Bgra32BitmapTool(int width, int height)
             : this(width,height,96.0)
@@ -46,7 +65,7 @@ namespace ComputerGraphics.Classes
         }
         public Bgra32BitmapTool(WriteableBitmap writableBitmap)
         {
-            this.wb = writableBitmap;
+            this.WritableBitmap = writableBitmap;
         }
 
         public void TrySetPixel(int x, int y, Color color)
@@ -108,9 +127,9 @@ namespace ComputerGraphics.Classes
 
         public void Apply()
         {
-            wb.Lock();
-            wb.AddDirtyRect(new Int32Rect(0, 0, wb.PixelWidth, wb.PixelHeight));
-            wb.Unlock();
+            this.WritableBitmap.Lock();
+            this.WritableBitmap.AddDirtyRect(new Int32Rect(0, 0, this.Width, this.Height));
+            this.WritableBitmap.Unlock();
         }
 
         #region IDisposable Support

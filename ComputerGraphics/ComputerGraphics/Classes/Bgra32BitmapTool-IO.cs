@@ -35,7 +35,7 @@ namespace ComputerGraphics.Classes
 
         public void Load(string filePath) => this.Load(new Uri(filePath));
         public void Load(Uri filePath) => this.Load(new BitmapImage(filePath) { CreateOptions = BitmapCreateOptions.None });
-        public void Load(BitmapSource bs) => this.wb = new WriteableBitmap(bs);
+        public void Load(BitmapSource bs) => this.WritableBitmap = new WriteableBitmap(bs);
 
     }
 }

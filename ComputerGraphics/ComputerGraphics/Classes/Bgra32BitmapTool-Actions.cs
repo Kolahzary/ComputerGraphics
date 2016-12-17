@@ -15,8 +15,8 @@ namespace ComputerGraphics.Classes
                 x_ratio = this.Width / (double)newWidth,
                 y_ratio = this.Height / (double)newHeight;
 
-            WriteableBitmap wbOld = this.wb;
-            this.wb = new WriteableBitmap(newWidth, newHeight, newDpiX, newDpiY, wbOld.Format, wbOld.Palette);
+            WriteableBitmap wbOld = this.WritableBitmap;
+            this.WritableBitmap = new WriteableBitmap(newWidth, newHeight, newDpiX, newDpiY, wbOld.Format, wbOld.Palette);
 
             for (int x = 0; x < newWidth; x++)
             {
@@ -32,8 +32,8 @@ namespace ComputerGraphics.Classes
             int minWidth = Math.Min(this.Width, newWidth),
                 minHeight = Math.Min(this.Height, newHeight);
 
-            WriteableBitmap wbOld = this.wb;
-            this.wb = new WriteableBitmap(newWidth, newHeight, wbOld.DpiX, wbOld.DpiY, wbOld.Format, wbOld.Palette);
+            WriteableBitmap wbOld = this.WritableBitmap;
+            this.WritableBitmap = new WriteableBitmap(newWidth, newHeight, wbOld.DpiX, wbOld.DpiY, wbOld.Format, wbOld.Palette);
             
             for (int x = 0; x < minWidth; x++)
             {
@@ -46,8 +46,8 @@ namespace ComputerGraphics.Classes
 
         public void Rotate_90C()
         {
-            var wbOld = this.wb;
-            this.wb = new WriteableBitmap(
+            var wbOld = this.WritableBitmap;
+            this.WritableBitmap = new WriteableBitmap(
                 pixelWidth: wbOld.PixelHeight,
                 pixelHeight: wbOld.PixelWidth,
                 dpiX: wbOld.DpiY,
@@ -66,8 +66,8 @@ namespace ComputerGraphics.Classes
         }
         public void Rotate_90CC()
         {
-            var wbOld = this.wb;
-            this.wb = new WriteableBitmap(
+            var wbOld = this.WritableBitmap;
+            this.WritableBitmap = new WriteableBitmap(
                 pixelWidth: wbOld.PixelHeight,
                 pixelHeight: wbOld.PixelWidth,
                 dpiX: wbOld.DpiY,
@@ -86,8 +86,8 @@ namespace ComputerGraphics.Classes
         }
         public void Rotate_180()
         {
-            var wbOld = this.wb;
-            this.wb = new WriteableBitmap(
+            var wbOld = this.WritableBitmap;
+            this.WritableBitmap = new WriteableBitmap(
                 pixelWidth: wbOld.PixelHeight,
                 pixelHeight: wbOld.PixelWidth,
                 dpiX: wbOld.DpiY,

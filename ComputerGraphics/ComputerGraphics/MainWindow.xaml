@@ -239,6 +239,10 @@
         <MenuItem Header='_GitHub'
                   Icon='{iconPacks:PackIconEntypo Kind=Github}'
                   Click='MenuItem_Help_GitHub_Click' />
+        <Separator />
+        <MenuItem Header='_Easter Egg !!'
+                  Icon='{iconPacks:PackIconMaterial Kind=EmoticonHappy}'
+                  Click='MenuItem_EasterEgg_Click' />
       </MenuItem>
     </Menu>
     <StatusBar DockPanel.Dock='Bottom'>
