@@ -175,18 +175,19 @@ namespace ComputerGraphics.Classes
             => this.Pentagon(x0, y0, x1, y1, ColorTool.ArgbToInt(alpha, red, green, blue));
         public void Pentagon(int x0, int y0, int x1, int y1, int color)
         {
-            int ax = (x0+x1)/2,
-                dy = y1-y0;
+            int ax = (x0 + x1) / 2,
+                dx = x1 - x0,
+                dy = y1 - y0;
 
 
-            this.Line_DDA(x0, y0, ax, y0 - dy / 2, color);
-            this.Line_DDA(ax, y0 - dy / 2, x1, y0, color);
+            this.Line_DDA(x0, y0+dy/4, ax, y0 - dy / 2, color);
+            this.Line_DDA(ax, y0 - dy / 2, x1, y0+dy/4, color);
 
 
-            this.Line_DDA(x0, y0, x0, y1, color);
+            this.Line_DDA(x0, y0 + dy / 4, x0 + dx / 4, y1, color);
 
-            this.Line_DDA(x1, y1, x1, y0, color);
-            this.Line_DDA(x1, y1, x0, y1, color);
+            this.Line_DDA(x1 - dx / 4, y1, x1, y0 + dy / 4, color);
+            this.Line_DDA(x1 - dx / 4, y1, x0 + dx / 4, y1, color);
         }
         public void Hexagon(IntPoint source, IntPoint destination, Color color)
             => this.Hexagon(source.X, source.Y, destination.X, destination.Y, ColorTool.ColorToInt(color));
