@@ -74,7 +74,7 @@ namespace ComputerGraphics.Classes
                 y += incY;
             }
         }
-        
+
         public void Line_Bresenham(IntPoint source, IntPoint destination, Color color)
             => this.Line_Bresenham(source.X, source.Y, destination.X, destination.Y, ColorTool.ColorToInt(color));
         public void Line_Bresenham(int x0, int y0, int x1, int y1, Color color)
@@ -96,7 +96,7 @@ namespace ComputerGraphics.Classes
                 if (e2 <= dx) { err += dx; y0 += sy; } /* e_xy+e_y < 0 */
             }
         }
-        
+
 
         public void Square_Empty(IntPoint source, IntPoint destination, Color color)
             => this.Square_Empty(source.X, source.Y, destination.X, destination.Y, ColorTool.ColorToInt(color));
@@ -114,7 +114,7 @@ namespace ComputerGraphics.Classes
             else
                 this.Rectangle_Empty(x0, y0, x0 + dy, y1, color);
         }
-        
+
 
         public void Square_Filled(IntPoint source, IntPoint destination, Color color)
             => this.Square_Filled(source.X, source.Y, destination.X, destination.Y, ColorTool.ColorToInt(color));
@@ -161,7 +161,7 @@ namespace ComputerGraphics.Classes
                 dy = y1 - y0;
 
             this.Line_DDA(x0 - dx / 2, ay, ax, y0 - dy / 2, color);
-            this.Line_DDA(ax, y0 - dy / 2, x1+dx/2, ay, color);
+            this.Line_DDA(ax, y0 - dy / 2, x1 + dx / 2, ay, color);
 
             this.Line_DDA(x1 + dx / 2, ay, ax, y1 + dy / 2, color);
             this.Line_DDA(ax, y1 + dy / 2, x0 - dx / 2, ay, color);
@@ -180,8 +180,8 @@ namespace ComputerGraphics.Classes
                 dy = y1 - y0;
 
 
-            this.Line_DDA(x0, y0+dy/4, ax, y0 - dy / 2, color);
-            this.Line_DDA(ax, y0 - dy / 2, x1, y0+dy/4, color);
+            this.Line_DDA(x0, y0 + dy / 4, ax, y0 - dy / 2, color);
+            this.Line_DDA(ax, y0 - dy / 2, x1, y0 + dy / 4, color);
 
 
             this.Line_DDA(x0, y0 + dy / 4, x0 + dx / 4, y1, color);
@@ -233,7 +233,7 @@ namespace ComputerGraphics.Classes
             }
         }
 
-        
+
         public void Triangle(IntPoint first, IntPoint second, IntPoint third, Color color)
             => this.Triangle(first.X, first.Y, second.X, second.Y, third.X, third.Y, ColorTool.ColorToInt(color));
         public void Triangle(int x0, int y0, int x1, int y1, int x2, int y2, Color color)
@@ -246,7 +246,7 @@ namespace ComputerGraphics.Classes
             this.Line_DDA(x1, y1, x2, y2, color);
             this.Line_DDA(x2, y2, x0, y0, color);
         }
-        
+
         public void Triangle_Equilateral(IntPoint center, int radius, Color color)
             => this.Triangle_Equilateral(center.X, center.Y, radius, ColorTool.ColorToInt(color));
         public void Triangle_Equilateral(int xc, int yc, int radius, Color color)
@@ -256,9 +256,9 @@ namespace ComputerGraphics.Classes
         public void Triangle_Equilateral(int xc, int yc, int radius, int color)
         {
             this.Triangle(
-                xc-radius, yc+radius,
-                xc+radius, yc+radius,
-                xc, yc-radius,
+                xc - radius, yc + radius,
+                xc + radius, yc + radius,
+                xc, yc - radius,
                 color);
         }
 
@@ -344,7 +344,7 @@ namespace ComputerGraphics.Classes
                 }
             }
         }
-        
+
 
         public void Circle_Bresenham(IntPoint center, int radius, Color color)
             => this.Circle_Bresenham(center.X, center.Y, radius, ColorTool.ColorToInt(color));
@@ -357,10 +357,10 @@ namespace ComputerGraphics.Classes
             int x = -radius, y = 0, err = 2 - 2 * radius; /* II. Quadrant */
             do
             {
-                this.TrySetPixel(xc - x, yc + y,color); /*   I. Quadrant */
-                this.TrySetPixel(xc - y, yc - x,color); /*  II. Quadrant */
-                this.TrySetPixel(xc + x, yc - y,color); /* III. Quadrant */
-                this.TrySetPixel(xc + y, yc + x,color); /*  IV. Quadrant */
+                this.TrySetPixel(xc - x, yc + y, color); /*   I. Quadrant */
+                this.TrySetPixel(xc - y, yc - x, color); /*  II. Quadrant */
+                this.TrySetPixel(xc + x, yc - y, color); /* III. Quadrant */
+                this.TrySetPixel(xc + y, yc + x, color); /*  IV. Quadrant */
                 radius = err;
                 if (radius <= y) err += ++y * 2 + 1;           /* e_xy+e_y < 0 */
                 if (radius > x || err > y) err += ++x * 2 + 1; /* e_xy+e_x > 0 or no 2nd y-step */
@@ -427,7 +427,7 @@ namespace ComputerGraphics.Classes
                 this.TrySetPixel(xc - x, yc - y, color);
             }
         }
-        
+
         public void Ellipse_BresenhamRect(IntPoint source, IntPoint target, Color color)
             => this.Ellipse_BresenhamRect(source.X, source.Y, target.X, target.Y, ColorTool.ColorToInt(color));
         public void Ellipse_BresenhamRect(int x0, int y0, int x1, int y1, Color color)
@@ -447,10 +447,10 @@ namespace ComputerGraphics.Classes
 
             do
             {
-                this.TrySetPixel(x1, y0,color); /*   I. Quadrant */
-                this.TrySetPixel(x0, y0,color); /*  II. Quadrant */
-                this.TrySetPixel(x0, y1,color); /* III. Quadrant */
-                this.TrySetPixel(x1, y1,color); /*  IV. Quadrant */
+                this.TrySetPixel(x1, y0, color); /*   I. Quadrant */
+                this.TrySetPixel(x0, y0, color); /*  II. Quadrant */
+                this.TrySetPixel(x0, y1, color); /* III. Quadrant */
+                this.TrySetPixel(x1, y1, color); /*  IV. Quadrant */
                 e2 = 2 * err;
                 if (e2 <= dy) { y0++; y1--; err += dy += a; }  /* y step */
                 if (e2 >= dx || 2 * err > dy) { x0++; x1--; err += dx += b1; } /* x step */
@@ -469,11 +469,11 @@ namespace ComputerGraphics.Classes
             => this.Fill_BF4_Recursive(x, y, ColorTool.ColorToInt(border), ColorTool.ColorToInt(fill));
         public void Fill_BF4_Recursive(int x, int y, byte border_alpha, byte border_red, byte border_green, byte border_blue, byte fill_alpha, byte fill_red, byte fill_green, byte fill_blue)
             => this.Fill_BF4_Recursive(x, y, ColorTool.ArgbToInt(border_alpha, border_red, border_green, border_blue), ColorTool.ArgbToInt(fill_alpha, fill_red, fill_green, fill_blue));
-        public void Fill_BF4_Recursive(int x, int y, int border_color,int fill_color)
+        public void Fill_BF4_Recursive(int x, int y, int border_color, int fill_color)
         {
             if (!this.IsAllowd(x, y)) return; // make sure it doesn't get out of canvas
             int present_color = this.GetPixeli(x, y);
-            
+
             if (present_color != border_color && present_color != fill_color)
             {
                 this.SetPixel(x, y, fill_color);
@@ -519,7 +519,7 @@ namespace ComputerGraphics.Classes
                 //this.Fill_BF8_Recursive(x - 1, y - 1, border_color, fill_color);
             }
         }
-        
+
         public void Fill_FF4_Recursive(int x, int y, Color fill)
             => this.Fill_FF4_Recursive(x, y, ColorTool.ColorToInt(fill));
         public void Fill_FF4_Recursive(int x, int y, byte fill_alpha, byte fill_red, byte fill_green, byte fill_blue)
@@ -564,7 +564,7 @@ namespace ComputerGraphics.Classes
             {
                 this.SetPixel(x, y, fill_color);
 
-                foreach (IntPoint adjucent in AdjacentFinder8(x,y))
+                foreach (IntPoint adjucent in AdjacentFinder8(x, y))
                 {
                     this.Fill_FF8_Recursive(adjucent.X, adjucent.Y, old_color, fill_color);
                 }
@@ -606,7 +606,7 @@ namespace ComputerGraphics.Classes
                 foreach (IntPoint adjacent in AdjacentFinder4(cp))
                 {
                     if (!this.IsAllowd(adjacent.X, adjacent.Y)) continue; // make sure it doesn't get out of canvas
-                    
+
                     if (this.GetPixeli(adjacent.X, adjacent.Y) == old_color)
                     {
                         st.Push(adjacent);
@@ -666,6 +666,120 @@ namespace ComputerGraphics.Classes
 
             yield return new IntPoint(x - 1, y + 1);
             yield return new IntPoint(x + 1, y - 1);
+        }
+
+        public void QuadraticBezier(int x0, int y0, int x1, int y1, int x2, int y2, Color color)
+            => this.QuadraticBezier(x0, y0, x1, y1, x2, y2, ColorTool.ColorToInt(color));
+        /// <summary>
+        /// plot any quadratic Bezier curve
+        /// </summary>
+        public void QuadraticBezier(int x0, int y0, int x1, int y1, int x2, int y2, int color)
+        {
+            int x = x0 - x1, y = y0 - y1;
+            double t = x0 - 2 * x1 + x2, r;
+
+            if ((long)x * (x2 - x1) > 0) { /* horizontal cut at P4? */
+                if ((long)y * (y2 - y1) > 0) /* vertical cut at P6 too? */
+                    if (Math.Abs((y0 - 2 * y1 + y2) / t * x) > Math.Abs(y)) { /* which first? */
+                        x0 = x2;
+                        x2 = x + x1;
+                        y0 = y2;
+                        y2 = y + y1; /* swap points */
+                    } /* now horizontal cut at P4 comes first */
+                t = (x0 - x1) / t;
+                r = (1 - t) * ((1 - t) * y0 + 2.0 * t * y1) + t * t * y2; /* By(t=P4) */
+                t = (x0 * x2 - x1 * x1) * t / (x0 - x1); /* gradient dP4/dx=0 */
+                x = (int)Math.Floor(t + 0.5);
+                y = (int)Math.Floor(r + 0.5);
+                r = (y1 - y0) * (t - x0) / (x1 - x0) + y0; /* intersect P3 | P0 P1 */
+                plotQuadBezierSeg(x0, y0, x, (int)Math.Floor(r + 0.5), x, y,color);
+                r = (y1 - y2) * (t - x2) / (x1 - x2) + y2; /* intersect P4 | P1 P2 */
+                x0 = x1 = x;
+                y0 = y;
+                y1 = (int)Math.Floor(r + 0.5);  /* P0 = P4, P1 = P8 */
+            }
+            if ((long)(y0 - y1) * (y2 - y1) > 0) { /* vertical cut at P6? */
+                t = y0 - 2 * y1 + y2;
+                t = (y0 - y1) / t;
+                r = (1 - t) * ((1 - t) * x0 + 2.0 * t * x1) + t * t * x2; /* Bx(t=P6) */
+                t = (y0 * y2 - y1 * y1) * t / (y0 - y1);   /* gradient dP6/dy=0 */
+                x = (int)Math.Floor(r + 0.5);
+                y = (int)Math.Floor(t + 0.5);
+                r = (x1 - x0) * (t - y0) / (y1 - y0) + x0; /* intersect P6 | P0 P1 */
+                plotQuadBezierSeg(x0, y0, (int)Math.Floor(r + 0.5), y, x, y,color);
+                r = (x1 - x2) * (t - y2) / (y1 - y2) + x2; /* intersect P7 | P1 P2 */
+                x0 = x;
+                x1 = (int)Math.Floor(r + 0.5);
+                y0 = y1 = y; /* P0 = P6, P1 = P7 */
+            }
+            plotQuadBezierSeg(x0, y0, x1, y1, x2, y2,color);  /* remaining part */
+        }
+        /// <summary>
+        /// plot a limited quadratic Bezier segment
+        /// </summary>
+        private void plotQuadBezierSeg(int x0, int y0, int x1, int y1, int x2, int y2,int color)
+        {
+            bool tmp;
+            int 
+                sx = x2 - x1, 
+                sy = y2 - y1;
+            long 
+                xx = x0 - x1, 
+                yy = y0 - y1, xy; /* relative values for checks */
+            double 
+                dx,
+                dy, 
+                err, 
+                cur = xx * sy - yy * sx; /* curvature */
+
+            if (!(xx * sx <= 0 && yy * sy <= 0)) throw new Exception("sign of gradient must not change"); // assert(xx * sx <= 0 && yy * sy <= 0); /* sign of gradient must not change */
+
+            if (sx * (long)sx + sy * (long)sy > xx * xx + yy * yy) { /* begin with longer part */
+                x2 = x0;
+                x0 = sx + x1;
+                y2 = y0;
+                y0 = sy + y1;
+                cur = -cur; /* swap P0 P2 */
+            }
+            if (cur != 0) { /* no straight line */
+                xx += sx;
+                xx *= sx = x0 < x2 ? 1 : -1; /* x step direction */
+                yy += sy;
+                yy *= sy = y0 < y2 ? 1 : -1; /* y step direction */
+                xy = 2 * xx * yy;
+                xx *= xx;
+                yy *= yy; /* differences 2nd degree */
+                if (cur * sx * sy < 0) { /* negated curvature? */
+                    xx = -xx;
+                    yy = -yy;
+                    xy = -xy;
+                    cur = -cur;
+                }
+                dx = 4.0 * sy * cur * (x1 - x0) + xx - xy;  /* differences 1st degree */
+                dy = 4.0 * sx * cur * (y0 - y1) + yy - xy;
+                xx += xx;
+                yy += yy;
+                err = dx + dy + xy; /* error 1st step */
+                do {
+                    this.TrySetPixel(x0, y0,color); /* plot curve */
+                    if (x0 == x2 && y0 == y2) return; /* last pixel -> curve finished */
+                    tmp = 2 * err < dx; /* save value for test of y step */
+                    
+                    if (2 * err > dy)
+                    {
+                        x0 += sx;
+                        dx -= xy;
+                        err += dy += yy;
+                    } /* x step */
+                    if (tmp)
+                    {
+                        y0 += sy;
+                        dy -= xy;
+                        err += dx += xx;
+                    } /* y step */
+                } while (dy < 0 && dx > 0); /* gradient negates -> algorithm fails */
+            }
+            this.Line_Bresenham(x0, y0, x2, y2,color); /* plot remaining part to end */
         }
     }
 }
