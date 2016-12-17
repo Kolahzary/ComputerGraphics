@@ -188,7 +188,7 @@ namespace ComputerGraphics
             }
         }
 
-        public IntPoint MousePosition => Mouse.GetPosition(imgMain).ToIntPointWithResolution(bmp.Resolution);
+        public IntPoint MousePosition => Mouse.GetPosition(imgMain).ToIntPointWithResolution(bmp.XResolution, bmp.YResolution);
         public string StringImageSize => $"{bmp.Width} * {bmp.Height} px";
 
         public MainWindow()
@@ -454,10 +454,17 @@ namespace ComputerGraphics
 
         private void CommandBinding_New_Executed(object sender, ExecutedRoutedEventArgs e)
         {
-            NewDialogBox ndb = new NewDialogBox();
+            SizeDialogBox ndb = new SizeDialogBox()
+            {
+                Values_Width = bmp.Width,
+                Values_Height = bmp.Height,
+                Values_XResolution = bmp.XResolution,
+                Values_YResolution = bmp.YResolution
+            };
+
             ndb.Owner = this;
             var res = ndb.ShowDialog();
-
+            
             if (res.HasValue)
             {
                 if (res.Value)
@@ -465,7 +472,8 @@ namespace ComputerGraphics
                     bmp = new Bgra32BitmapTool(
                         ndb.Values_Width,
                         ndb.Values_Height,
-                        ndb.Values_Resolution
+                        ndb.Values_XResolution,
+                        ndb.Values_YResolution
                         );
                     imgMain.Source = bmp.WritableBitmap;
                 }
@@ -563,6 +571,29 @@ namespace ComputerGraphics
             ActionType at = (ActionType)Enum.Parse(typeof(ActionType), (string)(sender as Control).Tag);
             switch (at)
             {
+                case ActionType.Scale:
+                    SizeDialogBox ndb = new SizeDialogBox()
+                    {
+                        Values_Width = bmp.Width,
+                        Values_Height = bmp.Height,
+                        Values_XResolution = bmp.XResolution,
+                        Values_YResolution = bmp.YResolution
+                    };
+
+                    ndb.Owner = this;
+                    var res = ndb.ShowDialog();
+
+                    if (res.HasValue)
+                    {
+                        if (res.Value)
+                        {
+                            bmp.Scale(ndb.Values_Width, ndb.Values_Height, ndb.Values_XResolution, ndb.Values_YResolution);
+                            bmp.Apply();
+                            bmp.SaveCheckpoint();
+                            imgMain.Source = bmp.WritableBitmap;
+                        }
+                    }
+                    break;
                 case ActionType.Rotate_90C:
                     bmp.Rotate_90C();
                     break;
@@ -587,6 +618,8 @@ namespace ComputerGraphics
         }
         private enum ActionType
         {
+            Scale,
+
             Rotate_90C,
             Rotate_90CC,
             Rotate_180,

@@ -73,6 +73,10 @@
                   Icon='{iconPacks:PackIconMaterial Kind=CloseCircleOutline}' />
       </MenuItem>
       <MenuItem Header='_Image'>
+        <MenuItem Tag='Scale'
+                  Header='_Scale'
+                  Click='ActionSelected' />
+        <Separator />
         <MenuItem Tag='Rotate_90C'
                   Header='Rotate 90° Clockwise'
                   Click='ActionSelected' />

@@ -9,6 +9,25 @@ namespace ComputerGraphics.Classes
 {
     public partial class Bgra32BitmapTool
     {
+        public void Scale(int newWidth, int newHeight, double newDpiX, double newDpiY)
+        {
+            double 
+                x_ratio = this.Width / (double)newWidth,
+                y_ratio = this.Height / (double)newHeight;
+
+            WriteableBitmap wbOld = this.wb;
+            this.wb = new WriteableBitmap(newWidth, newHeight, newDpiX, newDpiY, wbOld.Format, wbOld.Palette);
+
+            for (int x = 0; x < newWidth; x++)
+            {
+                for (int y = 0; y < newHeight; y++)
+                {
+                    this.SetPixel(x, y, wbOld.GetPixeli((int)Math.Floor(x * x_ratio), (int)Math.Floor(y * y_ratio)));
+                }
+            }
+
+        }
+
         public void Rotate_90C()
         {
             var wbOld = this.wb;

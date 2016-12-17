@@ -89,14 +89,14 @@
       <DependentUpon>MainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
-    <Page Include="NewDialogBox.xaml">
+    <Page Include="SizeDialogBox.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="NewDialogBox.xaml.cs">
-      <DependentUpon>NewDialogBox.xaml</DependentUpon>
+    <Compile Include="SizeDialogBox.xaml.cs">
+      <DependentUpon>SizeDialogBox.xaml</DependentUpon>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs">
       <SubType>Code</SubType>

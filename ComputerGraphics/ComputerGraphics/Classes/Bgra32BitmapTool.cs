@@ -12,7 +12,8 @@ namespace ComputerGraphics.Classes
         public WriteableBitmap WritableBitmap => this.wb;
         public int Width => wb.PixelWidth;
         public int Height => wb.PixelHeight;
-        public double Resolution => wb.DpiX;
+        public double XResolution => wb.DpiX;
+        public double YResolution => wb.DpiY;
         public Bgra32BitmapTool(Uri filePath)
             : this(new BitmapImage(filePath) { CreateOptions = BitmapCreateOptions.None })
         {
@@ -28,11 +29,16 @@ namespace ComputerGraphics.Classes
 
         }
         public Bgra32BitmapTool(int width, int height, double resolutionDPI)
+            : this(width,height,resolutionDPI,resolutionDPI)
+        {
+
+        }
+        public Bgra32BitmapTool(int width, int height, double xResolution, double yResolution)
             : this(new WriteableBitmap(
                 pixelWidth: width,
                 pixelHeight: height,
-                dpiX: resolutionDPI,
-                dpiY: resolutionDPI,
+                dpiX: xResolution,
+                dpiY: yResolution,
                 pixelFormat: PixelFormats.Bgra32,
                 palette: null))
         {
