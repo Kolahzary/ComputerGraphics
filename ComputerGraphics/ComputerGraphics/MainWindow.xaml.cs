@@ -20,10 +20,10 @@ namespace ComputerGraphics
     {
         public string CurrentFilePath;
         public string CurrentFileExtension => Path.GetExtension(this.CurrentFilePath);
-        
+
         public event PropertyChangedEventHandler PropertyChanged;
         public void NotifyPropertyChanged(string propName) => this.PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propName));
-        
+
 
         private Bgra32BitmapTool _bmp;
         private Bgra32BitmapTool bmp
@@ -170,7 +170,7 @@ namespace ComputerGraphics
             {ToolType.Fill_FF8_Dynamic,"Fill -> 8-Way Dynamic Flood Fill" },
 
             {ToolType.Etc_Arrow,"Etc -> Arrow" },
-            
+
         };
 
         private ToolType _CurrentTool;
@@ -461,112 +461,116 @@ namespace ComputerGraphics
             bmp.SaveCheckpoint();
         }
 
-        private void CommandBinding_New_Executed(object sender, ExecutedRoutedEventArgs e)
+        private RoutedUICommand GetCommand(string cmdName)
         {
-            SizeDialogBox sdb = new SizeDialogBox()
-            {
-                Values_Width = bmp.Width,
-                Values_Height = bmp.Height,
-                Values_XResolution = bmp.XResolution,
-                Values_YResolution = bmp.YResolution
-            };
+            foreach (CommandBinding item in this.CommandBindings)
+                if ((item.Command as RoutedUICommand).Name == cmdName)
+                    return item.Command as RoutedUICommand;
+            return null;
+        }
+        private void CommandExecuted(object sender, ExecutedRoutedEventArgs e)
+        {
+            RoutedUICommand cmd = e.Command as RoutedUICommand;
 
-            sdb.Owner = this;
-            var res = sdb.ShowDialog();
-            
-            if (res.HasValue)
+            switch (cmd.Name)
             {
-                if (res.Value)
-                {
-                    bmp = new Bgra32BitmapTool(
-                        sdb.Values_Width,
-                        sdb.Values_Height,
-                        sdb.Values_XResolution,
-                        sdb.Values_YResolution
-                        );
-                    bmp.PropertyChanged += Bmp_PropertyChanged;
-                }
-            }
-        }
-        private void CommandBinding_Open_Executed(object sender, ExecutedRoutedEventArgs e)
-        {
-            OpenFileDialog ofd = new OpenFileDialog();
-            ofd.Filter = "Supported image files (*.jpg;*.jpeg;*.png;*.bmp;*.gif;*.tif;*.tiff;*.ico)|*.jpg;*.jpeg;*.png;*.bmp;*.gif;*.tif;*.tiff;*.ico|All files (*.*)|*.*";
-            if (ofd.ShowDialog() == true)
-            {
-                bmp = new Bgra32BitmapTool(new Uri(ofd.FileName, UriKind.RelativeOrAbsolute));
-                bmp.PropertyChanged += Bmp_PropertyChanged;
-                this.CurrentFilePath = ofd.FileName;
-            }
-        }
-        private void CommandBinding_Save_Executed(object sender, ExecutedRoutedEventArgs e)
-        {
-            if (string.IsNullOrEmpty(this.CurrentFilePath))
-            {
-                this.CommandBinding_SaveAs_Executed(sender, e);
-            }
-            else
-            {
-                do
-                {
-                    try
+                case "Undo": bmp.Undo(); break;
+                case "Redo": bmp.Redo(); break;
+                case "Close": this.Close(); break;
+                case "New":
+                    SizeDialogBox sdb = new SizeDialogBox()
                     {
-                        switch (this.CurrentFileExtension)
+                        Values_Width = bmp.Width,
+                        Values_Height = bmp.Height,
+                        Values_XResolution = bmp.XResolution,
+                        Values_YResolution = bmp.YResolution
+                    };
+
+                    sdb.Owner = this;
+                    var res = sdb.ShowDialog();
+
+                    if (res.HasValue)
+                    {
+                        if (res.Value)
                         {
-                            case ".bmp":
-                                bmp.SaveBmp(this.CurrentFilePath);
-                                break;
-                            case ".gif":
-                                bmp.SaveGif(this.CurrentFilePath);
-                                break;
-                            case ".jpg":
-                            case ".jpeg":
-                                bmp.SaveJpeg(this.CurrentFilePath);
-                                break;
-                            case ".png":
-                                bmp.SavePng(this.CurrentFilePath);
-                                break;
-                            case ".tiff":
-                                bmp.SaveTiff(this.CurrentFilePath);
-                                break;
-                            case ".wmp":
-                                bmp.SaveWmp(this.CurrentFilePath);
-                                break;
-                            default:
-                                break;
+                            bmp = new Bgra32BitmapTool(
+                                sdb.Values_Width,
+                                sdb.Values_Height,
+                                sdb.Values_XResolution,
+                                sdb.Values_YResolution
+                                );
+                            bmp.PropertyChanged += Bmp_PropertyChanged;
+                            this.CurrentFilePath = null;
                         }
                     }
-                    catch (Exception ex)
+                    break;
+                case "Open":
+                    OpenFileDialog ofd = new OpenFileDialog();
+                    ofd.Filter = "Supported image files (*.jpg;*.jpeg;*.png;*.bmp;*.gif;*.tif;*.tiff;*.ico)|*.jpg;*.jpeg;*.png;*.bmp;*.gif;*.tif;*.tiff;*.ico|All files (*.*)|*.*";
+                    if (ofd.ShowDialog() == true)
                     {
-                        MessageBoxResult mbr = MessageBox.Show(ex.Message, "Try again?", MessageBoxButton.YesNo, MessageBoxImage.Error);
-                        if (mbr == MessageBoxResult.Yes) continue;
+                        bmp = new Bgra32BitmapTool(new Uri(ofd.FileName, UriKind.RelativeOrAbsolute));
+                        bmp.PropertyChanged += Bmp_PropertyChanged;
+                        this.CurrentFilePath = ofd.FileName;
                     }
                     break;
-                } while (true);
+                case "SaveAs":
+                    SaveFileDialog sfd = new SaveFileDialog();
+                    sfd.Filter = "Supported image files (*.png;*.jpg;*.jpeg;*.bmp;*.gif;*.tif;*.tiff;*.ico)|*.png;*.jpg;*.jpeg;*.bmp;*.gif;*.tif;*.tiff;*.ico|All files (*.*)|*.*";
+                    if (sfd.ShowDialog() == true)
+                    {
+                        this.CurrentFilePath = sfd.FileName;
+                        this.GetCommand("Save")?.Execute(null, null);
+                    }
+                    break;
+                case "Save":
+                    if (string.IsNullOrEmpty(this.CurrentFilePath))
+                    {
+                        this.GetCommand("SaveAs")?.Execute(null, null);
+                    }
+                    else
+                    {
+                        do
+                        {
+                            try
+                            {
+                                switch (this.CurrentFileExtension)
+                                {
+                                    case ".bmp":
+                                        bmp.SaveBmp(this.CurrentFilePath);
+                                        break;
+                                    case ".gif":
+                                        bmp.SaveGif(this.CurrentFilePath);
+                                        break;
+                                    case ".jpg":
+                                    case ".jpeg":
+                                        bmp.SaveJpeg(this.CurrentFilePath);
+                                        break;
+                                    case ".png":
+                                        bmp.SavePng(this.CurrentFilePath);
+                                        break;
+                                    case ".tiff":
+                                        bmp.SaveTiff(this.CurrentFilePath);
+                                        break;
+                                    case ".wmp":
+                                        bmp.SaveWmp(this.CurrentFilePath);
+                                        break;
+                                    default:
+                                        break;
+                                }
+                            }
+                            catch (Exception ex)
+                            {
+                                MessageBoxResult mbr = MessageBox.Show(ex.Message, "Try again?", MessageBoxButton.YesNo, MessageBoxImage.Error);
+                                if (mbr == MessageBoxResult.Yes) continue;
+                            }
+                            break;
+                        } while (true);
+                    }
+                    break;
+                default:
+                    break;
             }
-        }
-        private void CommandBinding_SaveAs_Executed(object sender, ExecutedRoutedEventArgs e)
-        {
-            SaveFileDialog sfd = new SaveFileDialog();
-            sfd.Filter = "Supported image files (*.jpg;*.jpeg;*.png;*.bmp;*.gif;*.tif;*.tiff;*.ico)|*.jpg;*.jpeg;*.png;*.bmp;*.gif;*.tif;*.tiff;*.ico|All files (*.*)|*.*";
-            if (sfd.ShowDialog() == true)
-            {
-                this.CurrentFilePath = sfd.FileName;
-                this.CommandBinding_Save_Executed(sender, e);
-            }
-        }
-        private void CommandBinding_Close_Executed(object sender, ExecutedRoutedEventArgs e)
-        {
-            Application.Current.Shutdown();
-        }
-
-        private void CommandBinding_Undo_Executed(object sender, ExecutedRoutedEventArgs e)
-        {
-            bmp.Undo();
-        }
-        private void CommandBinding_Redo_Executed(object sender, ExecutedRoutedEventArgs e)
-        {
-            bmp.Redo();
         }
 
         private void wMainWindow_Closed(object sender, EventArgs e)
@@ -638,6 +642,7 @@ namespace ComputerGraphics
             Flip_Vertical,
         }
 
+        #region EasterEgg
         private Timer EasterEgg_Timer;
         private bool EasterEgg_isGrowing = true;
         private const int EasterEgg_MaxGrow = 3;
@@ -688,12 +693,12 @@ namespace ComputerGraphics
                     }
                 else
                     if (EasterEgg_Counter > 0)
-                        EasterEgg_Counter--;
-                    else
-                    {
-                        EasterEgg_isGrowing = true;
-                        EasterEgg_Counter++;
-                    }
+                    EasterEgg_Counter--;
+                else
+                {
+                    EasterEgg_isGrowing = true;
+                    EasterEgg_Counter++;
+                }
                 this.Dispatcher.Invoke(delegate
                 {
                     bmp.Rotate_90C();
@@ -707,6 +712,6 @@ namespace ComputerGraphics
             };
             EasterEgg_Timer.Start();
         }
-        
+        #endregion
     }
 }

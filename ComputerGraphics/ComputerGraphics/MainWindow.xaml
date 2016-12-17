@@ -14,20 +14,20 @@
         Loaded='Window_Loaded'>
   <Window.CommandBindings>
     <CommandBinding Command='New'
-                    Executed='CommandBinding_New_Executed' />
+                    Executed='CommandExecuted' />
     <CommandBinding Command='Open'
-                    Executed='CommandBinding_Open_Executed' />
+                    Executed='CommandExecuted' />
     <CommandBinding Command='Save'
-                    Executed='CommandBinding_Save_Executed' />
+                    Executed='CommandExecuted' />
     <CommandBinding Command='SaveAs'
-                    Executed='CommandBinding_SaveAs_Executed' />
+                    Executed='CommandExecuted' />
     <CommandBinding Command='Close'
-                    Executed='CommandBinding_Close_Executed' />
+                    Executed='CommandExecuted' />
 
     <CommandBinding Command='Undo'
-                    Executed='CommandBinding_Undo_Executed' />
+                    Executed='CommandExecuted' />
     <CommandBinding Command='Redo'
-                    Executed='CommandBinding_Redo_Executed' />
+                    Executed='CommandExecuted' />
   </Window.CommandBindings>
   <Window.InputBindings>
     <KeyBinding Modifiers='Ctrl'
