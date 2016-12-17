@@ -476,10 +476,14 @@ namespace ComputerGraphics.Classes
             if (present_color != border_color && present_color != fill_color)
             {
                 this.SetPixel(x, y, fill_color);
-                this.Fill_BF4_Recursive(x + 1, y, border_color, fill_color);
-                this.Fill_BF4_Recursive(x - 1, y, border_color, fill_color);
-                this.Fill_BF4_Recursive(x, y + 1, border_color, fill_color);
-                this.Fill_BF4_Recursive(x, y - 1, border_color, fill_color);
+                foreach (IntPoint adjucent in AdjacentFinder4(x, y))
+                {
+                    this.Fill_BF8_Recursive(adjucent.X, adjucent.Y, border_color, fill_color);
+                }
+                //this.Fill_BF4_Recursive(x + 1, y, border_color, fill_color);
+                //this.Fill_BF4_Recursive(x - 1, y, border_color, fill_color);
+                //this.Fill_BF4_Recursive(x, y + 1, border_color, fill_color);
+                //this.Fill_BF4_Recursive(x, y - 1, border_color, fill_color);
             }
         }
 
@@ -497,17 +501,21 @@ namespace ComputerGraphics.Classes
             if (present_color != border_color && present_color != fill_color)
             {
                 this.SetPixel(x, y, fill_color);
-                this.Fill_BF8_Recursive(x + 1, y, border_color, fill_color);
-                this.Fill_BF8_Recursive(x - 1, y, border_color, fill_color);
+                foreach (IntPoint adjucent in AdjacentFinder8(x, y))
+                {
+                    this.Fill_BF8_Recursive(adjucent.X, adjucent.Y, border_color, fill_color);
+                }
+                //this.Fill_BF8_Recursive(x + 1, y, border_color, fill_color);
+                //this.Fill_BF8_Recursive(x - 1, y, border_color, fill_color);
 
-                this.Fill_BF8_Recursive(x, y + 1, border_color, fill_color);
-                this.Fill_BF8_Recursive(x, y - 1, border_color, fill_color);
+                //this.Fill_BF8_Recursive(x, y + 1, border_color, fill_color);
+                //this.Fill_BF8_Recursive(x, y - 1, border_color, fill_color);
 
-                this.Fill_BF8_Recursive(x + 1, y + 1, border_color, fill_color);
-                this.Fill_BF8_Recursive(x + 1, y - 1, border_color, fill_color);
+                //this.Fill_BF8_Recursive(x + 1, y + 1, border_color, fill_color);
+                //this.Fill_BF8_Recursive(x + 1, y - 1, border_color, fill_color);
 
-                this.Fill_BF8_Recursive(x - 1, y + 1, border_color, fill_color);
-                this.Fill_BF8_Recursive(x - 1, y - 1, border_color, fill_color);
+                //this.Fill_BF8_Recursive(x - 1, y + 1, border_color, fill_color);
+                //this.Fill_BF8_Recursive(x - 1, y - 1, border_color, fill_color);
             }
         }
         
@@ -526,11 +534,16 @@ namespace ComputerGraphics.Classes
             if (present_color == old_color)
             {
                 this.SetPixel(x, y, fill_color);
-                this.Fill_FF4_Recursive(x + 1, y, old_color, fill_color);
-                this.Fill_FF4_Recursive(x - 1, y, old_color, fill_color);
 
-                this.Fill_FF4_Recursive(x, y + 1, old_color, fill_color);
-                this.Fill_FF4_Recursive(x, y - 1, old_color, fill_color);
+                foreach (IntPoint adjucent in AdjacentFinder4(x, y))
+                {
+                    this.Fill_FF4_Recursive(adjucent.X, adjucent.Y, old_color, fill_color);
+                }
+                //this.Fill_FF4_Recursive(x + 1, y, old_color, fill_color);
+                //this.Fill_FF4_Recursive(x - 1, y, old_color, fill_color);
+
+                //this.Fill_FF4_Recursive(x, y + 1, old_color, fill_color);
+                //this.Fill_FF4_Recursive(x, y - 1, old_color, fill_color);
             }
         }
 
@@ -550,17 +563,21 @@ namespace ComputerGraphics.Classes
             {
                 this.SetPixel(x, y, fill_color);
 
-                this.Fill_FF8_Recursive(x + 1, y, old_color, fill_color);
-                this.Fill_FF8_Recursive(x - 1, y, old_color, fill_color);
+                foreach (IntPoint adjucent in AdjacentFinder8(x,y))
+                {
+                    this.Fill_FF8_Recursive(adjucent.X, adjucent.Y, old_color, fill_color);
+                }
+                //this.Fill_FF8_Recursive(x + 1, y, old_color, fill_color);
+                //this.Fill_FF8_Recursive(x - 1, y, old_color, fill_color);
 
-                this.Fill_FF8_Recursive(x, y + 1, old_color, fill_color);
-                this.Fill_FF8_Recursive(x, y - 1, old_color, fill_color);
+                //this.Fill_FF8_Recursive(x, y + 1, old_color, fill_color);
+                //this.Fill_FF8_Recursive(x, y - 1, old_color, fill_color);
 
-                this.Fill_FF8_Recursive(x + 1, y + 1, old_color, fill_color);
-                this.Fill_FF8_Recursive(x + 1, y - 1, old_color, fill_color);
+                //this.Fill_FF8_Recursive(x + 1, y + 1, old_color, fill_color);
+                //this.Fill_FF8_Recursive(x + 1, y - 1, old_color, fill_color);
 
-                this.Fill_FF8_Recursive(x - 1, y + 1, old_color, fill_color);
-                this.Fill_FF8_Recursive(x - 1, y - 1, old_color, fill_color);
+                //this.Fill_FF8_Recursive(x - 1, y + 1, old_color, fill_color);
+                //this.Fill_FF8_Recursive(x - 1, y - 1, old_color, fill_color);
             }
         }
 
@@ -585,7 +602,7 @@ namespace ComputerGraphics.Classes
                 cp = st.Pop();
                 this.SetPixel(cp.X, cp.Y, fill_color);
 
-                foreach (IntPoint adjacent in this.AdjacentFinder4(cp))
+                foreach (IntPoint adjacent in AdjacentFinder4(cp))
                 {
                     if (!this.IsAllowd(adjacent.X, adjacent.Y)) continue; // make sure it doesn't get out of canvas
                     
@@ -616,7 +633,7 @@ namespace ComputerGraphics.Classes
                 cp = st.Pop();
                 this.SetPixel(cp.X, cp.Y, fill_color);
 
-                foreach (IntPoint adjacent in this.AdjacentFinder8(cp))
+                foreach (IntPoint adjacent in AdjacentFinder8(cp))
                 {
                     if (!this.IsAllowd(adjacent.X, adjacent.Y)) continue; // make sure it doesn't get out of canvas
 
@@ -627,25 +644,27 @@ namespace ComputerGraphics.Classes
                 }
             }
         }
-        private IEnumerable<IntPoint> AdjacentFinder4(IntPoint center)
+        private static IEnumerable<IntPoint> AdjacentFinder4(IntPoint center) => AdjacentFinder4(center.X, center.Y);
+        private static IEnumerable<IntPoint> AdjacentFinder4(int x, int y)
         {
-            yield return new IntPoint(center.X + 1, center.Y);
-            yield return new IntPoint(center.X, center.Y + 1);
-            yield return new IntPoint(center.X - 1, center.Y);
-            yield return new IntPoint(center.X, center.Y - 1);
+            yield return new IntPoint(x + 1, y);
+            yield return new IntPoint(x, y + 1);
+            yield return new IntPoint(x - 1, y);
+            yield return new IntPoint(x, y - 1);
         }
-        private IEnumerable<IntPoint> AdjacentFinder8(IntPoint center)
+        private static IEnumerable<IntPoint> AdjacentFinder8(IntPoint center) => AdjacentFinder8(center.X, center.Y);
+        private static IEnumerable<IntPoint> AdjacentFinder8(int x, int y)
         {
-            yield return new IntPoint(center.X + 1, center.Y);
-            yield return new IntPoint(center.X, center.Y + 1);
-            yield return new IntPoint(center.X - 1, center.Y);
-            yield return new IntPoint(center.X, center.Y - 1);
+            yield return new IntPoint(x + 1, y);
+            yield return new IntPoint(x, y + 1);
+            yield return new IntPoint(x - 1, y);
+            yield return new IntPoint(x, y - 1);
 
-            yield return new IntPoint(center.X + 1, center.Y + 1);
-            yield return new IntPoint(center.X - 1, center.Y - 1);
+            yield return new IntPoint(x + 1, y + 1);
+            yield return new IntPoint(x - 1, y - 1);
 
-            yield return new IntPoint(center.X - 1, center.Y + 1);
-            yield return new IntPoint(center.X + 1, center.Y - 1);
+            yield return new IntPoint(x - 1, y + 1);
+            yield return new IntPoint(x + 1, y - 1);
         }
     }
 }
