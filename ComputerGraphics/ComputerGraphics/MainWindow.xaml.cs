@@ -454,7 +454,7 @@ namespace ComputerGraphics
 
         private void CommandBinding_New_Executed(object sender, ExecutedRoutedEventArgs e)
         {
-            SizeDialogBox ndb = new SizeDialogBox()
+            SizeDialogBox sdb = new SizeDialogBox()
             {
                 Values_Width = bmp.Width,
                 Values_Height = bmp.Height,
@@ -462,18 +462,18 @@ namespace ComputerGraphics
                 Values_YResolution = bmp.YResolution
             };
 
-            ndb.Owner = this;
-            var res = ndb.ShowDialog();
+            sdb.Owner = this;
+            var res = sdb.ShowDialog();
             
             if (res.HasValue)
             {
                 if (res.Value)
                 {
                     bmp = new Bgra32BitmapTool(
-                        ndb.Values_Width,
-                        ndb.Values_Height,
-                        ndb.Values_XResolution,
-                        ndb.Values_YResolution
+                        sdb.Values_Width,
+                        sdb.Values_Height,
+                        sdb.Values_XResolution,
+                        sdb.Values_YResolution
                         );
                     imgMain.Source = bmp.WritableBitmap;
                 }
@@ -569,31 +569,34 @@ namespace ComputerGraphics
         private void ActionSelected(object sender, RoutedEventArgs e)
         {
             ActionType at = (ActionType)Enum.Parse(typeof(ActionType), (string)(sender as Control).Tag);
+            if (at == ActionType.Scale || at == ActionType.ChangeCanvasSize)
+            {
+                SizeDialogBox sdb = new SizeDialogBox(at == ActionType.Scale)
+                {
+                    Values_Width = bmp.Width,
+                    Values_Height = bmp.Height,
+                    Values_XResolution = bmp.XResolution,
+                    Values_YResolution = bmp.YResolution
+                };
+                sdb.Owner = this;
+                var res = sdb.ShowDialog();
+                if (res.HasValue)
+                {
+                    if (res.Value)
+                    {
+                        if (at == ActionType.Scale)
+                            bmp.Scale(sdb.Values_Width, sdb.Values_Height, sdb.Values_XResolution, sdb.Values_YResolution);
+                        else
+                            bmp.ChangeCanvasSize(sdb.Values_Width, sdb.Values_Height);
+
+                        bmp.Apply();
+                        bmp.SaveCheckpoint();
+                        imgMain.Source = bmp.WritableBitmap;
+                    }
+                }
+            }
             switch (at)
             {
-                case ActionType.Scale:
-                    SizeDialogBox ndb = new SizeDialogBox()
-                    {
-                        Values_Width = bmp.Width,
-                        Values_Height = bmp.Height,
-                        Values_XResolution = bmp.XResolution,
-                        Values_YResolution = bmp.YResolution
-                    };
-
-                    ndb.Owner = this;
-                    var res = ndb.ShowDialog();
-
-                    if (res.HasValue)
-                    {
-                        if (res.Value)
-                        {
-                            bmp.Scale(ndb.Values_Width, ndb.Values_Height, ndb.Values_XResolution, ndb.Values_YResolution);
-                            bmp.Apply();
-                            bmp.SaveCheckpoint();
-                            imgMain.Source = bmp.WritableBitmap;
-                        }
-                    }
-                    break;
                 case ActionType.Rotate_90C:
                     bmp.Rotate_90C();
                     break;
@@ -619,6 +622,7 @@ namespace ComputerGraphics
         private enum ActionType
         {
             Scale,
+            ChangeCanvasSize,
 
             Rotate_90C,
             Rotate_90CC,

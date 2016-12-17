@@ -74,7 +74,10 @@
       </MenuItem>
       <MenuItem Header='_Image'>
         <MenuItem Tag='Scale'
-                  Header='_Scale'
+                  Header='_Scale Image'
+                  Click='ActionSelected' />
+        <MenuItem Tag='ChangeCanvasSize'
+                  Header='_Change Canvas size'
                   Click='ActionSelected' />
         <Separator />
         <MenuItem Tag='Rotate_90C'

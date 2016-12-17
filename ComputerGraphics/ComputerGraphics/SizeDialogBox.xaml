@@ -53,8 +53,8 @@
       <Grid.RowDefinitions>
         <RowDefinition />
         <RowDefinition />
-        <RowDefinition />
-        <RowDefinition />
+        <RowDefinition Name='rdResX' />
+        <RowDefinition Name='rdResY' />
       </Grid.RowDefinitions>
       <Grid.ColumnDefinitions>
         <ColumnDefinition Width='80' />

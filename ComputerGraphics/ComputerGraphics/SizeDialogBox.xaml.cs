@@ -66,13 +66,22 @@ namespace ComputerGraphics
             }
         }
 
-        public SizeDialogBox()
+        public SizeDialogBox(bool getResolution=true)
         {
             InitializeComponent();
             this.Values_Width = 800;
             this.Values_Height = 600;
-            this.Values_XResolution = 96.0;
-            this.Values_YResolution = 96.0;
+            if (getResolution)
+            {
+                this.Values_XResolution = 96.0;
+                this.Values_YResolution = 96.0;
+            }
+            else
+            {
+                rdResX.Height = new GridLength(0);
+                rdResY.Height = new GridLength(0);
+                this.Height = 150;
+            }
         }
 
 

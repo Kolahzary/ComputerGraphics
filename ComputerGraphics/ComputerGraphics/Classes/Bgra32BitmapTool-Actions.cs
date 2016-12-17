@@ -11,7 +11,7 @@ namespace ComputerGraphics.Classes
     {
         public void Scale(int newWidth, int newHeight, double newDpiX, double newDpiY)
         {
-            double 
+            double
                 x_ratio = this.Width / (double)newWidth,
                 y_ratio = this.Height / (double)newHeight;
 
@@ -26,6 +26,22 @@ namespace ComputerGraphics.Classes
                 }
             }
 
+        }
+        public void ChangeCanvasSize(int newWidth, int newHeight)
+        {
+            int minWidth = Math.Min(this.Width, newWidth),
+                minHeight = Math.Min(this.Height, newHeight);
+
+            WriteableBitmap wbOld = this.wb;
+            this.wb = new WriteableBitmap(newWidth, newHeight, wbOld.DpiX, wbOld.DpiY, wbOld.Format, wbOld.Palette);
+            
+            for (int x = 0; x < minWidth; x++)
+            {
+                for (int y = 0; y < minHeight; y++)
+                {
+                    this.SetPixel(x, y, wbOld.GetPixeli(x,y));
+                }
+            }
         }
 
         public void Rotate_90C()
