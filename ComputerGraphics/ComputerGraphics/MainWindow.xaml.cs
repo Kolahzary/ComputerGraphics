@@ -18,13 +18,15 @@ namespace ComputerGraphics
     /// 
     public partial class MainWindow : Window, INotifyPropertyChanged
     {
+        #region Current File Path
         public string CurrentFilePath;
         public string CurrentFileExtension => Path.GetExtension(this.CurrentFilePath);
-
+        #endregion
+        #region INotifyPropertyChanged implementation
         public event PropertyChangedEventHandler PropertyChanged;
         public void NotifyPropertyChanged(string propName) => this.PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propName));
-
-
+        #endregion
+        #region bmp
         private Bgra32BitmapTool _bmp;
         private Bgra32BitmapTool bmp
         {
@@ -36,10 +38,10 @@ namespace ComputerGraphics
             {
                 this._bmp = value;
                 imgMain.Source = bmp.WritableBitmap;
-                this.NotifyPropertyChanged("StringImageSize");
             }
         }
-
+        #endregion
+        #region Source Point
         private IntPoint? _SourcePoint;
         private IntPoint? SourcePoint
         {
@@ -53,7 +55,7 @@ namespace ComputerGraphics
                 lblSourcePoint.Text = value.HasValue ? $"{value.Value.X}, {value.Value.Y} px" : "";
             }
         }
-
+        #endregion
         #region Current Back Color
         private Color _CurrentBackColor;
         public Color CurrentBackColor
@@ -86,7 +88,7 @@ namespace ComputerGraphics
         public Color CurrentNegativeForeColor => this.CurrentForeColor.GetNegative();
         public Brush CurrentNegativeForeColorBrush => new SolidColorBrush(this.CurrentNegativeForeColor);
         #endregion
-
+        #region Tool Types
         private enum ToolType
         {
             Freehand_PutPixels,
@@ -127,9 +129,29 @@ namespace ComputerGraphics
 
             Etc_Arrow,
         }
+        #endregion
+        #region Current Selected Tool
+        private ToolType _CurrentTool;
+        private ToolType CurrentTool
+        {
+            get
+            {
+                return _CurrentTool;
+            }
+            set
+            {
+                this._CurrentTool = value;
+                this.NotifyPropertyChanged("CurrentToolName");
+            }
+        }
 
         public void ToolSelected(object sender, RoutedEventArgs e)
             => this.CurrentTool = (ToolType)Enum.Parse(typeof(ToolType), (string)(sender as Control).Tag);
+
+        public string CurrentToolName => ToolNames[this.CurrentTool];
+        #endregion
+
+        #region ToolNames
 
         private Dictionary<ToolType, string> ToolNames = new Dictionary<ToolType, string>()
         {
@@ -172,30 +194,27 @@ namespace ComputerGraphics
             {ToolType.Etc_Arrow,"Etc -> Arrow" },
 
         };
+        #endregion
 
-        private ToolType _CurrentTool;
-        public string CurrentToolName => ToolNames[this.CurrentTool];
-        private ToolType CurrentTool
+        #region Image Size
+        private int _img_width, _img_height;
+        public string StringImageSize => $"{_img_width} * {_img_height} px";
+        private void ImgMain_SizeChanged(object sender, SizeChangedEventArgs e)
         {
-            get
-            {
-                return _CurrentTool;
-            }
-            set
-            {
-                this._CurrentTool = value;
-                this.NotifyPropertyChanged("CurrentToolName");
-            }
+            if (e.WidthChanged) _img_width = bmp.Width;
+            if (e.HeightChanged) _img_height = bmp.Height;
+            this.NotifyPropertyChanged("StringImageSize");
         }
+        #endregion
 
-        public IntPoint MousePosition => Mouse.GetPosition(imgMain).ToIntPointWithResolution(bmp.XResolution, bmp.YResolution);
-        public string StringImageSize => $"{bmp.Width} * {bmp.Height} px";
+        public IntPoint GetMousePosition()
+            => Mouse.GetPosition(imgMain).ToIntPointWithResolution(bmp.XResolution, bmp.YResolution);
 
         public MainWindow()
         {
             InitializeComponent();
+            imgMain.SizeChanged += ImgMain_SizeChanged;
         }
-
         private void Window_Loaded(object sender, RoutedEventArgs e)
         {
             bmp = new Bgra32BitmapTool(100, 100, 10);
@@ -214,7 +233,7 @@ namespace ComputerGraphics
             if (e.PropertyName == "WritableBitmap")
             {
                 imgMain.Source = bmp.WritableBitmap;
-                this.NotifyPropertyChanged("StringImageSize");
+                //this.NotifyPropertyChanged("StringImageSize");
             }
         }
 
@@ -226,7 +245,7 @@ namespace ComputerGraphics
         private void imgMain_MouseMove(object sender, MouseEventArgs e)
         {
             this.NotifyPropertyChanged("MousePosition");
-            var mouse = this.MousePosition;
+            var mouse = this.GetMousePosition();
             if (e.LeftButton == MouseButtonState.Pressed)
             {
                 switch (CurrentTool)
@@ -247,7 +266,7 @@ namespace ComputerGraphics
         }
         private void imgMain_MouseDown(object sender, MouseButtonEventArgs e)
         {
-            var mouse = this.MousePosition;
+            var mouse = this.GetMousePosition();
             if (e.ChangedButton == MouseButton.Left)
             {
                 switch (CurrentTool)
@@ -297,7 +316,7 @@ namespace ComputerGraphics
 
         private void imgMain_MouseUp(object sender, MouseButtonEventArgs e)
         {
-            var mouse = this.MousePosition;
+            var mouse = this.GetMousePosition();
             int radius, radiusX, radiusY;
             if (e.ChangedButton == MouseButton.Left)
             {
