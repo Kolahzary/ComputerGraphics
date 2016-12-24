@@ -7,376 +7,386 @@
         xmlns:local="clr-namespace:ComputerGraphics"
         mc:Ignorable="d"
         Title="MainWindow"
-        Height="350"
-        Width="525"
+        Height="377.632"
+        Width="751.316"
         Name='wMainWindow'
         Closed='wMainWindow_Closed'
         Loaded='Window_Loaded'>
-  <Window.CommandBindings>
-    <CommandBinding Command='New'
+    <Window.CommandBindings>
+        <CommandBinding Command='New'
                     Executed='CommandExecuted' />
-    <CommandBinding Command='Open'
+        <CommandBinding Command='Open'
                     Executed='CommandExecuted' />
-    <CommandBinding Command='Save'
+        <CommandBinding Command='Save'
                     Executed='CommandExecuted' />
-    <CommandBinding Command='SaveAs'
+        <CommandBinding Command='SaveAs'
                     Executed='CommandExecuted' />
-    <CommandBinding Command='Close'
+        <CommandBinding Command='Close'
                     Executed='CommandExecuted' />
 
-    <CommandBinding Command='Undo'
+        <CommandBinding Command='Undo'
                     Executed='CommandExecuted' />
-    <CommandBinding Command='Redo'
+        <CommandBinding Command='Redo'
                     Executed='CommandExecuted' />
-  </Window.CommandBindings>
-  <Window.InputBindings>
-    <KeyBinding Modifiers='Ctrl'
+    </Window.CommandBindings>
+    <Window.InputBindings>
+        <KeyBinding Modifiers='Ctrl'
                 Key='N'
                 Command='New' />
-    <KeyBinding Modifiers='Ctrl'
+        <KeyBinding Modifiers='Ctrl'
                 Key='O'
                 Command='Open' />
-    <KeyBinding Modifiers='Ctrl'
+        <KeyBinding Modifiers='Ctrl'
                 Key='S'
                 Command='Save' />
-    <KeyBinding Modifiers='Ctrl'
+        <KeyBinding Modifiers='Ctrl'
                 Key='Z'
                 Command='Undo' />
-    <KeyBinding Modifiers='Ctrl'
+        <KeyBinding Modifiers='Ctrl'
                 Key='Y'
                 Command='Redo' />
-  </Window.InputBindings>
-  <DockPanel>
-    <Menu IsMainMenu='True'
+    </Window.InputBindings>
+    <DockPanel>
+        <Menu IsMainMenu='True'
           DockPanel.Dock='Top'>
-      <MenuItem Header='_File'>
-        <MenuItem Header="_New..."
+            <MenuItem Header='_File'>
+                <MenuItem Header="_New..."
                   Command='New'
                   InputGestureText='Ctrl+N'
                   Icon='{iconPacks:PackIconModern Kind=PageNew}' />
-        <Separator />
-        <MenuItem Header="_Open..."
+                <Separator />
+                <MenuItem Header="_Open..."
                   Command='Open'
                   InputGestureText='Ctrl+O'
                   Icon='{iconPacks:PackIconModern Kind=FolderOpen}' />
-        <Separator />
-        <MenuItem Header="_Save"
+                <Separator />
+                <MenuItem Header="_Save"
                   Command='Save'
                   InputGestureText='Ctrl+S'
                   Icon='{iconPacks:PackIconModern Kind=Save}' />
-        <MenuItem Header="Save _As..."
+                <MenuItem Header="Save _As..."
                   Command='SaveAs' />
-        <Separator />
-        <MenuItem Header="_Exit"
+                <Separator />
+                <MenuItem Header="_Exit"
                   Command='Close'
                   InputGestureText='Alt+F4'
                   Icon='{iconPacks:PackIconMaterial Kind=CloseCircleOutline}' />
-      </MenuItem>
-      <MenuItem Header='_Image'>
-        <MenuItem Tag='Scale'
+            </MenuItem>
+            <MenuItem Header='_Image'>
+                <MenuItem Tag='Scale'
                   Header='_Scale Image'
                   Click='ActionSelected' />
-        <MenuItem Tag='ChangeCanvasSize'
+                <MenuItem Tag='ChangeCanvasSize'
                   Header='_Change Canvas size'
                   Click='ActionSelected' />
-        <Separator />
-        <MenuItem Tag='Rotate_90C'
+                <Separator />
+                <MenuItem Tag='Rotate_90C'
                   Header='Rotate 90° Clockwise'
                   Click='ActionSelected' />
-        <MenuItem Tag='Rotate_90CC'
+                <MenuItem Tag='Rotate_90CC'
                   Header='Rotate 90° Counter-Clockwise'
                   Click='ActionSelected' />
-        <MenuItem Tag='Rotate_180'
+                <MenuItem Tag='Rotate_180'
                   Header='Rotate 180°'
                   Click='ActionSelected' />
-        <Separator />
-        <MenuItem Tag='Flip_Horizontal'
+                <Separator />
+                <MenuItem Tag='Flip_Horizontal'
                   Header='Flip _Horizontal'
                   Click='ActionSelected' />
-        <MenuItem Tag='Flip_Vertical'
+                <MenuItem Tag='Flip_Vertical'
                   Header='Flip _Vertical'
                   Click='ActionSelected' />
-      </MenuItem>
-      <MenuItem Header='_Edit'>
-        <MenuItem Header='_Undo'
+            </MenuItem>
+            <MenuItem Header='_Edit'>
+                <MenuItem Header='_Undo'
                   Command='Undo'
                   InputGestureText='Ctrl+Z'
                   Icon='{iconPacks:PackIconModern Kind=UndoCurve}' />
-        <MenuItem Header='_Redo'
+                <MenuItem Header='_Redo'
                   Command='Redo'
                   InputGestureText='Ctrl+Y'
                   Icon='{iconPacks:PackIconModern Kind=RedoCurve}' />
-      </MenuItem>
-      <MenuItem Header='_Tools'>
-        <MenuItem Header='_Free Hand'
+            </MenuItem>
+            <MenuItem Header='_Tools'>
+                <MenuItem Header='_Free Hand'
                   Icon='{iconPacks:PackIconModern Kind=DrawPencilReflection}'>
-          <MenuItem Tag='Freehand_PutPixels'
+                    <MenuItem Tag='Freehand_PutPixels'
                     Header='_Put pixels'
                     Click='ToolSelected' />
-          <MenuItem Tag='Freehand_DrawLine'
+                    <MenuItem Tag='Freehand_DrawLine'
                     Header='_Draw line'
                     Click='ToolSelected' />
-        </MenuItem>
-        <Separator />
-        <MenuItem Header='_Line'
+                </MenuItem>
+                <Separator />
+                <MenuItem Header='_Line'
                   Icon='{iconPacks:PackIconModern Kind=VectorLine}'>
-          <MenuItem Tag='Line_Naive'
+                    <MenuItem Tag='Line_Naive'
                     Header='_Naive line drawing algorithm'
                     Click='ToolSelected' />
-          <MenuItem Tag='Line_DDA'
+                    <MenuItem Tag='Line_DDA'
                     Header='_DDA (Digital Differential Analyzer)'
                     Click='ToolSelected' />
-          <MenuItem Tag='Line_Bresenham'
+                    <MenuItem Tag='Line_Bresenham'
                     Header="_Bresenham's Line Algorithm"
                     Click='ToolSelected' />
-        </MenuItem>
-        <MenuItem Header='_Triangle'
+                    <MenuItem Tag='LineWidth_AA_Bresenham'
+                    Header="_Bresenham's Line Algorithm with Anti-Aliasing and Width"
+                    Click='ToolSelected' />
+                </MenuItem>
+                <MenuItem Header='_Triangle'
                   Icon='{iconPacks:PackIconModern Kind=VectorPolygon}'>
-          <MenuItem Tag='Triangle_Equilateral'
+                    <MenuItem Tag='Triangle_Equilateral'
                     Header='_Equilateral Triangle'
                     Click='ToolSelected' />
-          <MenuItem Tag='Triangle_Isosceles'
+                    <MenuItem Tag='Triangle_Isosceles'
                     Header='_Isosceles Triangle'
                     Click='ToolSelected' />
-          <MenuItem Tag='Triangle_Right'
+                    <MenuItem Tag='Triangle_Right'
                     Header='_Right Triangle'
                     Click='ToolSelected' />
-        </MenuItem>
-        <MenuItem Header='_Square'>
-          <MenuItem Tag='Square_Empty'
+                </MenuItem>
+                <MenuItem Header='_Square'>
+                    <MenuItem Tag='Square_Empty'
                     Header='_Empty Square'
                     Click='ToolSelected' />
-          <MenuItem Tag='Square_Filled'
+                    <MenuItem Tag='Square_Filled'
                     Header='_Filled Square'
                     Click='ToolSelected' />
-        </MenuItem>
-        <MenuItem Header='_Rectangle'
+                </MenuItem>
+                <MenuItem Header='_Rectangle'
                   Icon='{iconPacks:PackIconModern Kind=VectorRectangle}'>
-          <MenuItem Tag='Rectangle_Empty'
+                    <MenuItem Tag='Rectangle_Empty'
                     Header='_Empty Rectangle'
                     Click='ToolSelected' />
-          <MenuItem Tag='Rectangle_Filled'
+                    <MenuItem Tag='Rectangle_Filled'
                     Header='_Filled Rectangle'
                     Click='ToolSelected' />
-        </MenuItem>
+                </MenuItem>
 
-        <MenuItem Tag='Diamond'
+                <MenuItem Tag='Diamond'
                   Header='_Diamond'
                   Click='ToolSelected' />
 
-        <MenuItem Tag='Pentagon'
+                <MenuItem Tag='Pentagon'
                   Header='_Pentagon'
                   Click='ToolSelected' />
 
-        <MenuItem Tag='Hexagon'
+                <MenuItem Tag='Hexagon'
                   Header='_Hexagon'
                   Click='ToolSelected' />
 
-        <MenuItem Header='_Circle'
+                <MenuItem Header='_Circle'
                   Icon='{iconPacks:PackIconModern Kind=VectorCircle}'>
-          <MenuItem Tag='Circle_Midpoint'
+                    <MenuItem Tag='Circle_Midpoint'
                     Header='_Midpoint algorithm'
                     Click='ToolSelected' />
-          <MenuItem Tag='Circle_Bresenham'
+                    <MenuItem Tag='Circle_Bresenham'
                     Header="_Bresenham's algorithm"
                     Click='ToolSelected' />
-        </MenuItem>
-        <MenuItem Header='_Ellipse'>
-          <MenuItem Tag='Ellipse_Midpoint'
+                </MenuItem>
+                <MenuItem Header='_Ellipse'>
+                    <MenuItem Tag='Ellipse_Midpoint'
                     Header='_Midpoint algorithm'
                     Click='ToolSelected' />
-          <MenuItem Tag='Ellipse_BresenhamRect'
+                    <MenuItem Tag='Ellipse_BresenhamRect'
                     Header="Rect _Bresenham's algorithm"
                     Click='ToolSelected' />
-        </MenuItem>
-        <Separator />
-        <MenuItem Tag='Etc_Arrow'
+                </MenuItem>
+                <Separator />
+                <MenuItem Tag='Etc_Arrow'
                   Header='_Arrow'
                   Click='ToolSelected' />
-        <Separator />
-        <MenuItem Header='_Fill'
+                <Separator />
+                <MenuItem Header='_Fill'
                   Icon='{iconPacks:PackIconOcticons Kind=Paintcan}'>
-          <MenuItem Header='_Apply background color to all pixels'
+                    <MenuItem Header='_Apply background color to all pixels'
                     Click='MenuItem_Fill_BackgroundColor_Click' />
-          <Separator />
-          <MenuItem Header='_Boundary Fill'>
-            <MenuItem Tag='Fill_BF4_Recursive'
+                    <Separator />
+                    <MenuItem Header='_Boundary Fill'>
+                        <MenuItem Tag='Fill_BF4_Recursive'
                       Header='_4-Way Recursive Boundary Fill Method (BF4)'
                       Click='ToolSelected' />
-            <MenuItem Tag='Fill_BF8_Recursive'
+                        <MenuItem Tag='Fill_BF8_Recursive'
                       Header='_8-Way Recursive Boundary Fill Method (BF8)'
                       Click='ToolSelected' />
-          </MenuItem>
-          <MenuItem Header='_Flood Fill'>
-            <MenuItem Header='_Recursive'>
-              <MenuItem Tag='Fill_FF4_Recursive'
+                    </MenuItem>
+                    <MenuItem Header='_Flood Fill'>
+                        <MenuItem Header='_Recursive'>
+                            <MenuItem Tag='Fill_FF4_Recursive'
                         Header='_4-Way Recursive Flood Fill Method (FF4)'
                         Click='ToolSelected' />
-              <MenuItem Tag='Fill_FF8_Recursive'
+                            <MenuItem Tag='Fill_FF8_Recursive'
                         Header='_8-Way Recursive Flood Fill Method (FF8)'
                         Click='ToolSelected' />
-            </MenuItem>
-            <MenuItem Header='_Dynamic'>
-              <MenuItem Tag='Fill_FF4_Dynamic'
+                        </MenuItem>
+                        <MenuItem Header='_Dynamic'>
+                            <MenuItem Tag='Fill_FF4_Dynamic'
                         Header='_4-Way Dynamic Flood Fill Method (FF4)'
                         Click='ToolSelected' />
-              <MenuItem Tag='Fill_FF8_Dynamic'
+                            <MenuItem Tag='Fill_FF8_Dynamic'
                         Header='_8-Way Dynamic Flood Fill Method (FF8)'
                         Click='ToolSelected' />
-            </MenuItem>
-          </MenuItem>
-        </MenuItem>
-        <Separator />
-        <MenuItem Header='C_olor Picker'
+                        </MenuItem>
+                    </MenuItem>
+                </MenuItem>
+                <Separator />
+                <MenuItem Header='C_olor Picker'
                   Icon='{iconPacks:PackIconFontAwesome Kind=Eyedropper}'>
-          <MenuItem Header='Pick _background color'
+                    <MenuItem Header='Pick _background color'
                     Click='MenuItem_Tools_BackgroundColorPicker_Click' />
-          <MenuItem Header='Pick _foreground Color'
+                    <MenuItem Header='Pick _foreground Color'
                     Click='MenuItem_Tools_ForegroundColorPicker_Click' />
-        </MenuItem>
-      </MenuItem>
-      <MenuItem Header='_Help'>
-        <MenuItem Header='_GitHub'
+                </MenuItem>
+            </MenuItem>
+            <MenuItem Header='_Help'>
+                <MenuItem Header='_GitHub'
                   Icon='{iconPacks:PackIconEntypo Kind=Github}'
                   Click='MenuItem_Help_GitHub_Click' />
-        <Separator />
-        <MenuItem Header='_Easter Egg !!'
+                <Separator />
+                <MenuItem Header='_Easter Egg !!'
                   Icon='{iconPacks:PackIconMaterial Kind=EmoticonHappy}'
                   Click='MenuItem_EasterEgg_Click' />
-      </MenuItem>
-    </Menu>
-    <StatusBar DockPanel.Dock='Bottom'>
-      <StatusBar.ItemsPanel>
-        <ItemsPanelTemplate>
-          <Grid>
-            <Grid.ColumnDefinitions>
-              <ColumnDefinition />
-              <ColumnDefinition Width='auto' />
-              <ColumnDefinition />
-              <ColumnDefinition Width='auto' />
-              <ColumnDefinition />
-              <ColumnDefinition Width='auto' />
-              <ColumnDefinition />
-            </Grid.ColumnDefinitions>
-          </Grid>
-        </ItemsPanelTemplate>
-      </StatusBar.ItemsPanel>
-      <StatusBarItem Grid.Column='0'>
-        <TextBlock Name='lblToolName'
+            </MenuItem>
+        </Menu>
+        <StatusBar DockPanel.Dock='Bottom'>
+            <StatusBar.ItemsPanel>
+                <ItemsPanelTemplate>
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition />
+                            <ColumnDefinition Width='auto' />
+                            <ColumnDefinition />
+                            <ColumnDefinition Width='auto' />
+                            <ColumnDefinition />
+                            <ColumnDefinition Width='auto' />
+                            <ColumnDefinition />
+                        </Grid.ColumnDefinitions>
+                    </Grid>
+                </ItemsPanelTemplate>
+            </StatusBar.ItemsPanel>
+            <StatusBarItem Grid.Column='0'>
+                <TextBlock Name='lblToolName'
                    Text='{Binding ElementName=wMainWindow,Path=CurrentToolName}' />
-      </StatusBarItem>
+            </StatusBarItem>
 
-      <Separator Grid.Column='1' />
+            <Separator Grid.Column='1' />
 
-      <StatusBarItem Grid.Column='2'>
-        <TextBlock Name='lblSourcePoint' />
-      </StatusBarItem>
+            <StatusBarItem Grid.Column='2'>
+                <TextBlock Name='lblSourcePoint' />
+            </StatusBarItem>
 
-      <Separator Grid.Column='3' />
+            <Separator Grid.Column='3' />
 
-      <StatusBarItem Grid.Column='4'>
-        <TextBlock Name='lblCursorPosition'>
-          <TextBlock.Text>
-            <MultiBinding Mode='OneWay'
+            <StatusBarItem Grid.Column='4'>
+                <TextBlock Name='lblCursorPosition'>
+                    <TextBlock.Text>
+                        <MultiBinding Mode='OneWay'
                           StringFormat='{}{0}, {1} px'>
-              <Binding ElementName='wMainWindow'
+                            <Binding ElementName='wMainWindow'
                        Path='MousePosition.X' />
-              <Binding ElementName='wMainWindow'
+                            <Binding ElementName='wMainWindow'
                        Path='MousePosition.Y' />
-            </MultiBinding>
-          </TextBlock.Text>
-        </TextBlock>
-      </StatusBarItem>
+                        </MultiBinding>
+                    </TextBlock.Text>
+                </TextBlock>
+            </StatusBarItem>
 
-      <Separator  Grid.Column='5' />
+            <Separator  Grid.Column='5' />
 
-      <StatusBarItem Grid.Column='6'>
-        <TextBlock Name='lblImageSize'
+            <StatusBarItem Grid.Column='6'>
+                <TextBlock Name='lblImageSize'
                    Text='{Binding ElementName=wMainWindow,Path=StringImageSize,Mode=OneWay}' />
-      </StatusBarItem>
-    </StatusBar>
-    <ToolBarTray DockPanel.Dock='Top'
+            </StatusBarItem>
+        </StatusBar>
+        <ToolBarTray DockPanel.Dock='Top'
                  Orientation='Horizontal'>
-      <ToolBar>
-        <Button Command='New'
+            <ToolBar>
+                <Button Command='New'
                 ToolTip='New'
                 Content='{iconPacks:PackIconModern Kind=PageNew}' />
-        <Button Command='Open'
+                <Button Command='Open'
                 ToolTip='Open'
                 Content='{iconPacks:PackIconModern Kind=FolderOpen}' />
-        <Button Command='Save'
+                <Button Command='Save'
                 ToolTip='Save'
                 Content='{iconPacks:PackIconModern Kind=Save}' />
-      </ToolBar>
-      <ToolBar>
-        <Button Command='Undo'
+            </ToolBar>
+            <ToolBar>
+                <Button Command='Undo'
                 ToolTip='Undo'
                 Content='{iconPacks:PackIconModern Kind=UndoCurve}' />
-        <Button Command='Redo'
+                <Button Command='Redo'
                 ToolTip='Redo'
                 Content='{iconPacks:PackIconModern Kind=RedoCurve}' />
-      </ToolBar>
-      <ToolBar>
-        <Button ToolTip='Free Hand'
+            </ToolBar>
+            <ToolBar>
+                <Button ToolTip='Free Hand'
                 Tag='Freehand_DrawLine'
                 Click='ToolSelected'
                 Content='{iconPacks:PackIconModern Kind=DrawPencilReflection}' />
-        <Button ToolTip='Line'
-                Tag='Line_DDA'
+                <Button ToolTip='Line'
+                Tag='LineWidth_AA_Bresenham'
                 Click='ToolSelected'
                 Content='{iconPacks:PackIconModern Kind=VectorLine}' />
-        <Button ToolTip='Right Triangle'
+                <Button ToolTip='Right Triangle'
                 Tag='Triangle_Right'
                 Click='ToolSelected'
                 Content='{iconPacks:PackIconModern Kind=VectorPolygon}' />
-        <Button ToolTip='Rectangle'
+                <Button ToolTip='Rectangle'
                 Tag='Rectangle_Empty'
                 Click='ToolSelected'
                 Content='{iconPacks:PackIconModern Kind=VectorRectangle}' />
 
-        <Button ToolTip='Pentagon'
+                <Button ToolTip='Pentagon'
                 Tag='Pentagon'
                 Click='ToolSelected'
                 Content='Pentagon' />
-        <Button ToolTip='Hexagon'
+                <Button ToolTip='Hexagon'
                 Tag='Hexagon'
                 Click='ToolSelected'
                 Content='Hexagon' />
 
-        <Button ToolTip='Arrow'
+                <Button ToolTip='Arrow'
                 Tag='Etc_Arrow'
                 Click='ToolSelected'
                 Content='Arrow' />
 
-        <Button ToolTip='Circle'
+                <Button ToolTip='Circle'
                 Tag='Circle_Midpoint'
                 Click='ToolSelected'
                 Content='{iconPacks:PackIconModern Kind=VectorCircle}' />
-        <Button ToolTip='Flood Fill'
+                <Button ToolTip='Flood Fill'
                 Tag='Fill_FF4_Dynamic'
                 Click='ToolSelected'
                 Content='{iconPacks:PackIconOcticons Kind=Paintcan}' />
-      </ToolBar>
-      <ToolBar>
-        <Button ToolTip='Pick background color'
+            </ToolBar>
+            <ToolBar>
+                <Button ToolTip='Pick background color'
                 Foreground='{Binding ElementName=wMainWindow,Path=CurrentNegativeBackColorBrush}'
                 Background='{Binding ElementName=wMainWindow,Path=CurrentBackColorBrush}'
                 Click='MenuItem_Tools_BackgroundColorPicker_Click'
                 Content='Background' />
-        <Button ToolTip='Pick foreground color'
+                <Button ToolTip='Pick foreground color'
                 Foreground='{Binding ElementName=wMainWindow,Path=CurrentNegativeForeColorBrush}'
                 Background='{Binding ElementName=wMainWindow,Path=CurrentForeColorBrush}'
                 Click='MenuItem_Tools_ForegroundColorPicker_Click'
                 Content='Foreground' />
-      </ToolBar>
-    </ToolBarTray>
-    <ScrollViewer HorizontalScrollBarVisibility='Auto'
+            </ToolBar>
+            <ToolBar>
+                <TextBlock Text="Line Width:" 
+                           VerticalAlignment="Center"/>
+                <TextBox Name="txtLineWidth" 
+                         Text="{Binding ElementName=wMainWindow,Path=LineWidth,UpdateSourceTrigger=PropertyChanged}"
+                         VerticalAlignment="Center"/>
+            </ToolBar>
+        </ToolBarTray>
+        <ScrollViewer HorizontalScrollBarVisibility='Auto'
                   VerticalScrollBarVisibility='Auto'>
-      <Border BorderThickness='1'
+            <Border BorderThickness='1'
               BorderBrush='Black'
               HorizontalAlignment='Left'
               VerticalAlignment='Top'>
-        <Image  Name='imgMain'
+                <Image  Name='imgMain'
                 RenderOptions.BitmapScalingMode='NearestNeighbor'
                 RenderOptions.EdgeMode='Aliased'
                 Stretch='None'
@@ -385,7 +395,7 @@
                 MouseLeftButtonDown='imgMain_MouseDown'
                 MouseLeftButtonUp='imgMain_MouseUp'
                 MouseMove='imgMain_MouseMove' />
-      </Border>
-    </ScrollViewer>
-  </DockPanel>
+            </Border>
+        </ScrollViewer>
+    </DockPanel>
 </Window>

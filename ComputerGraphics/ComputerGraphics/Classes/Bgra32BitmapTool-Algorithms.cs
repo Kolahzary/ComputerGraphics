@@ -55,6 +55,11 @@ namespace ComputerGraphics.Classes
             => this.Line_DDA(x0, y0, x1, y1, ColorTool.ArgbToInt(alpha, red, green, blue));
         public void Line_DDA(int x0, int y0, int x1, int y1, int color)
         {
+            if (this.LineWidth != 1)
+            {
+                this.LineWidth_AA_Bresenham(x0, y0, x1, y1, ColorTool.IntToColor(color));
+                return;
+            }
             int
                 dx = x1 - x0,
                 dy = y1 - y0;
@@ -94,6 +99,55 @@ namespace ComputerGraphics.Classes
                 e2 = 2 * err;
                 if (e2 >= dy) { err += dy; x0 += sx; } /* e_xy+e_x > 0 */
                 if (e2 <= dx) { err += dx; y0 += sy; } /* e_xy+e_y < 0 */
+            }
+        }
+        public float LineWidth { get; set; } = 1;
+        public void LineWidth_AA_Bresenham(int x0, int y0, int x1, int y1, Color color)
+             => this.LineWidth_AA_Bresenham(x0, y0, x1, y1, color.A, color.R, color.G, color.B);
+        public void LineWidth_AA_Bresenham(int x0, int y0, int x1, int y1, byte alpha, byte red, byte green, byte blue)
+            => this.LineWidth_AA_Bresenham(x0, y0, x1, y1, this.LineWidth, alpha, red, green, blue);
+        public void LineWidth_AA_Bresenham(IntPoint source, IntPoint destination, Color color)
+            => this.LineWidth_AA_Bresenham(source.X, source.Y, destination.X, destination.Y, color.A, color.R, color.G, color.B);
+        public void LineWidth_AA_Bresenham(IntPoint source, IntPoint destination, float width, Color color)
+            => this.LineWidth_AA_Bresenham(source.X, source.Y, destination.X, destination.Y, width, color.A, color.R, color.G, color.B);
+        public void LineWidth_AA_Bresenham(int x0, int y0, int x1, int y1, float width, Color color)
+            => this.LineWidth_AA_Bresenham(x0, y0, x1, y1, width, color.A, color.R, color.G, color.B);
+        public void LineWidth_AA_Bresenham(int x0, int y0, int x1, int y1, float width, byte alpha, byte red, byte green, byte blue)
+        //    => this.LineWidth_AA_Bresenham(x0, y0, x1, y1, width, ColorTool.ArgbToInt(alpha, red, green, blue));
+        //public void LineWidth_AA_Bresenham(int x0, int y0, int x1, int y1, float width, int color)
+        {
+            /* plot an anti-aliased line of width wd */
+            float tmp;
+            int dx = Math.Abs(x1 - x0), sx = x0 < x1 ? 1 : -1;
+            int dy = Math.Abs(y1 - y0), sy = y0 < y1 ? 1 : -1;
+            int err = dx - dy, e2, x2, y2; /* error value e_xy */
+            float ed = dx + dy == 0 ? 1 : (float)Math.Sqrt((float)dx * dx + (float)dy * dy);
+            for (width = (width + 1) / 2; ;) { /* pixel loop */
+                tmp = 255-Math.Max(0, 255 * (Math.Abs(err - dx + dy) / ed - width + 1));
+                this.TrySetPixel(x0, y0, (byte)tmp, red, green, blue);
+                e2 = err;
+                x2 = x0;
+                if (2 * e2 >= -dx) { /* x step */
+                    for (e2 += dy, y2 = y0; e2 < ed * width && (y1 != y2 || dx > dy); e2 += dx)
+                    {
+                        tmp = 255-Math.Max(0, 255 * (Math.Abs(e2) / ed - width + 1));
+                        this.TrySetPixel(x0, y2 += sy, (byte)tmp, red, green, blue);
+                    }
+                    if (x0 == x1) break;
+                    e2 = err;
+                    err -= dy;
+                    x0 += sx;
+                }
+                if (2 * e2 <= dy) { /* y step */
+                    for (e2 = dx - e2; e2 < ed * width && (x1 != x2 || dx < dy); e2 += dy)
+                    {
+                        tmp = 255 - Math.Max(0, 255 * (Math.Abs(e2) / ed - width + 1));
+                        this.TrySetPixel(x2 += sx, y0, (byte)tmp, red, green, blue);
+                    }
+                    if (y0 == y1) break;
+                    err += dx;
+                    y0 += sy;
+                }
             }
         }
 

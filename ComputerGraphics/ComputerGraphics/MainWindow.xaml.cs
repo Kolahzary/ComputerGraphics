@@ -18,6 +18,17 @@ namespace ComputerGraphics
     /// 
     public partial class MainWindow : Window, INotifyPropertyChanged
     {
+        public float LineWidth
+        {
+            get
+            {
+                return this.bmp == null ? 1 : this.bmp.LineWidth;
+            }
+            set
+            {
+                this.bmp.LineWidth = value;
+            }
+        }
         #region Current File Path
         public string CurrentFilePath;
         public string CurrentFileExtension => Path.GetExtension(this.CurrentFilePath);
@@ -97,6 +108,7 @@ namespace ComputerGraphics
             Line_Naive,
             Line_DDA,
             Line_Bresenham,
+            LineWidth_AA_Bresenham,
 
             Square_Empty,
             Square_Filled,
@@ -161,6 +173,7 @@ namespace ComputerGraphics
             {ToolType.Line_Naive,"Line -> Naive" },
             {ToolType.Line_DDA,"Line -> DDA" },
             {ToolType.Line_Bresenham,"Line -> Bresenham" },
+            {ToolType.LineWidth_AA_Bresenham, "Line -> Bresenham Anti-aliased width" },
 
             {ToolType.Square_Empty,"Empty Square" },
             {ToolType.Square_Filled,"Filled Square" },
@@ -254,7 +267,9 @@ namespace ComputerGraphics
                         bmp.SetPixel(mouse.X, mouse.Y, this.CurrentForeColor);
                         break;
                     case ToolType.Freehand_DrawLine:
+                        
                         bmp.Line_DDA(SourcePoint ?? mouse, mouse, this.CurrentForeColor);
+                        //bmp.LineWidth_AA_Bresenham(SourcePoint ?? mouse, mouse, this.CurrentForeColor);
                         this.SourcePoint = mouse;
                         break;
                     default:
@@ -284,6 +299,7 @@ namespace ComputerGraphics
                     case ToolType.Line_Naive:
                     case ToolType.Line_DDA:
                     case ToolType.Line_Bresenham:
+                    case ToolType.LineWidth_AA_Bresenham:
 
                     case ToolType.Square_Empty:
                     case ToolType.Square_Filled:
@@ -364,6 +380,9 @@ namespace ComputerGraphics
                         break;
                     case ToolType.Line_Bresenham:
                         bmp.Line_Bresenham(this.SourcePoint.Value, mouse, this.CurrentForeColor);
+                        break;
+                    case ToolType.LineWidth_AA_Bresenham:
+                        bmp.LineWidth_AA_Bresenham(this.SourcePoint.Value, mouse, this.CurrentForeColor);
                         break;
                     case ToolType.Square_Empty:
                         bmp.Square_Empty(this.SourcePoint.Value, mouse, this.CurrentForeColor);
