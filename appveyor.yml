@@ -1,0 +1,31 @@
+version: 1.0.{build}
+configuration:
+- Debug
+- Release
+platform:
+- Any CPU
+- x86
+- x64
+before_build:
+- ps: nuget restore ComputerGraphics
+build:
+  parallel: true
+  verbosity: normal
+artifacts:
+- path: ComputerGraphics\ComputerGraphics\bin\$(platform)\$(configuration)
+  name: ComputerGraphics-v$(appveyor_build_version)-$(configuration)-$(platform)
+deploy:
+- provider: GitHub
+  release: AppVeyor CI v$(appveyor_build_version)
+  description: 'Created by AppVeyor.com, Build Version: $(appveyor_build_version)'
+  auth_token:
+    secure: hYhdoaWvMIfYZKCqvwBdHfJTTTzx4jYvf/WVhO1qgUq8Zeejee+7bz5SQwr8l982
+  artifact: /.*/
+  force_update: true
+notifications:
+- provider: Email
+  to:
+  - shadman.ko@gmail.com
+  on_build_success: true
+  on_build_failure: true
+  on_build_status_changed: true
